@@ -177,3 +177,26 @@ def test_schema():
     r = UpliftResponse(uplift=0.02, p_control=0.04, p_treated=0.06, segment="persuadable", decision="treat", budget=0.2, threshold=0.01,
                        outcome="visit", model="r_learner", version="abc", latency_ms=3.2)
     assert r.decision == "treat"
+
+
+# --- categorical columns and τ rounds (M2 ablation machinery) ----------------------------
+def test_categorical_codes_and_tau_rounds(world):
+    from uplift.learners import CategoricalCodes, categorical_columns, fast_settings, fit_learner
+
+    X = world["X"]
+    cols = categorical_columns(X, 50)  # the synthetic world's coded columns: f4 (40 values), f5 (7), f9 (5)
+    assert cols == (4, 5, 9)
+    codes = CategoricalCodes(cols).fit(X)
+    Z = codes.transform(X[:10])
+    assert Z.shape == X[:10].shape and (Z[:, 5] >= 0).all() and Z[:, 5].max() < 7 and np.array_equal(Z[:, 0], X[:10, 0])
+    unseen = X[:1].copy()
+    unseen[0, 5] = 99.0
+    assert codes.transform(unseen)[0, 5] == -1  # unseen value → missing for LightGBM
+    s = fast_settings()
+    s.categorical, s.tau_rounds = cols, 30
+    m = fit_learner("dr_learner", X, world["t"], world["y"], settings=s)
+    assert m.codes is not None and m.tau.num_trees() == 30
+    u = m.predict_uplift(world["Xd"])
+    assert np.isfinite(u).all() and spearman(world["truth"], u) > 0.3
+    p0, p1 = m.predict_outcomes(world["Xd"][:50])
+    assert p0.shape == (50,) and (0 <= p0).all() and (p1 <= 1).all()

@@ -168,8 +168,165 @@ seven implementations, the cross-fitting, the propensity handling and the defaul
 response-model failure mode by construction. It says nothing about how strong the real heterogeneity is: that is M2's
 question, answered only with observed outcomes by arm.
 
-## 3. Learners on dev (M2)
-Qini / AUUC with CIs, decile tables, hyperparameter choice, the categorical ablation, the propensity ablation.
+## 3. Learners on dev (M2, 2026-10-28)
+
+All seven learners on `visit`: fit on train (2,399,998 rows, treated share 0.850), scored on dev (799,998 rows,
+119,999 control). The dev ATE is 1.034 pp [0.914, 1.154], so **random targeting yields 10.3 incremental visits per
+1,000 contacts at every budget**; that is the line every model is measured against. Qini is normalised (0 = random,
+1 = the perfect ordering of observed outcomes); every CI is a stratified bootstrap with 200 resamples. One resample
+loop now serves every statistic (`metrics.bootstrap_block`: the same resamples and numbers as before, three times
+faster); evaluating seven models took 11.5 min with a 0.40 GB peak RSS. The test split was not opened.
+
+### 3.1 The committed defaults (`eval/results/dev-summary-visit-defaults.md`)
+
+Fit times with the M1 defaults on an Apple M2: response 6.0 s, S 6.6 s, T 5.5 s, X 11.1 s, transformed outcome 3.7 s,
+R 26.9 s, DR 32.9 s; all seven in 105 s wall with a 0.91 GB peak RSS (1.30 GB peak footprint).
+
+| Learner | Normalised Qini [95% CI] | AUUC | Incremental visits / 1,000 at 10% [CI] | at 20% [CI] | at 30% [CI] | Share of total effect at 10 / 20 / 30% |
+|---|---|---|---|---|---|---|
+| S-learner | 0.0908 [0.0776, 0.1030] | 0.00380 | 60.5 [51.5, 69.1] | 38.7 [32.7, 44.7] | 29.8 [25.8, 34.0] | 0.58 / 0.75 / 0.86 |
+| X-learner | 0.0898 [0.0786, 0.1017] | 0.00376 | 61.5 [53.4, 68.8] | 39.4 [34.3, 44.7] | 28.8 [24.9, 32.5] | 0.59 / 0.76 / 0.83 |
+| transformed outcome | 0.0897 [0.0770, 0.1012] | 0.00375 | 63.9 [55.8, 72.1] | 39.9 [34.8, 44.7] | 27.9 [24.0, 31.3] | 0.62 / 0.77 / 0.81 |
+| R-learner | 0.0873 [0.0748, 0.0988] | 0.00365 | 65.0 [57.0, 72.4] | 39.0 [33.9, 43.9] | 28.8 [24.9, 32.8] | 0.63 / 0.75 / 0.84 |
+| **response model** | 0.0872 [0.0743, 0.1004] | 0.00366 | 53.5 [43.7, 64.5] | 38.4 [32.7, 44.5] | 29.5 [25.6, 33.6] | 0.52 / 0.74 / 0.86 |
+| DR-learner | 0.0869 [0.0735, 0.0990] | 0.00363 | 63.9 [55.6, 71.3] | 38.7 [33.4, 43.6] | 27.9 [24.0, 31.6] | 0.62 / 0.75 / 0.81 |
+| T-learner | 0.0867 [0.0733, 0.0995] | 0.00363 | 59.8 [51.7, 66.8] | 38.9 [33.8, 43.7] | 29.3 [25.8, 32.8] | 0.58 / 0.75 / 0.85 |
+| random | 0 | 0 | 10.3 | 10.3 | 10.3 | 0.10 / 0.20 / 0.30 |
+
+Three things to read off this table. Every model, the response model included, finds 3.7–4 times the random uplift
+at a 20% budget and captures three quarters of the total incremental effect with a fifth of the contacts. The seven
+Qini values sit inside one another's CIs: the ranking signal on Criteo is real (every CI excludes zero by a wide
+margin) but the learners are not separable at 800k dev rows. And the response model is a strong baseline here,
+unlike on the synthetic world: the Criteo effect is close to proportional to the base rate (relative uplift ≈ 27%
+in every slice we looked at), so ranking by P(visit | treated) ranks by uplift as well — except at the tight end,
+where it costs: at a 10% budget the uplift learners find 60–65 incremental visits per 1,000 and the response model
+53.5, with overlapping CIs.
+
+### 3.2 Hyperparameters, chosen once on dev Qini (`scripts/tune.py` → `eval/results/tuning_dev_visit.csv`)
+
+At most four configurations of (num_leaves, min_data_in_leaf, rounds) for the S-learner's single classifier and for
+the τ regression of the R- and DR-learners; the nuisance models of R and DR keep the defaults and were cross-fitted
+once per learner (32 s and 37 s) and reused for every τ configuration, so the comparison isolates the τ model. The
+other four learners keep the defaults.
+
+| Learner | Configuration (leaves, min_data_in_leaf, rounds) | Dev Qini | Incremental / 1,000 at 20% |
+|---|---|---|---|
+| S-learner | (15, 2,000, 150) default | 0.0908 | 38.7 |
+| S-learner | **(31, 2,000, 300) kept** | **0.0941** | 41.0 |
+| S-learner | (63, 1,000, 300) | 0.0934 | 38.6 |
+| S-learner | (31, 500, 500) | 0.0932 | 40.6 |
+| R-learner τ | (7, 5,000, 150) default | 0.0873 | 39.0 |
+| R-learner τ | (15, 2,000, 300) | 0.0853 | 38.6 |
+| R-learner τ | **(7, 20,000, 300) kept** | **0.0938** | 40.0 |
+| R-learner τ | (3, 10,000, 500) | 0.0852 | 39.1 |
+| DR-learner τ | (7, 5,000, 150) default | 0.0869 | 38.7 |
+| DR-learner τ | (15, 2,000, 300) | 0.0853 | 39.5 |
+| DR-learner τ | **(7, 20,000, 300) kept** | **0.0927** | 40.4 |
+| DR-learner τ | (3, 10,000, 500) | 0.0842 | 38.9 |
+
+The S-learner wants more capacity (31 leaves, 300 rounds: +0.003); the pseudo-outcome learners want *more*
+regularisation of τ (min_data_in_leaf 20,000: +0.006 for both), and the less regularised configuration loses — the
+same direction as the M1 synthetic finding, now on real data. Each gain is smaller than a single model's CI
+half-width (± 0.012), but the comparison is paired on the same dev rows, and the choice was made once. The three
+learners were retrained with the kept settings (`train.py --cls-params … --rounds 300` for S, `--reg-params …
+--tau-rounds 300` for R and DR) and their bundles overwritten.
+
+### 3.3 Ablations on the R- and DR-learners (`eval/results/ablations_dev_visit.md`)
+
+Both ablations use the tuned τ settings, so "base" here is the installed bundle. The decision rule was fixed before
+the numbers were seen: keep the variant whose Qini CI lower bound is higher; ties go to the simpler setting.
+
+| Learner | Variant | Normalised Qini [95% CI] | Incremental / 1,000 at 20% [CI] | Fit (s) |
+|---|---|---|---|---|
+| R-learner | base: known propensity e = 0.85, numeric features | **0.0938 [0.0819, 0.1060]** | 40.0 [34.4, 45.0] | 43 |
+| R-learner | (a) cross-fitted estimated propensity e(x) | 0.0923 [0.0807, 0.1046] | 39.6 [33.8, 44.5] | 72 |
+| R-learner | (b) f1, f3, f4, f5, f11 as LightGBM categoricals (≤ 1,000 distinct values) | 0.0887 [0.0767, 0.1017] | 39.6 [34.1, 44.5] | 42 |
+| DR-learner | base | **0.0927 [0.0817, 0.1055]** | 40.4 [35.2, 45.4] | 49 |
+| DR-learner | (a) estimated propensity | 0.0928 [0.0810, 0.1050] | 40.4 [34.9, 45.6] | 88 |
+| DR-learner | (b) categorical columns | 0.0887 [0.0778, 0.1021] | 39.4 [33.7, 44.4] | 42 |
+
+**Decision: base carries to M3 for both learners** (CI lower bounds 0.0819 vs 0.0807 vs 0.0767 for R; 0.0817 vs
+0.0810 vs 0.0778 for DR). Two readings:
+
+- (a) is the robustness check promised in §1.4. Estimating e(x) instead of using 0.85 changes nothing measurable:
+  the DR point estimate moves by +0.0001, the R one by −0.0015, both far inside the CI. The imbalance found in M1
+  shifts the *level* of the effect (the adjusted ATE is 0.8 pp rather than 1.0 pp) but not the *ranking* of customers
+  — the propensity varies only between 0.83 and 0.90 and is nearly orthogonal to the uplift signal. The known-e
+  learners stay the default; the M1 caveat is about how much uplift we report, not about whom to target.
+- (b) costs 0.004–0.005 Qini. With categorical handling the τ model splits four times as often on f4 (260 values)
+  and a tenth as often on f3, which looks like LightGBM's categorical splits overfitting the coded columns at this
+  signal level. Features stay numeric.
+
+Reproduce with `train.py --learners r_learner,dr_learner --reg-params '{"num_leaves": 7, "min_data_in_leaf": 20000}'
+--tau-rounds 300 --estimate-propensity` (or `--categorical 1000`) into `--models-dir models/ablations/<variant>`,
+`evaluate.py --split dev --models-dir … --out eval/results/ablations/<variant>`, then `ablation_table.py`. The
+ablation bundles are not committed.
+
+### 3.4 Uplift by decile (`deciles_dev_visit_<learner>.csv`, `qini_curves_dev.png`, `deciles_dev_s_learner.png`)
+
+Customers sorted by each model's score into ten equal bins (bin 1 = highest predicted uplift); in each, the observed
+uplift is the treated visit rate minus the control visit rate, which the randomised assignment makes an unbiased
+estimate of the effect the model placed there. The S-learner, best on dev by Qini:
+
+| Decile | n | Control rows | Visit rate, control | Visit rate, treated | Observed uplift [95% CI] | Mean predicted uplift |
+|---|---|---|---|---|---|---|
+| 1 | 79,999 | 10,784 | 21.37% | 28.03% | **+6.66 pp [5.81, 7.50]** | +5.71 pp |
+| 2 | 80,000 | 12,155 | 10.33% | 11.04% | +0.71 pp [0.12, 1.30] | +0.88 pp |
+| 3 | 80,000 | 12,272 | 3.72% | 3.93% | +0.21 pp [−0.16, 0.57] | +0.28 pp |
+| 4 | 80,000 | 12,350 | 1.29% | 1.51% | +0.22 pp [0.00, 0.44] | +0.11 pp |
+| 5 | 80,000 | 12,253 | 0.68% | 0.73% | +0.06 pp [−0.10, 0.21] | +0.07 pp |
+| 6 | 79,999 | 12,170 | 0.32% | 0.41% | +0.09 pp [−0.02, 0.21] | +0.03 pp |
+| 7 | 80,000 | 12,037 | 0.19% | 0.21% | +0.02 pp [−0.07, 0.11] | +0.01 pp |
+| 8 | 80,000 | 11,914 | 0.08% | 0.08% | +0.00 pp [−0.05, 0.06] | +0.00 pp |
+| 9 | 80,000 | 12,054 | 0.06% | 0.08% | +0.03 pp [−0.02, 0.07] | +0.00 pp |
+| 10 | 80,000 | 12,010 | 2.06% | 2.07% | +0.01 pp [−0.26, 0.29] | −0.02 pp |
+
+- **Top decile ≥ 2 × ATE: passes, by a wide margin.** 6.66 pp is 6.4 × the dev ATE of 1.03 pp; the top 10% of
+  customers hold 64% of the whole population's incremental visits. Every learner passes this check (top deciles
+  5.98–6.66 pp for the uplift learners, 5.35 pp [4.41, 6.29] for the response model, whose top decile is the only one
+  whose CI excludes 6 pp).
+- **Bottom decile ≤ ATE: passes** for every learner (S: +0.01 pp [−0.26, 0.29]).
+- **Is the bottom decile negative?** Not demonstrably. With the S-learner it is zero inside its CI; the R- and
+  DR-learners put a negative point estimate there (−0.14 pp [−0.59, 0.30] and −0.08 pp [−0.52, 0.36]) but both CIs
+  contain zero. At decile resolution the data shows no group of 80,000 customers whom the contact hurts; whether a
+  smaller predicted-τ < 0 group exists is M3's sleeping-dog question, answered with its own CI.
+- **Calibration.** Predicted and observed uplift agree in order everywhere and in level in deciles 2–10; the top
+  decile is under-predicted by about 1 pp (5.7 predicted vs 6.7 observed). The transformed-outcome learner shows the
+  usual high-variance signature instead, over-predicting its top decile (8.6 predicted vs 6.4 observed).
+- **What the ordering is made of.** Deciles 1–2 are the high-base-rate customers (control visit rates 21% and 10%)
+  and carry almost all of the effect; deciles 7–9 visit at 0.1% or less with or without the treatment (lost causes);
+  decile 10 is a distinct group with a 2% base rate and no measurable effect. The Qini curves (`qini_curves_dev.png`)
+  make the same point: the seven curves overlap almost everywhere, the response model's sits visibly below the
+  S-learner's only in the first 20%.
+
+### 3.5 The response-model contrast
+
+At a 20% budget on dev, random targeting yields 10.3 incremental visits per 1,000 contacts and captures 20% of the
+total incremental effect; the response model yields 38.4 [32.7, 44.5] and captures 74%; the best uplift learner (the
+S-learner) yields 41.0 [35.5, 46.0] and captures 79%. The uplift gain over the response model at 20% is therefore
++2.6 visits per 1,000 contacts (+7%), with overlapping CIs. At a 10% budget the gap is three times larger: 53.5
+[43.7, 64.5] against 66.6 [58.0, 73.9] per 1,000 (+13.1, +24%), with the shares of the total effect at 52% against
+64%; at 30% it has closed (29.5 against 30.2). On Qini the two are 0.0872 [0.0743, 0.1004] and 0.0941 [0.0840,
+0.1064]. So on Criteo the response model is a strong baseline, because the treatment effect is close to
+proportional to the base rate and ranking by P(visit | treated) ranks by uplift as a by-product; the uplift learners
+earn their keep where the budget is tight, which is exactly where a targeting decision bites, and are never worse.
+The acceptance criterion written in M0 — the best uplift learner's Qini beats the response model's with
+non-overlapping 95% CIs — is not met on dev and is unlikely to be met on test; the README will say so rather than
+soften the criterion after the fact. A paired bootstrap of the difference (the two models scored on the same
+resamples, which `bootstrap_block` already draws) is the right test for M3.
+
+### 3.6 What carries to M3
+
+- Seven bundles in `models/` (`eval/results/models_visit.json` records each one's settings and dev Qini): S-, R-
+  and DR-learners with the settings of §3.2; the other four with the defaults. Best on dev by Qini: the S-learner
+  (0.0941), with R (0.0938) and DR (0.0927) within 0.002.
+- Known propensity and numeric features (§3.3). The S-learner's segments use its own f(X, 0) as P(visit | control);
+  R and DR carry a control-outcome model for the same purpose.
+- Evaluation: the raw Qini / policy value on observed outcomes by arm stays primary; M3 adds the IPW-weighted budget
+  curve (cross-fitted propensity) as the robustness check to §1.4, paired-difference CIs, the placebo, and the
+  `conversion` outcome.
+- The dev split has now been used for learner choice, tuning and two ablations; every number above is a dev number
+  and the test split is still unopened.
 
 ## 4. Decisions (M3)
 Budget curves, profit under the stated economics, segments, sleeping dogs, placebo, calibration of uplift by decile,

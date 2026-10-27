@@ -28,24 +28,31 @@ def _order(score: np.ndarray, rng: np.random.Generator | None = None) -> np.ndar
     return np.lexsort((noise, -score))
 
 
+def _sorted(y, t, score):
+    """(y, t) in the targeting order of `score`."""
+    order = _order(score)
+    return y[order], t[order]
+
+
+def _curve_sorted(y_o, t_o, n_points: int = 100) -> pd.DataFrame:
+    """Uplift-gain and Qini curves of an already ordered population on an evenly spaced grid of targeted fractions."""
+    n = len(y_o)
+    cum_t, cum_c = np.cumsum(t_o), np.cumsum(1 - t_o)
+    cum_yt, cum_yc = np.cumsum(y_o * t_o), np.cumsum(y_o * (1 - t_o))
+    ks = np.unique(np.clip((np.linspace(0, 1, n_points + 1) * n).astype(int), 0, n))
+    ks = ks[ks > 0]
+    nt, nc, yt, yc = cum_t[ks - 1], cum_c[ks - 1], cum_yt[ks - 1], cum_yc[ks - 1]
+    rate_t = np.divide(yt, nt, out=np.zeros(len(ks)), where=nt > 0)
+    rate_c = np.divide(yc, nc, out=np.zeros(len(ks)), where=nc > 0)
+    qini = np.where(nc > 0, yt - yc * nt / np.maximum(nc, 1), yt.astype(float))
+    return pd.DataFrame({"fraction": np.r_[0.0, ks / n], "n": np.r_[0, ks], "uplift_gain": np.r_[0.0, (rate_t - rate_c) * ks], "qini": np.r_[0.0, qini]})
+
+
 def curves(y, t, score, n_points: int = 100) -> pd.DataFrame:
     """Uplift-gain and Qini curves on an evenly spaced grid of targeted fractions."""
     y, t = np.asarray(y, dtype=float), np.asarray(t).astype(int)
-    order = _order(score)
-    y, t = y[order], t[order]
-    n = len(y)
-    cum_t, cum_c = np.cumsum(t), np.cumsum(1 - t)
-    cum_yt, cum_yc = np.cumsum(y * t), np.cumsum(y * (1 - t))
-    ks = np.unique(np.clip((np.linspace(0, 1, n_points + 1) * n).astype(int), 0, n))
-    rows = [{"fraction": 0.0, "n": 0, "uplift_gain": 0.0, "qini": 0.0}]
-    for k in ks:
-        if k == 0:
-            continue
-        nt, nc, yt, yc = cum_t[k - 1], cum_c[k - 1], cum_yt[k - 1], cum_yc[k - 1]
-        rate_t, rate_c = (yt / nt if nt else 0.0), (yc / nc if nc else 0.0)
-        qini = yt - yc * nt / nc if nc else float(yt)
-        rows.append({"fraction": k / n, "n": int(k), "uplift_gain": (rate_t - rate_c) * k, "qini": float(qini)})
-    return pd.DataFrame(rows)
+    y_o, t_o = _sorted(y, t, score)
+    return _curve_sorted(y_o, t_o, n_points)
 
 
 def _area(curve: pd.DataFrame, col: str) -> float:
@@ -58,14 +65,18 @@ def perfect_score(y, t) -> np.ndarray:
     return (2 * (t * y) + (1 - y)).astype(float)
 
 
+def _qini_area_sorted(y_o, t_o) -> float:
+    """Area between the Qini curve of an ordering and the random line (chord from (0, 0) to (1, total))."""
+    c = _curve_sorted(y_o, t_o)
+    return _area(c, "qini") - c["qini"].iloc[-1] / 2
+
+
 def qini_coefficient(y, t, score, normalize: bool = True) -> float:
-    c = curves(y, t, score)
-    total = c["qini"].iloc[-1]
-    random_area = total / 2  # straight line from (0, 0) to (1, total)
-    model_area = _area(c, "qini") - random_area
+    y, t = np.asarray(y, dtype=float), np.asarray(t).astype(int)
+    model_area = _qini_area_sorted(*_sorted(y, t, score))
     if not normalize:
-        return model_area / len(np.asarray(y))
-    perfect_area = _area(curves(y, t, perfect_score(y, t)), "qini") - random_area
+        return model_area / len(y)
+    perfect_area = _qini_area_sorted(*_sorted(y, t, perfect_score(y, t)))
     return float(model_area / perfect_area) if perfect_area > 0 else 0.0
 
 
@@ -132,11 +143,51 @@ def _policy_per_1000(y, t, score, budget):
     return np.nan if v is None else v
 
 
+def _policy_sorted(y_o, t_o, k: int) -> float:
+    """Incremental responses per 1,000 contacts among the top k of an ordering; nan when an arm is empty."""
+    yt, yc = y_o[:k][t_o[:k] == 1], y_o[:k][t_o[:k] == 0]
+    return float((yt.mean() - yc.mean()) * 1000) if len(yt) and len(yc) else np.nan
+
+
+def bootstrap_block(y, t, score, budgets=(0.1, 0.2, 0.3), n_resamples: int = BOOTSTRAP_RESAMPLES, seed: int = SEED) -> dict:
+    """Normalised Qini and incremental per 1,000 at every budget from ONE stratified (by treatment) resample loop: each
+    resample is sorted once by the score and once by the perfect ordering instead of once per statistic. Same resamples
+    and same numbers as calling `bootstrap` per statistic, several times faster."""
+    y, t, score = np.asarray(y, dtype=float), np.asarray(t).astype(int), np.asarray(score, dtype=float)
+    n = len(y)
+    ks = [max(int(round(n * b)), 1) for b in budgets]
+
+    def stats(y_, t_, s_):
+        y_o, t_o = _sorted(y_, t_, s_)
+        perfect_area = _qini_area_sorted(*_sorted(y_, t_, perfect_score(y_, t_)))
+        q = _qini_area_sorted(y_o, t_o) / perfect_area if perfect_area > 0 else 0.0
+        return float(q), [_policy_sorted(y_o, t_o, k) for k in ks]
+
+    rng = np.random.default_rng(seed)
+    idx_t, idx_c = np.flatnonzero(t == 1), np.flatnonzero(t == 0)
+    q0, p0 = stats(y, t, score)
+    qs, ps = [], []
+    for _ in range(n_resamples):
+        idx = np.concatenate([rng.choice(idx_t, len(idx_t)), rng.choice(idx_c, len(idx_c))])
+        q, p = stats(y[idx], t[idx], score[idx])
+        qs.append(q)
+        ps.append(p)
+    qs, ps = np.asarray(qs, dtype=float), np.asarray(ps, dtype=float)
+    out = {"qini": {"point": q0, "ci_low": float(np.nanpercentile(qs, 2.5)), "ci_high": float(np.nanpercentile(qs, 97.5)), "n_resamples": n_resamples},
+           "policy": {}}
+    for j, b in enumerate(budgets):
+        out["policy"][str(b)] = {"point": p0[j], "ci_low": float(np.nanpercentile(ps[:, j], 2.5)), "ci_high": float(np.nanpercentile(ps[:, j], 97.5)),
+                                 "n_resamples": n_resamples}
+    return out
+
+
 def evaluate_scores(y, t, score, budgets=(0.1, 0.2, 0.3), n_resamples: int = BOOTSTRAP_RESAMPLES) -> dict:
-    """The standard block for one model on one split: Qini (normalised, with CI), AUUC, policy value at a few budgets with CIs."""
-    out = {"qini": bootstrap(qini_coefficient, y, t, score, n_resamples), "auuc": auuc(y, t, score), "policy": {}}
+    """The standard block for one model on one split: Qini (normalised, with CI), AUUC, policy value at a few budgets with
+    CIs and the share of the total incremental effect captured."""
+    out = bootstrap_block(y, t, score, budgets, n_resamples)
+    out["auuc"] = auuc(y, t, score)
     for b in budgets:
-        out["policy"][str(b)] = bootstrap(_policy_per_1000, y, t, score, n_resamples, budget=b)
+        out["policy"][str(b)]["share_of_total"] = policy_value(y, t, score, b)["share_of_total"]
     return out
 
 

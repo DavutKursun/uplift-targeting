@@ -1,0 +1,72 @@
+{
+  "response": {
+    "qini": 0.0872,
+    "auuc": 0.003657,
+    "incremental_per_1000_at_20pct": 38.36,
+    "fit_seconds": 6.0,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/response-visit.joblib"
+  },
+  "s_learner": {
+    "qini": 0.0908,
+    "auuc": 0.003804,
+    "incremental_per_1000_at_20pct": 38.66,
+    "fit_seconds": 6.6,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/s_learner-visit.joblib"
+  },
+  "t_learner": {
+    "qini": 0.0867,
+    "auuc": 0.00363,
+    "incremental_per_1000_at_20pct": 38.87,
+    "fit_seconds": 5.5,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/t_learner-visit.joblib"
+  },
+  "x_learner": {
+    "qini": 0.0898,
+    "auuc": 0.003761,
+    "incremental_per_1000_at_20pct": 39.39,
+    "fit_seconds": 11.1,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/x_learner-visit.joblib"
+  },
+  "transformed_outcome": {
+    "qini": 0.0897,
+    "auuc": 0.003752,
+    "incremental_per_1000_at_20pct": 39.94,
+    "fit_seconds": 3.7,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/transformed_outcome-visit.joblib"
+  },
+  "r_learner": {
+    "qini": 0.0873,
+    "auuc": 0.003652,
+    "incremental_per_1000_at_20pct": 38.95,
+    "fit_seconds": 26.9,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/r_learner-visit.joblib"
+  },
+  "dr_learner": {
+    "qini": 0.0869,
+    "auuc": 0.003634,
+    "incremental_per_1000_at_20pct": 38.68,
+    "fit_seconds": 32.9,
+    "propensity": 0.85,
+    "estimate_propensity": false,
+    "rounds": 150,
+    "path": "/Users/davutkursun/Downloads/uplift-targeting/models/dr_learner-visit.joblib"
+  }
+}

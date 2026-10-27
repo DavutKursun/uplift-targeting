@@ -1,4 +1,4 @@
-.PHONY: setup setup-dev test splits ate synth train eval-dev policy-dev placebo smoke app
+.PHONY: setup setup-dev test splits ate synth train eval-dev tune plots-dev policy-dev placebo smoke app
 
 PY ?= python
 
@@ -18,6 +18,10 @@ train:            ## all seven learners on visit, saved under models/
 	$(PY) scripts/train.py --learners all --outcome visit
 eval-dev:
 	$(PY) scripts/evaluate.py --split dev
+tune:             ## at most four (leaves, min_data_in_leaf, rounds) configurations for S, R, DR on dev Qini
+	$(PY) scripts/tune.py
+plots-dev:        ## Qini curves and the decile plot of the best learner, from the saved models and dev results
+	$(PY) scripts/plots.py --split dev
 policy-dev:
 	$(PY) scripts/policy_eval.py --split dev
 placebo:

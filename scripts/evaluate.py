@@ -53,13 +53,16 @@ def main(argv=None) -> int:
         rows.append({"model": name, "qini": round(ev["qini"]["point"], 4), "qini_ci_low": round(ev["qini"]["ci_low"], 4), "qini_ci_high": round(ev["qini"]["ci_high"], 4),
                      "auuc": round(ev["auuc"], 6),
                      **{f"per_1000_at_{int(float(b) * 100)}pct": round(v["point"], 2) for b, v in ev["policy"].items()},
-                     **{f"per_1000_at_{int(float(b) * 100)}pct_ci": f"[{v['ci_low']:.1f}, {v['ci_high']:.1f}]" for b, v in ev["policy"].items()}})
+                     **{f"per_1000_at_{int(float(b) * 100)}pct_ci": f"[{v['ci_low']:.1f}, {v['ci_high']:.1f}]" for b, v in ev["policy"].items()},
+                     **{f"share_of_total_at_{int(float(b) * 100)}pct": round(v["share_of_total"], 4) if v["share_of_total"] is not None else None
+                        for b, v in ev["policy"].items()}})
         tab = uplift_by_bin(y, t, s, predicted=s if name != "response" else None)
         tab.to_csv(a.out / f"deciles_{a.split}_{a.outcome}_{name}.csv", index=False)
         deciles[name] = tab[["bin", "n", "uplift_observed", "uplift_predicted"]].round(5).to_dict(orient="records")
         print(f"{name:20s} Qini {rows[-1]['qini']:.4f} [{rows[-1]['qini_ci_low']:.4f}, {rows[-1]['qini_ci_high']:.4f}]  per 1,000 at 20%: {rows[-1]['per_1000_at_20pct']}", flush=True)
     table = pd.DataFrame(rows).sort_values("qini", ascending=False)
-    stamp = {"split": a.split, "outcome": a.outcome, "run_date": str(date.today()), "n": len(df), "ate": base, "random_per_1000": round(base["ate"] * 1000, 2),
+    stamp = {"split": a.split, "outcome": a.outcome, "run_date": str(date.today()), "n": len(df), "n_resamples": a.resamples, "models_dir": str(a.models_dir),
+             "ate": base, "random_per_1000": round(base["ate"] * 1000, 2),
              "metrics": table.to_dict(orient="records"), "deciles": deciles}
     (a.out / f"{a.split}-summary-{a.outcome}.json").write_text(json.dumps(stamp, indent=2), encoding="utf-8")
     md = [f"# {a.split} results — outcome `{a.outcome}`, {len(df):,} rows, run {stamp['run_date']}", "",

@@ -31,6 +31,8 @@ _(filled at Milestone 4 — test split, used once)_
 ## Data
 Criteo Uplift Prediction Dataset v2.1 (≈ 14M rows, randomized treatment, 85% treated; outcomes `visit` and
 `conversion`). Stratified random splits 60/20/20; a 4M-row working subsample by default.
+Licence: the data is released by Criteo AI Lab under CC BY-NC-SA 4.0 (non-commercial, attribution, share-alike);
+cite Diemert et al., "A Large Scale Benchmark for Uplift Modeling", AdKDD 2018. The raw file is not in this repo.
 
 ## Run it yourself
 ```bash

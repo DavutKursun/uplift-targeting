@@ -1,0 +1,79 @@
+{
+  "split": "dev",
+  "outcome": "visit",
+  "rule": "keep the variant with the higher Qini CI lower bound; ties \u2192 the simpler setting",
+  "rows": [
+    {
+      "learner": "r_learner",
+      "variant": "base",
+      "qini": 0.0938,
+      "qini_ci_low": 0.0819,
+      "qini_ci_high": 0.106,
+      "per_1000_at_20pct": 40.0,
+      "per_1000_at_20pct_ci": "[34.4, 45.0]"
+    },
+    {
+      "learner": "r_learner",
+      "variant": "propensity",
+      "qini": 0.0923,
+      "qini_ci_low": 0.0807,
+      "qini_ci_high": 0.1046,
+      "per_1000_at_20pct": 39.6,
+      "per_1000_at_20pct_ci": "[33.8, 44.5]"
+    },
+    {
+      "learner": "r_learner",
+      "variant": "categorical",
+      "qini": 0.0887,
+      "qini_ci_low": 0.0767,
+      "qini_ci_high": 0.1017,
+      "per_1000_at_20pct": 39.63,
+      "per_1000_at_20pct_ci": "[34.1, 44.5]"
+    },
+    {
+      "learner": "dr_learner",
+      "variant": "base",
+      "qini": 0.0927,
+      "qini_ci_low": 0.0817,
+      "qini_ci_high": 0.1055,
+      "per_1000_at_20pct": 40.39,
+      "per_1000_at_20pct_ci": "[35.2, 45.4]"
+    },
+    {
+      "learner": "dr_learner",
+      "variant": "propensity",
+      "qini": 0.0928,
+      "qini_ci_low": 0.081,
+      "qini_ci_high": 0.105,
+      "per_1000_at_20pct": 40.4,
+      "per_1000_at_20pct_ci": "[34.9, 45.6]"
+    },
+    {
+      "learner": "dr_learner",
+      "variant": "categorical",
+      "qini": 0.0887,
+      "qini_ci_low": 0.0778,
+      "qini_ci_high": 0.1021,
+      "per_1000_at_20pct": 39.35,
+      "per_1000_at_20pct_ci": "[33.7, 44.4]"
+    }
+  ],
+  "decisions": {
+    "r_learner": {
+      "keep": "base",
+      "qini_ci_low": {
+        "base": 0.0819,
+        "propensity": 0.0807,
+        "categorical": 0.0767
+      }
+    },
+    "dr_learner": {
+      "keep": "base",
+      "qini_ci_low": {
+        "base": 0.0817,
+        "propensity": 0.081,
+        "categorical": 0.0778
+      }
+    }
+  }
+}

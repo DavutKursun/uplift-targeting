@@ -11,3 +11,6 @@ __pycache__/
 .idea/
 .DS_Store
 scratchpad/
+
+# ablation bundles are reproducible from train.py flags (DESIGN.md §3.3); only the seven main bundles are committed
+models/ablations/

@@ -1,0 +1,50 @@
+{
+  "r_learner": {
+    "qini": 0.0923,
+    "auuc": 0.003861,
+    "incremental_per_1000_at_20pct": 39.6,
+    "fit_seconds": 71.7,
+    "propensity": 0.85,
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 300,
+      "estimate_propensity": true,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 20000,
+        "learning_rate": 0.03
+      }
+    },
+    "path": "models/ablations/propensity/r_learner-visit.joblib"
+  },
+  "dr_learner": {
+    "qini": 0.0928,
+    "auuc": 0.003882,
+    "incremental_per_1000_at_20pct": 40.4,
+    "fit_seconds": 88.0,
+    "propensity": 0.85,
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 300,
+      "estimate_propensity": true,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 20000,
+        "learning_rate": 0.03
+      }
+    },
+    "path": "models/ablations/propensity/dr_learner-visit.joblib"
+  }
+}

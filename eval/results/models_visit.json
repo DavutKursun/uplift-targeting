@@ -1,0 +1,177 @@
+{
+  "dr_learner": {
+    "path": "models/dr_learner-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 300,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 20000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0927,
+    "auuc": 0.003877,
+    "incremental_per_1000_at_20pct": 40.39,
+    "fit_seconds": 48.8,
+    "propensity": 0.85
+  },
+  "r_learner": {
+    "path": "models/r_learner-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 300,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 20000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0938,
+    "auuc": 0.003927,
+    "incremental_per_1000_at_20pct": 40.0,
+    "fit_seconds": 43.3,
+    "propensity": 0.85
+  },
+  "response": {
+    "path": "models/response-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 150,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 5000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0872,
+    "auuc": 0.003657,
+    "incremental_per_1000_at_20pct": 38.36,
+    "fit_seconds": 6.0,
+    "propensity": 0.85
+  },
+  "s_learner": {
+    "path": "models/s_learner-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 300,
+      "tau_rounds": 300,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 31,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 5000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0941,
+    "auuc": 0.003938,
+    "incremental_per_1000_at_20pct": 40.97,
+    "fit_seconds": 21.5,
+    "propensity": 0.85
+  },
+  "t_learner": {
+    "path": "models/t_learner-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 150,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 5000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0867,
+    "auuc": 0.00363,
+    "incremental_per_1000_at_20pct": 38.87,
+    "fit_seconds": 5.5,
+    "propensity": 0.85
+  },
+  "transformed_outcome": {
+    "path": "models/transformed_outcome-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 150,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 5000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0897,
+    "auuc": 0.003752,
+    "incremental_per_1000_at_20pct": 39.94,
+    "fit_seconds": 3.7,
+    "propensity": 0.85
+  },
+  "x_learner": {
+    "path": "models/x_learner-visit.joblib",
+    "outcome": "visit",
+    "settings": {
+      "rounds": 150,
+      "tau_rounds": 150,
+      "estimate_propensity": false,
+      "categorical": [],
+      "cls_params": {
+        "num_leaves": 15,
+        "min_data_in_leaf": 2000,
+        "learning_rate": 0.03
+      },
+      "reg_params": {
+        "num_leaves": 7,
+        "min_data_in_leaf": 5000,
+        "learning_rate": 0.03
+      }
+    },
+    "qini": 0.0898,
+    "auuc": 0.003761,
+    "incremental_per_1000_at_20pct": 39.39,
+    "fit_seconds": 11.1,
+    "propensity": 0.85
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "outcome": "visit",
+  "grid": {
+    "s_learner": [
+      [
+        15,
+        2000,
+        150
+      ],
+      [
+        31,
+        2000,
+        300
+      ],
+      [
+        63,
+        1000,
+        300
+      ],
+      [
+        31,
+        500,
+        500
+      ]
+    ],
+    "tau": [
+      [
+        7,
+        5000,
+        150
+      ],
+      [
+        15,
+        2000,
+        300
+      ],
+      [
+        7,
+        20000,
+        300
+      ],
+      [
+        3,
+        10000,
+        500
+      ]
+    ]
+  },
+  "rows": [
+    {
+      "learner": "s_learner",
+      "config": 0,
+      "num_leaves": 15,
+      "min_data_in_leaf": 2000,
+      "rounds": 150,
+      "is_default": true,
+      "qini": 0.0908,
+      "auuc": 0.003804,
+      "per_1000_at_20pct": 38.66,
+      "fit_seconds": 10.2
+    },
+    {
+      "learner": "s_learner",
+      "config": 1,
+      "num_leaves": 31,
+      "min_data_in_leaf": 2000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0941,
+      "auuc": 0.003938,
+      "per_1000_at_20pct": 40.97,
+      "fit_seconds": 27.1
+    },
+    {
+      "learner": "s_learner",
+      "config": 2,
+      "num_leaves": 63,
+      "min_data_in_leaf": 1000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0934,
+      "auuc": 0.003911,
+      "per_1000_at_20pct": 38.62,
+      "fit_seconds": 35.9
+    },
+    {
+      "learner": "s_learner",
+      "config": 3,
+      "num_leaves": 31,
+      "min_data_in_leaf": 500,
+      "rounds": 500,
+      "is_default": false,
+      "qini": 0.0932,
+      "auuc": 0.003901,
+      "per_1000_at_20pct": 40.58,
+      "fit_seconds": 41.0
+    },
+    {
+      "learner": "r_learner",
+      "config": 0,
+      "num_leaves": 7,
+      "min_data_in_leaf": 5000,
+      "rounds": 150,
+      "is_default": true,
+      "qini": 0.0873,
+      "auuc": 0.003652,
+      "per_1000_at_20pct": 38.95,
+      "fit_seconds": 36.1
+    },
+    {
+      "learner": "r_learner",
+      "config": 1,
+      "num_leaves": 15,
+      "min_data_in_leaf": 2000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0853,
+      "auuc": 0.00357,
+      "per_1000_at_20pct": 38.63,
+      "fit_seconds": 42.1
+    },
+    {
+      "learner": "r_learner",
+      "config": 2,
+      "num_leaves": 7,
+      "min_data_in_leaf": 20000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0938,
+      "auuc": 0.003927,
+      "per_1000_at_20pct": 40.0,
+      "fit_seconds": 41.0
+    },
+    {
+      "learner": "r_learner",
+      "config": 3,
+      "num_leaves": 3,
+      "min_data_in_leaf": 10000,
+      "rounds": 500,
+      "is_default": false,
+      "qini": 0.0852,
+      "auuc": 0.003562,
+      "per_1000_at_20pct": 39.11,
+      "fit_seconds": 41.4
+    },
+    {
+      "learner": "dr_learner",
+      "config": 0,
+      "num_leaves": 7,
+      "min_data_in_leaf": 5000,
+      "rounds": 150,
+      "is_default": true,
+      "qini": 0.0869,
+      "auuc": 0.003634,
+      "per_1000_at_20pct": 38.68,
+      "fit_seconds": 42.5
+    },
+    {
+      "learner": "dr_learner",
+      "config": 1,
+      "num_leaves": 15,
+      "min_data_in_leaf": 2000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0853,
+      "auuc": 0.003571,
+      "per_1000_at_20pct": 39.47,
+      "fit_seconds": 47.6
+    },
+    {
+      "learner": "dr_learner",
+      "config": 2,
+      "num_leaves": 7,
+      "min_data_in_leaf": 20000,
+      "rounds": 300,
+      "is_default": false,
+      "qini": 0.0927,
+      "auuc": 0.003877,
+      "per_1000_at_20pct": 40.39,
+      "fit_seconds": 46.4
+    },
+    {
+      "learner": "dr_learner",
+      "config": 3,
+      "num_leaves": 3,
+      "min_data_in_leaf": 10000,
+      "rounds": 500,
+      "is_default": false,
+      "qini": 0.0842,
+      "auuc": 0.003523,
+      "per_1000_at_20pct": 38.89,
+      "fit_seconds": 47.0
+    }
+  ],
+  "choice": {
+    "dr_learner": {
+      "config": 2,
+      "num_leaves": 7,
+      "min_data_in_leaf": 20000,
+      "rounds": 300,
+      "qini": 0.0927,
+      "is_default": false,
+      "retrain": "python scripts/train.py --learners dr_learner --outcome visit --reg-params '{\"num_leaves\": 7, \"min_data_in_leaf\": 20000}' --tau-rounds 300"
+    },
+    "r_learner": {
+      "config": 2,
+      "num_leaves": 7,
+      "min_data_in_leaf": 20000,
+      "rounds": 300,
+      "qini": 0.0938,
+      "is_default": false,
+      "retrain": "python scripts/train.py --learners r_learner --outcome visit --reg-params '{\"num_leaves\": 7, \"min_data_in_leaf\": 20000}' --tau-rounds 300"
+    },
+    "s_learner": {
+      "config": 1,
+      "num_leaves": 31,
+      "min_data_in_leaf": 2000,
+      "rounds": 300,
+      "qini": 0.0941,
+      "is_default": false,
+      "retrain": "python scripts/train.py --learners s_learner --outcome visit --cls-params '{\"num_leaves\": 31, \"min_data_in_leaf\": 2000}' --rounds 300"
+    }
+  }
+}

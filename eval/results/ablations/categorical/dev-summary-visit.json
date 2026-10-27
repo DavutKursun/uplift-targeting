@@ -1,0 +1,180 @@
+{
+  "split": "dev",
+  "outcome": "visit",
+  "run_date": "2026-10-27",
+  "n": 799998,
+  "n_resamples": 200,
+  "models_dir": "models/ablations/categorical",
+  "ate": {
+    "n_treated": 679999,
+    "n_control": 119999,
+    "rate_treated": 0.048543,
+    "rate_control": 0.0382,
+    "ate": 0.010342,
+    "ci_low": 0.009144,
+    "ci_high": 0.011541,
+    "relative_uplift": 0.2707,
+    "se": 0.0006116
+  },
+  "random_per_1000": 10.34,
+  "metrics": [
+    {
+      "model": "dr_learner",
+      "qini": 0.0887,
+      "qini_ci_low": 0.0778,
+      "qini_ci_high": 0.1021,
+      "auuc": 0.00371,
+      "per_1000_at_10pct": 63.51,
+      "per_1000_at_20pct": 39.35,
+      "per_1000_at_30pct": 28.58,
+      "per_1000_at_10pct_ci": "[55.8, 71.6]",
+      "per_1000_at_20pct_ci": "[33.7, 44.4]",
+      "per_1000_at_30pct_ci": "[24.7, 32.0]",
+      "share_of_total_at_10pct": 0.6141,
+      "share_of_total_at_20pct": 0.7609,
+      "share_of_total_at_30pct": 0.8291
+    },
+    {
+      "model": "r_learner",
+      "qini": 0.0887,
+      "qini_ci_low": 0.0767,
+      "qini_ci_high": 0.1017,
+      "auuc": 0.003712,
+      "per_1000_at_10pct": 64.19,
+      "per_1000_at_20pct": 39.63,
+      "per_1000_at_30pct": 28.91,
+      "per_1000_at_10pct_ci": "[56.2, 72.7]",
+      "per_1000_at_20pct_ci": "[34.1, 44.5]",
+      "per_1000_at_30pct_ci": "[25.3, 32.5]",
+      "share_of_total_at_10pct": 0.6207,
+      "share_of_total_at_20pct": 0.7664,
+      "share_of_total_at_30pct": 0.8387
+    }
+  ],
+  "deciles": {
+    "dr_learner": [
+      {
+        "bin": 1,
+        "n": 79999,
+        "uplift_observed": 0.06352,
+        "uplift_predicted": 0.06022
+      },
+      {
+        "bin": 2,
+        "n": 80000,
+        "uplift_observed": 0.0063,
+        "uplift_predicted": 0.01032
+      },
+      {
+        "bin": 3,
+        "n": 80000,
+        "uplift_observed": 0.00196,
+        "uplift_predicted": 0.0035
+      },
+      {
+        "bin": 4,
+        "n": 80000,
+        "uplift_observed": 0.00418,
+        "uplift_predicted": 0.00162
+      },
+      {
+        "bin": 5,
+        "n": 80000,
+        "uplift_observed": 0.00167,
+        "uplift_predicted": 0.00076
+      },
+      {
+        "bin": 6,
+        "n": 79999,
+        "uplift_observed": 0.00094,
+        "uplift_predicted": 0.00045
+      },
+      {
+        "bin": 7,
+        "n": 80000,
+        "uplift_observed": 0.00045,
+        "uplift_predicted": 0.00024
+      },
+      {
+        "bin": 8,
+        "n": 80000,
+        "uplift_observed": 0.00041,
+        "uplift_predicted": 0.0002
+      },
+      {
+        "bin": 9,
+        "n": 80000,
+        "uplift_observed": -1e-05,
+        "uplift_predicted": 0.0002
+      },
+      {
+        "bin": 10,
+        "n": 80000,
+        "uplift_observed": 0.00165,
+        "uplift_predicted": -0.00164
+      }
+    ],
+    "r_learner": [
+      {
+        "bin": 1,
+        "n": 79999,
+        "uplift_observed": 0.0642,
+        "uplift_predicted": 0.06002
+      },
+      {
+        "bin": 2,
+        "n": 80000,
+        "uplift_observed": 0.0064,
+        "uplift_predicted": 0.01036
+      },
+      {
+        "bin": 3,
+        "n": 80000,
+        "uplift_observed": 0.00205,
+        "uplift_predicted": 0.00347
+      },
+      {
+        "bin": 4,
+        "n": 80000,
+        "uplift_observed": 0.00299,
+        "uplift_predicted": 0.00146
+      },
+      {
+        "bin": 5,
+        "n": 80000,
+        "uplift_observed": 0.00168,
+        "uplift_predicted": 0.00075
+      },
+      {
+        "bin": 6,
+        "n": 79999,
+        "uplift_observed": 0.00119,
+        "uplift_predicted": 0.00056
+      },
+      {
+        "bin": 7,
+        "n": 80000,
+        "uplift_observed": 0.00053,
+        "uplift_predicted": 0.00034
+      },
+      {
+        "bin": 8,
+        "n": 80000,
+        "uplift_observed": 0.00042,
+        "uplift_predicted": 0.00026
+      },
+      {
+        "bin": 9,
+        "n": 80000,
+        "uplift_observed": 5e-05,
+        "uplift_predicted": 0.00026
+      },
+      {
+        "bin": 10,
+        "n": 80000,
+        "uplift_observed": 0.00157,
+        "uplift_predicted": -0.00153
+      }
+    ]
+  }
+}
