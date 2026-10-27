@@ -10,6 +10,10 @@
 - **Baseline kept in every table:** response model P(visit | x, treated).
 - **Also trained and reported:** T-, X-, DR-learners and the transformed-outcome regression (`docs/DESIGN.md` §3).
 - Version: the commit hash of this repository; date of the single test run: 2026-10-28.
+- **Served at** https://davutkursun-uplift-targeting.hf.space (Hugging Face Docker Space, cpu-basic): `POST /score`, `POST /score/batch`,
+  `GET /policy`, `GET /health`, demo UI at `/ui`. Model time about 1 ms per customer; round-trip p50 about 165 ms from a laptop
+  (`eval/results/latency_space.json`). The τ̂ < −δ segment is served as `no_detectable_effect` with the sentence "negative predicted
+  uplift was not confirmed on held-out data; do not treat as harm".
 
 ## Intended use
 Portfolio demonstration of causal targeting: for a customer described by Criteo's 12 anonymous features, an estimated

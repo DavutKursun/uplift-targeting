@@ -1,8 +1,14 @@
 # uplift-targeting
 
+[![live demo](https://img.shields.io/badge/%F0%9F%A4%97%20Space-live%20demo-blue)](https://davutkursun-uplift-targeting.hf.space/ui)
+[![ci](https://github.com/DavutKursun/uplift-targeting/actions/workflows/ci.yml/badge.svg)](https://github.com/DavutKursun/uplift-targeting/actions/workflows/ci.yml)
+
 **Decides who should receive a marketing campaign by the effect it has on them, not by how likely they are to buy anyway.**
 
-_(demo GIF and live link arrive in Milestone 5)_
+![demo: pick a customer, both models, the budget slider, the evidence tab](docs/img/demo.gif)
+
+Live demo: **https://davutkursun-uplift-targeting.hf.space/ui** · API docs at `/docs` · a customer's uplift, segment and
+treat / skip decision in about a millisecond of model time.
 
 ## The problem
 A campaign budget covers a fraction of the customers. Targeting the people most likely to convert wastes the
@@ -51,7 +57,33 @@ uplift model earns 3.6 per 1,000 customers against 0.7 for the response model's 
 - **Features are anonymous** (Criteo's f0–f11), so the product can say *that* a customer is persuadable, not why.
 - **Data licence:** CC BY-NC-SA 4.0, non-commercial; cite Diemert et al., AdKDD 2018. The raw file is not in this repo.
 
+- **Tuning optimism.** The three learners whose settings were chosen on dev lost about 0.008 of Qini from dev to test,
+  the untuned ones 0.002–0.005; on test the response model ties the deployed model on Qini. The headline 10% difference is
+  the number that replicated (+13.0 on dev, +13.9 on test); the dev advantages at 20% and in Qini did not.
+
 Every number, its dev counterpart and the scripts that produced it: `docs/DESIGN.md`; model card: `docs/model_card.md`.
+
+## Use it
+
+```bash
+# one customer: the twelve anonymous Criteo features; extra or missing fields are rejected (422)
+curl -s -X POST "https://davutkursun-uplift-targeting.hf.space/score?model=s_learner&budget=0.10" \
+  -H "content-type: application/json" \
+  -d '{"f0": 23.3769, "f1": 10.0597, "f2": 8.2144, "f3": 4.6799, "f4": 10.2805, "f5": 4.1155, "f6": -2.4111, "f7": 4.8338, "f8": 3.9719, "f9": 13.1901, "f10": 5.3004, "f11": -0.1687}'
+# → {"uplift": -2e-06, "p_control": 0.00076, "p_treated": 0.000757, "segment": "lost_cause", "segment_note": null, "decision": "skip", "budget": 0.1, "threshold": 0.0159899, "outcome": "visit", "model": "s_learner", "version": "418f66f", "latency_ms": 1.63}
+#   (dev customer 0: a lost cause — a 0.08% visit probability that the ad does not move; skip at any budget)
+
+# the policy at a budget: threshold, expected incremental visits per 1,000 contacts (dev, raw and IPW), profit, break-even
+curl -s "https://davutkursun-uplift-targeting.hf.space/policy?budget=0.10"
+```
+
+`POST /score/batch` takes up to 1,000 customers; `?model=r_learner` scores with the cross-check learner; `GET /health`.
+The segment `no_detectable_effect` is the textbook sleeping dog, renamed because held-out data did not confirm any harm;
+every response carrying it also carries that sentence. Requests are logged without feature values; nothing is stored.
+
+**Latency.** Live Space (cpu-basic), 30 calls from a laptop: round-trip p50 164 ms / p95 183 ms for the S-learner and 163 / 191 ms for the R-learner, of which about 1 ms is model time (`latency_ms` in the response); locally over HTTP the p50 is 1.1 ms and 1,000 customers score in 29 ms (`eval/results/latency_space.json`, `latency_local.json`; target p50 < 30 ms of model time, met).
+
+Run it locally: `make serving app` then open http://127.0.0.1:7860/ui, or `docker build -t uplift . && docker run -p 7860:7860 uplift`.
 
 ## What this does
 - Estimates each customer's uplift (treated minus untreated outcome probability) with seven learners, from the
@@ -73,4 +105,5 @@ cite Diemert et al., "A Large Scale Benchmark for Uplift Modeling", AdKDD 2018. 
 pip install -r requirements-dev.txt && pytest -q      # no data needed
 python scripts/download.py                            # where to put the raw file
 make splits ate synth train eval-dev policy-dev paired-dev placebo plots-dev
+make serving bench api-test                           # the dev policy grid for the service, the latency benchmark, the API tests
 ```

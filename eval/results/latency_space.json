@@ -1,0 +1,56 @@
+{
+  "space": "https://davutkursun-uplift-targeting.hf.space",
+  "version_deployed": "418f66f",
+  "health": {
+    "status": "ok",
+    "outcome": "visit",
+    "models": [
+      "s_learner",
+      "r_learner"
+    ],
+    "comparison_models": [
+      "response"
+    ],
+    "budget": 0.1,
+    "thresholds_at_budget": {
+      "s_learner": 0.0159899,
+      "r_learner": 0.0187704
+    },
+    "segments": {
+      "names": [
+        "persuadable",
+        "sure_thing",
+        "lost_cause",
+        "no_detectable_effect"
+      ],
+      "delta": 0.0025855,
+      "p0_high": 0.0764,
+      "note": "negative predicted uplift was not confirmed on held-out data; do not treat as harm"
+    },
+    "version": "418f66f",
+    "grid_built": "2026-10-28",
+    "loaded_at": 1793143283.969137
+  },
+  "round_trip": {
+    "s_learner": {
+      "n": 30,
+      "p50_ms": 163.6,
+      "p95_ms": 182.6,
+      "server_latency_ms_last": 1.23
+    },
+    "r_learner": {
+      "n": 30,
+      "p50_ms": 163.0,
+      "p95_ms": 190.9,
+      "server_latency_ms_last": 0.65
+    }
+  },
+  "note": "round-trip from a laptop to the Space (network included); server-side latency_ms is in each response",
+  "policy_10pct": {
+    "threshold": 0.0159899,
+    "incremental_per_1000": 66.554,
+    "ipw_per_1000": 61.87,
+    "profit_per_1000_contacts": 33.108,
+    "breakeven_budget": 0.14
+  }
+}
