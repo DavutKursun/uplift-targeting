@@ -21,6 +21,10 @@ Two ways to get the Criteo Uplift Prediction Dataset v2.1 (your Kaggle / Criteo 
   1) Kaggle mirror: https://www.kaggle.com/datasets/{KAGGLE_DATASET} → Data → download the CSV (≈ 3 GB) → data/raw/
      or: kaggle datasets download -d {KAGGLE_DATASET} -p data/raw/ && unzip in data/raw/
   2) Criteo AI Lab: https://ailab.criteo.com/criteo-uplift-prediction-dataset/ → criteo-research-uplift-v2.1.csv.gz (≈ 300 MB) → data/raw/
+     (its go.criteo.net link returned 404 on 2026-10-27)
+  3) Criteo's own Hugging Face mirror of the same file (311 MB, CC BY-NC-SA 4.0, no login):
+     curl -L -o data/raw/criteo-research-uplift-v2.1.csv.gz \
+       https://huggingface.co/datasets/criteo/criteo-uplift/resolve/main/criteo-research-uplift-v2.1.csv.gz
 Then: python scripts/build_splits.py
 """
 

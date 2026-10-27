@@ -5,40 +5,47 @@ milestone; after each milestone stop, show how to run it, and wait for Davut's O
 Do not spawn review or refuter sub-agents; verify with the scripts and tests and
 report directly. Section 0 says where we are.
 
-## 0. Status (updated 2026-10-27)
+## 0. Status (updated 2026-10-27 — Milestone 1 done)
 
-**Starter is implemented and tested (no network, no raw data needed for tests). Start at
-Milestone 1, step 0 below.**
+**Starter and M1 are done and committed; start at Milestone 2 below.** Repo: `github.com/DavutKursun/uplift-targeting`
+(public). `pytest -q` → 18 passed without the raw data. Every M1 number and table lives in `docs/DESIGN.md` §1–2;
+`scripts/m1_diagnostics.py facts | balance | synthetic` reproduces them.
 
-Implemented in the starter:
-- `uplift/config.py` (paths, split shares, seeds, economics defaults), `schema.py` (Customer / UpliftResponse,
-  Pydantic), `data.py` (chunked loader for the Criteo file → float32 parquet, stratified subsample, stratified
-  train/dev/test split, randomization check with standardized mean differences, ATE with confidence interval),
-  `synthetic.py` (a fake campaign with **known** individual effects τ(x), including a sleeping-dog region and
-  sure things, so learners can be scored against the truth), `learners.py` (one interface `fit(X, t, y)` /
-  `predict_uplift(X)` for: response model (the wrong baseline), S-learner, T-learner, X-learner, transformed
-  outcome, R-learner and DR-learner with cross-fitting; LightGBM base learners), `metrics.py` (uplift and Qini
-  curves, normalised Qini coefficient, AUUC, uplift by decile from observed outcomes, policy value at a budget,
-  stratified bootstrap CIs, PEHE on synthetic data), `policy.py` (budget → threshold, incremental outcomes per
-  1,000 contacts, profit with contact cost and value per outcome, persuadable / sure thing / lost cause /
-  sleeping dog segments)
-- `scripts/download.py`, `build_splits.py`, `ate_report.py`, `train.py`, `evaluate.py` (refuses `--split test`
-  without `--final`), `policy_eval.py`, `placebo.py`
-- `tests/` (no network, no raw data): ATE recovery, randomization check, every learner recovers the synthetic
-  τ (correlation and PEHE bounds), Qini of the truth beats random, response model loses to uplift models on a
-  world with sure things, placebo ≈ 0, decile and policy arithmetic, schema, the whole script chain (`make smoke`).
-- NOT yet: `app.py` (FastAPI + Gradio), Dockerfile/Space, DESIGN.md content, model card, GIF.
+Implemented in the starter: `uplift/config.py`, `schema.py`, `data.py` (chunked loader → float32 parquet, stratified
+subsample and splits, randomization check, ATE with CI), `synthetic.py` (a campaign with known τ(x): persuadables, sure
+things, lost causes, sleeping dogs), `learners.py` (response model, S, T, X, transformed outcome, R, DR; one interface;
+LightGBM; cross-fitting), `metrics.py` (Qini, AUUC, uplift by decile, policy value, stratified bootstrap, PEHE),
+`policy.py` (budget → threshold, incremental outcomes per 1,000, profit, segments); `scripts/download.py`,
+`build_splits.py`, `ate_report.py`, `synthetic_check.py`, `train.py`, `evaluate.py` (refuses `--split test` without
+`--final`), `policy_eval.py`, `placebo.py`; `tests/`. NOT yet: `app.py`, Dockerfile/Space, model card, GIF.
 
-No LLM anywhere; no API key; CPU only. The raw file (≈ 300 MB compressed) is gitignored.
+Done in M1 (2026-10-27):
+- **Data.** The Criteo AI Lab link is dead; the same `criteo-research-uplift-v2.1.csv.gz` comes from Criteo's own
+  Hugging Face org (§3.1). Chunked CSV → parquet cache, 4M-row stratified subsample, splits 2,399,998 / 799,998 /
+  800,004 (treated share 0.850 and visit rate 4.70% in each); `build_splits.py` took 16 s with a 1.04 GB peak RSS on
+  the M2 / 8 GB. `data/splits/summary.json` committed; the test parquet has not been opened. The raw file is
+  block-ordered by treatment (first 30% of rows all treated): never take "the first N rows".
+- **The experiment (train).** visit 3.82% control → 4.85% treated, ATE +1.03 pp [0.97, 1.10], +27%; conversion
+  0.196% → 0.302%, +0.106 pp [0.089, 0.122], +54%. The spec's §3.2 arm rates and relative uplifts were wrong (69% /
+  37%) and were corrected to the measured values.
+- **Randomization is imperfect.** max |SMD| = 0.049 (f3), 7 of 12 features above 0.02, all below 0.1; treatment is
+  weakly predictable from the features (cross-fitted AUC 0.508, propensity 0.83–0.90); every covariate adjustment
+  (exact strata, OLS, IPW, AIPW) puts the visit ATE near 0.8 pp, below the raw CI. Decision: the raw arm difference
+  stays primary (as in the release paper); the adjusted number is reported next to it; the estimated-propensity
+  ablation in M2 is a real robustness check; an IPW-weighted Qini is a candidate for M3; README and model card list
+  it as a limitation of the data.
+- **Synthetic ground truth (n = 200k).** All six uplift learners reach Spearman 0.66–0.88 with the true τ; the
+  response model gets −0.08 and, at a 20% budget, fewer incremental visits than random targeting. With the starter's
+  LightGBM values only the S-learner passed; the committed defaults in `learners.py` (lr 0.03, 15 / 7 leaves,
+  min_data_in_leaf 2,000 / 5,000, 150 rounds) were chosen on the synthetic truth at 200k and 1M rows and are the M2
+  starting point.
 
-**Milestone 1, step 0 (do first):** `pip install -r requirements-dev.txt`, `pytest -q`. Ask Davut to place the
-Criteo file in `data/raw/` (§3.1), then `python scripts/build_splits.py` (chunked read → parquet; default
-stratified subsample of 4M rows, `--full` for all) and `python scripts/ate_report.py`. Report: rows, treatment
-share, visit and conversion rates by arm, ATE on visit and on conversion with 95% CIs (absolute and relative),
-the randomization table (SMD per feature, max |SMD|), the split sizes. Compare with §3.2 and say if anything is off.
-Stop.
+**Milestone 2 (do next):** all seven learners on `visit` (`make train`), dev Qini / AUUC with bootstrap CIs
+(`make eval-dev`), uplift-by-decile tables, hyperparameters tuned once on dev Qini starting from the committed
+defaults, the categorical ablation (§3.4), the estimated-propensity ablation (now a robustness check, §2), the
+response-model contrast at every budget. Report the dev table with CIs and stop. Never open the test split.
 
-macOS notes: Python 3.11 venv; 8 GB RAM. The raw CSV must be read in chunks (the loader does); never load it whole.
+macOS notes: Python 3.11 venv at `.venv`; 8 GB RAM. The raw CSV must be read in chunks (the loader does); never load it whole.
 
 ## 1. Goal
 
@@ -83,17 +90,22 @@ features `f0`–`f11`, 4 continuous and 8 high-cardinality categorical stored as
 85% treated; `visit`, `conversion`, `exposure` 0/1). Davut downloads it once: the Kaggle mirror
 `arashnic/uplift-modeling` (file `criteo-uplift-v2.1.csv`, ≈ 3 GB) or the Criteo AI Lab page
 (`criteo-research-uplift-v2.1.csv.gz`, ≈ 300 MB), and places the file in `data/raw/`. `scripts/download.py` only
-checks the file and prints both routes. The loader accepts .csv and .csv.gz and reads in chunks.
+checks the file and prints the routes. The loader accepts .csv and .csv.gz and reads in chunks.
+2026-10-27: the Criteo AI Lab link (go.criteo.net) returns 404; the same file is served by Criteo's own Hugging Face
+org, `https://huggingface.co/datasets/criteo/criteo-uplift` (311 MB gzip, CC BY-NC-SA 4.0, no login) — used for M1.
 
-### 3.2 Expected facts (from the release paper; verify in M1)
+### 3.2 Expected facts (from the release paper) vs measured (M1, 2026-10-27, all 13,979,592 rows)
 
-| Quantity | Expected |
-|---|---|
-| Rows | ≈ 13.98M |
-| Treated share | ≈ 0.85 |
-| Visit rate (all / control / treated) | ≈ 4.7% / ≈ 3.0% / ≈ 5.0%; relative uplift ≈ 69% |
-| Conversion rate (all) | ≈ 0.29%; relative uplift ≈ 37% |
-| Randomization | max |SMD| across features < 0.02 |
+| Quantity | Expected | Measured |
+|---|---|---|
+| Rows | ≈ 13.98M | 13,979,592 ✓ |
+| Treated share | ≈ 0.85 | 0.850 ✓ |
+| Visit rate (all / control / treated) | ≈ 4.7% / ≈ 3.0% / ≈ 5.0%; relative uplift ≈ 69% | 4.70% / 3.82% / 4.85%; ATE +1.03 pp [1.01, 1.06]; relative +27.1% [26.2, 28.0] — the spec's arm rates were wrong, the all-rows rate is right |
+| Conversion rate (all) | ≈ 0.29%; relative uplift ≈ 37% | 0.292%; control 0.194% / treated 0.309%; ATE +0.115 pp [0.109, 0.122]; relative +59% [54, 65] |
+| Randomization | max \|SMD\| across features < 0.02 | max \|SMD\| = 0.049 (f3); 7 of 12 features above 0.02, all below 0.1. Treatment is predictable from features (see DESIGN.md §1): the arms are not perfectly balanced, and a feature-adjusted ATE on visit is ≈ 0.7 pp instead of 1.0 pp |
+
+The raw treated-minus-control estimate stays the primary number (as in the release paper); the adjusted one is reported
+next to it as the honest caveat, and every M2–M4 evaluation keeps using observed outcomes by arm.
 
 ### 3.3 Splits and subsample
 

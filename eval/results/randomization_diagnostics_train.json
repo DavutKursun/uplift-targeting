@@ -1,0 +1,100 @@
+{
+  "split": "train",
+  "rows": 2399998,
+  "visit_ate_raw": {
+    "ate": 0.010343,
+    "ci": [
+      0.009651,
+      0.011035
+    ]
+  },
+  "visit_ate_ols_12_features": {
+    "ate": 0.007192,
+    "ci": [
+      0.006595,
+      0.00779
+    ]
+  },
+  "visit_ate_exact_strata_f3": {
+    "ate": 0.008922,
+    "ci": [
+      0.008225,
+      0.009619
+    ],
+    "n_strata": 288,
+    "rows_covered_share": 0.9998
+  },
+  "visit_ate_exact_strata_f5": {
+    "ate": 0.009762,
+    "ci": [
+      0.009068,
+      0.010456
+    ],
+    "n_strata": 46,
+    "rows_covered_share": 1.0
+  },
+  "visit_ate_exact_strata_f3_f5": {
+    "ate": 0.008357,
+    "ci": [
+      0.007668,
+      0.009047
+    ],
+    "n_strata": 1253,
+    "rows_covered_share": 0.9975
+  },
+  "visit_ate_exact_strata_f3_f5_f1": {
+    "ate": 0.008115,
+    "ci": [
+      0.00743,
+      0.008801
+    ],
+    "n_strata": 1648,
+    "rows_covered_share": 0.9956
+  },
+  "f3_top_values": [
+    {
+      "f3": 4.679881572723389,
+      "share": 0.819,
+      "treated_share": 0.8479,
+      "visit_rate": 0.0296
+    },
+    {
+      "f3": 3.9076619148254395,
+      "share": 0.0408,
+      "treated_share": 0.8504,
+      "visit_rate": 0.0693
+    },
+    {
+      "f3": 3.3597631454467773,
+      "share": 0.0221,
+      "treated_share": 0.8537,
+      "visit_rate": 0.0875
+    },
+    {
+      "f3": 2.9347801208496094,
+      "share": 0.0154,
+      "treated_share": 0.8548,
+      "visit_rate": 0.102
+    },
+    {
+      "f3": 2.587543487548828,
+      "share": 0.0115,
+      "treated_share": 0.8533,
+      "visit_rate": 0.1062
+    }
+  ],
+  "treatment_from_features_auc_oof": 0.5084,
+  "propensity_oof_p1_p99": [
+    0.8308,
+    0.9002
+  ],
+  "visit_ate_hajek_ipw": 0.0074,
+  "visit_ate_aipw": {
+    "ate": 0.007723,
+    "ci": [
+      0.007113,
+      0.008332
+    ]
+  },
+  "nuisance_seconds": 38.9
+}

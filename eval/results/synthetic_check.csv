@@ -1,0 +1,9 @@
+learner,spearman_with_truth,pehe,qini,incremental_per_1000_at_20pct,fit_seconds
+truth,1.0,0.0,0.0772,51.46,0.0
+response,-0.0805,0.12244,-0.0056,6.28,0.9
+s_learner,0.8809,0.01009,0.0724,49.66,1.0
+t_learner,0.6622,0.02743,0.0662,43.69,0.9
+x_learner,0.7363,0.01362,0.0583,41.21,1.5
+transformed_outcome,0.7482,0.01627,0.0718,46.3,0.8
+r_learner,0.7704,0.01415,0.0765,48.1,4.8
+dr_learner,0.7593,0.01452,0.075,49.05,5.5

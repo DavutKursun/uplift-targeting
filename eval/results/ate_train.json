@@ -1,0 +1,31 @@
+{
+  "split": "train",
+  "rows": 2399998,
+  "treated_share": 0.85,
+  "visit": {
+    "n_treated": 2039999,
+    "n_control": 359999,
+    "rate_treated": 0.048543,
+    "rate_control": 0.0382,
+    "ate": 0.010343,
+    "ci_low": 0.009651,
+    "ci_high": 0.011035,
+    "relative_uplift": 0.2708,
+    "se": 0.0003531
+  },
+  "conversion": {
+    "n_treated": 2039999,
+    "n_control": 359999,
+    "rate_treated": 0.003019,
+    "rate_control": 0.001964,
+    "ate": 0.001055,
+    "ci_low": 0.000892,
+    "ci_high": 0.001218,
+    "relative_uplift": 0.5373,
+    "se": 8.32e-05
+  },
+  "randomization": {
+    "max_abs_smd": 0.04788,
+    "balanced": true
+  }
+}

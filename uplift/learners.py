@@ -23,11 +23,15 @@ from sklearn.model_selection import StratifiedKFold
 
 from .config import CROSS_FIT_FOLDS, SEED
 
-CLS_PARAMS = dict(objective="binary", learning_rate=0.05, num_leaves=31, min_data_in_leaf=500, feature_fraction=0.9, bagging_fraction=0.8,
+# Defaults chosen on the synthetic ground truth (M1, scripts/m1_diagnostics.py synthetic): the looser starter values
+# (lr 0.05, 31/15 leaves, min_data_in_leaf 500/1000, 400 rounds) overfit the noise in the pseudo-outcomes — at n = 200k only
+# the S-learner reached Spearman 0.6 with the truth; with these values every learner does, at 200k and at 1M rows, in a
+# third of the time. M2 tunes from here on dev Qini (real data), once.
+CLS_PARAMS = dict(objective="binary", learning_rate=0.03, num_leaves=15, min_data_in_leaf=2000, feature_fraction=0.9, bagging_fraction=0.8,
                   bagging_freq=1, lambda_l2=10.0, verbose=-1, seed=SEED, num_threads=0)
-REG_PARAMS = dict(objective="regression", learning_rate=0.05, num_leaves=15, min_data_in_leaf=1000, feature_fraction=0.9, bagging_fraction=0.8,
+REG_PARAMS = dict(objective="regression", learning_rate=0.03, num_leaves=7, min_data_in_leaf=5000, feature_fraction=0.9, bagging_fraction=0.8,
                   bagging_freq=1, lambda_l2=10.0, verbose=-1, seed=SEED, num_threads=0)
-ROUNDS = 400
+ROUNDS = 150
 
 
 def _train(X, y, params, rounds, weight=None):

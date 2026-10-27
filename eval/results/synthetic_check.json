@@ -1,0 +1,70 @@
+{
+  "n": 200000,
+  "true_ate": 0.02136,
+  "rows": [
+    {
+      "learner": "truth",
+      "spearman_with_truth": 1.0,
+      "pehe": 0.0,
+      "qini": 0.0772,
+      "incremental_per_1000_at_20pct": 51.46,
+      "fit_seconds": 0.0
+    },
+    {
+      "learner": "response",
+      "spearman_with_truth": -0.0805,
+      "pehe": 0.12244,
+      "qini": -0.0056,
+      "incremental_per_1000_at_20pct": 6.28,
+      "fit_seconds": 0.9
+    },
+    {
+      "learner": "s_learner",
+      "spearman_with_truth": 0.8809,
+      "pehe": 0.01009,
+      "qini": 0.0724,
+      "incremental_per_1000_at_20pct": 49.66,
+      "fit_seconds": 1.0
+    },
+    {
+      "learner": "t_learner",
+      "spearman_with_truth": 0.6622,
+      "pehe": 0.02743,
+      "qini": 0.0662,
+      "incremental_per_1000_at_20pct": 43.69,
+      "fit_seconds": 0.9
+    },
+    {
+      "learner": "x_learner",
+      "spearman_with_truth": 0.7363,
+      "pehe": 0.01362,
+      "qini": 0.0583,
+      "incremental_per_1000_at_20pct": 41.21,
+      "fit_seconds": 1.5
+    },
+    {
+      "learner": "transformed_outcome",
+      "spearman_with_truth": 0.7482,
+      "pehe": 0.01627,
+      "qini": 0.0718,
+      "incremental_per_1000_at_20pct": 46.3,
+      "fit_seconds": 0.8
+    },
+    {
+      "learner": "r_learner",
+      "spearman_with_truth": 0.7704,
+      "pehe": 0.01415,
+      "qini": 0.0765,
+      "incremental_per_1000_at_20pct": 48.1,
+      "fit_seconds": 4.8
+    },
+    {
+      "learner": "dr_learner",
+      "spearman_with_truth": 0.7593,
+      "pehe": 0.01452,
+      "qini": 0.075,
+      "incremental_per_1000_at_20pct": 49.05,
+      "fit_seconds": 5.5
+    }
+  ]
+}
