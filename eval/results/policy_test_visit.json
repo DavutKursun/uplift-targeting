@@ -1,0 +1,523 @@
+{
+  "split": "test",
+  "outcome": "visit",
+  "n": 800004,
+  "n_resamples": 200,
+  "ate": {
+    "n_treated": 680002,
+    "n_control": 120002,
+    "rate_treated": 0.048544,
+    "rate_control": 0.038208,
+    "ate": 0.010336,
+    "ci_low": 0.009137,
+    "ci_high": 0.011535,
+    "relative_uplift": 0.2705,
+    "se": 0.0006117
+  },
+  "random_per_1000": 10.34,
+  "economics": {
+    "value_per_response": 2.0,
+    "contact_cost": 0.1,
+    "stated_as": "assumptions, not measured",
+    "marginal_threshold_per_1000": 50.0
+  },
+  "propensity": {
+    "auc_oof": 0.5093,
+    "p1": 0.8406,
+    "p99": 0.8924,
+    "mean": 0.85
+  },
+  "budgets": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5
+  ],
+  "raw_vs_ipw": {
+    "max_abs_difference_per_1000": 6.43,
+    "rows_where_difference_exceeds_ci_halfwidth": [
+      {
+        "model": "random",
+        "budget": 0.15,
+        "incremental_per_1000": 9.39,
+        "ipw_per_1000": 6.118,
+        "raw_ci_halfwidth": 3.026
+      },
+      {
+        "model": "random",
+        "budget": 0.2,
+        "incremental_per_1000": 9.92,
+        "ipw_per_1000": 6.662,
+        "raw_ci_halfwidth": 2.606
+      },
+      {
+        "model": "random",
+        "budget": 0.25,
+        "incremental_per_1000": 12.26,
+        "ipw_per_1000": 9.157,
+        "raw_ci_halfwidth": 2.405
+      },
+      {
+        "model": "random",
+        "budget": 0.3,
+        "incremental_per_1000": 11.285,
+        "ipw_per_1000": 8.231,
+        "raw_ci_halfwidth": 2.224
+      },
+      {
+        "model": "random",
+        "budget": 0.35,
+        "incremental_per_1000": 11.493,
+        "ipw_per_1000": 8.511,
+        "raw_ci_halfwidth": 1.807
+      },
+      {
+        "model": "random",
+        "budget": 0.4,
+        "incremental_per_1000": 11.262,
+        "ipw_per_1000": 8.29,
+        "raw_ci_halfwidth": 1.69
+      },
+      {
+        "model": "random",
+        "budget": 0.45,
+        "incremental_per_1000": 10.992,
+        "ipw_per_1000": 8.046,
+        "raw_ci_halfwidth": 1.614
+      },
+      {
+        "model": "random",
+        "budget": 0.5,
+        "incremental_per_1000": 11.342,
+        "ipw_per_1000": 8.403,
+        "raw_ci_halfwidth": 1.513
+      },
+      {
+        "model": "response",
+        "budget": 0.2,
+        "incremental_per_1000": 39.236,
+        "ipw_per_1000": 33.121,
+        "raw_ci_halfwidth": 5.166
+      },
+      {
+        "model": "response",
+        "budget": 0.25,
+        "incremental_per_1000": 34.209,
+        "ipw_per_1000": 27.804,
+        "raw_ci_halfwidth": 4.15
+      },
+      {
+        "model": "response",
+        "budget": 0.3,
+        "incremental_per_1000": 29.355,
+        "ipw_per_1000": 23.068,
+        "raw_ci_halfwidth": 3.524
+      },
+      {
+        "model": "response",
+        "budget": 0.35,
+        "incremental_per_1000": 26.665,
+        "ipw_per_1000": 20.649,
+        "raw_ci_halfwidth": 3.005
+      },
+      {
+        "model": "response",
+        "budget": 0.4,
+        "incremental_per_1000": 24.104,
+        "ipw_per_1000": 18.408,
+        "raw_ci_halfwidth": 2.628
+      },
+      {
+        "model": "response",
+        "budget": 0.45,
+        "incremental_per_1000": 21.794,
+        "ipw_per_1000": 16.423,
+        "raw_ci_halfwidth": 2.41
+      },
+      {
+        "model": "response",
+        "budget": 0.5,
+        "incremental_per_1000": 19.705,
+        "ipw_per_1000": 14.672,
+        "raw_ci_halfwidth": 2.166
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.15,
+        "incremental_per_1000": 47.795,
+        "ipw_per_1000": 41.807,
+        "raw_ci_halfwidth": 5.841
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.2,
+        "incremental_per_1000": 38.872,
+        "ipw_per_1000": 33.094,
+        "raw_ci_halfwidth": 4.893
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.25,
+        "incremental_per_1000": 32.887,
+        "ipw_per_1000": 27.068,
+        "raw_ci_halfwidth": 4.026
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.3,
+        "incremental_per_1000": 28.415,
+        "ipw_per_1000": 22.634,
+        "raw_ci_halfwidth": 3.3
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.35,
+        "incremental_per_1000": 25.511,
+        "ipw_per_1000": 19.875,
+        "raw_ci_halfwidth": 2.837
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.4,
+        "incremental_per_1000": 23.054,
+        "ipw_per_1000": 17.561,
+        "raw_ci_halfwidth": 2.526
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.45,
+        "incremental_per_1000": 21.057,
+        "ipw_per_1000": 15.836,
+        "raw_ci_halfwidth": 2.299
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.5,
+        "incremental_per_1000": 19.174,
+        "ipw_per_1000": 14.271,
+        "raw_ci_halfwidth": 2.011
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.2,
+        "incremental_per_1000": 39.215,
+        "ipw_per_1000": 32.881,
+        "raw_ci_halfwidth": 5.037
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.25,
+        "incremental_per_1000": 33.436,
+        "ipw_per_1000": 27.006,
+        "raw_ci_halfwidth": 3.794
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.3,
+        "incremental_per_1000": 28.867,
+        "ipw_per_1000": 22.693,
+        "raw_ci_halfwidth": 3.165
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.35,
+        "incremental_per_1000": 25.356,
+        "ipw_per_1000": 19.567,
+        "raw_ci_halfwidth": 2.795
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.4,
+        "incremental_per_1000": 23.025,
+        "ipw_per_1000": 17.575,
+        "raw_ci_halfwidth": 2.467
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.45,
+        "incremental_per_1000": 20.643,
+        "ipw_per_1000": 15.443,
+        "raw_ci_halfwidth": 2.15
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.5,
+        "incremental_per_1000": 19.097,
+        "ipw_per_1000": 14.176,
+        "raw_ci_halfwidth": 1.98
+      }
+    ]
+  },
+  "breakeven": {
+    "random": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.01,
+        "max_profit_per_1000_customers": -0.873,
+        "breakeven_budget": null,
+        "per_1000_at_profit_max": 6.33
+      },
+      "ipw": {
+        "profit_max_budget": 0.01,
+        "max_profit_per_1000_customers": -0.937,
+        "breakeven_budget": null,
+        "per_1000_at_profit_max": 3.17
+      }
+    },
+    "response": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.06,
+        "max_profit_per_1000_customers": 0.653,
+        "breakeven_budget": 0.09,
+        "per_1000_at_profit_max": 55.44
+      },
+      "ipw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 0.877,
+        "breakeven_budget": 0.08,
+        "per_1000_at_profit_max": 58.77
+      }
+    },
+    "s_learner": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.06,
+        "max_profit_per_1000_customers": 3.65,
+        "breakeven_budget": 0.14,
+        "per_1000_at_profit_max": 80.42
+      },
+      "ipw": {
+        "profit_max_budget": 0.04,
+        "max_profit_per_1000_customers": 3.354,
+        "breakeven_budget": 0.11,
+        "per_1000_at_profit_max": 91.92
+      }
+    },
+    "r_learner": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 3.812,
+        "breakeven_budget": 0.13,
+        "per_1000_at_profit_max": 88.12
+      },
+      "ipw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 3.402,
+        "breakeven_budget": 0.11,
+        "per_1000_at_profit_max": 84.02
+      }
+    }
+  },
+  "segments": {
+    "delta": 0.0025855,
+    "p0_high": 0.0764,
+    "shares": {
+      "persuadable": 0.2538,
+      "sure_thing": 0.0085,
+      "lost_cause": 0.7358,
+      "sleeping_dog": 0.0019
+    },
+    "observed": {
+      "persuadable": {
+        "n": 203005,
+        "share": 0.2538,
+        "n_control": 29270,
+        "mean_tau_hat": 0.02681,
+        "mean_p0_hat": 0.13667,
+        "n_treated": 173735,
+        "rate_treated": 0.16497,
+        "rate_control": 0.132696,
+        "ate": 0.032274,
+        "ci_low": 0.028014,
+        "ci_high": 0.036534,
+        "relative_uplift": 0.2432,
+        "se": 0.0021737
+      },
+      "sure_thing": {
+        "n": 6816,
+        "share": 0.0085,
+        "n_control": 1011,
+        "mean_tau_hat": 0.00045,
+        "mean_p0_hat": 0.34727,
+        "n_treated": 5805,
+        "rate_treated": 0.352799,
+        "rate_control": 0.332344,
+        "ate": 0.020455,
+        "ci_low": -0.011077,
+        "ci_high": 0.051987,
+        "relative_uplift": 0.0615,
+        "se": 0.0160876
+      },
+      "lost_cause": {
+        "n": 588678,
+        "share": 0.7358,
+        "n_control": 89479,
+        "mean_tau_hat": 0.00043,
+        "mean_p0_hat": 0.00313,
+        "n_treated": 499199,
+        "rate_treated": 0.003339,
+        "rate_control": 0.002995,
+        "ate": 0.000344,
+        "ci_low": -4.8e-05,
+        "ci_high": 0.000736,
+        "relative_uplift": 0.1149,
+        "se": 0.0002001
+      },
+      "sleeping_dog": {
+        "n": 1505,
+        "share": 0.0019,
+        "n_control": 242,
+        "mean_tau_hat": -0.00527,
+        "mean_p0_hat": 0.49144,
+        "n_treated": 1263,
+        "rate_treated": 0.501979,
+        "rate_control": 0.400826,
+        "ate": 0.101153,
+        "ci_low": 0.03353,
+        "ci_high": 0.168776,
+        "relative_uplift": 0.2524,
+        "se": 0.0345015
+      }
+    },
+    "tau_negative": {
+      "n": 52529,
+      "share": 0.0657,
+      "n_control": 7862,
+      "mean_tau_hat": -0.00023,
+      "mean_p0_hat": 0.03321,
+      "n_treated": 44667,
+      "rate_treated": 0.033022,
+      "rate_control": 0.029891,
+      "ate": 0.003132,
+      "ci_low": -0.000981,
+      "ci_high": 0.007244,
+      "relative_uplift": 0.1048,
+      "se": 0.0020984
+    },
+    "model": "s_learner",
+    "thresholds_source": "fixed on the command line",
+    "share_tau_negative": 0.0657
+  },
+  "worked_customers": {
+    "threshold_at_20pct": 0.004612,
+    "rows": [
+      {
+        "role": "persuadable",
+        "row": 61519,
+        "f0": 12.6362,
+        "f1": 10.0597,
+        "f2": 8.329,
+        "f3": -3.7244,
+        "f4": 10.2805,
+        "f5": 2.2309,
+        "f6": -21.2261,
+        "f7": 11.069,
+        "f8": 3.8311,
+        "f9": 32.9504,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.27457,
+        "p_treated": 0.53961,
+        "uplift": 0.26504,
+        "segment": "persuadable",
+        "decision_at_20pct": "treat"
+      },
+      {
+        "role": "sure_thing",
+        "row": 560500,
+        "f0": 26.1124,
+        "f1": 10.0597,
+        "f2": 8.221,
+        "f3": 4.6799,
+        "f4": 14.2341,
+        "f5": 4.1155,
+        "f6": -1.2882,
+        "f7": 4.8338,
+        "f8": 3.7084,
+        "f9": 51.5343,
+        "f10": 5.3097,
+        "f11": -0.436,
+        "p_control": 0.83423,
+        "p_treated": 0.83662,
+        "uplift": 0.00239,
+        "segment": "sure_thing",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "lost_cause",
+        "row": 41,
+        "f0": 22.4269,
+        "f1": 10.0597,
+        "f2": 8.2144,
+        "f3": 4.6799,
+        "f4": 10.2805,
+        "f5": 4.1155,
+        "f6": -1.2882,
+        "f7": 4.8338,
+        "f8": 3.9719,
+        "f9": 13.1901,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.00044,
+        "p_treated": 0.00044,
+        "uplift": -0.0,
+        "segment": "lost_cause",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "sleeping_dog",
+        "row": 517786,
+        "f0": 25.5208,
+        "f1": 10.0597,
+        "f2": 8.2951,
+        "f3": 4.6799,
+        "f4": 11.0296,
+        "f5": 4.1155,
+        "f6": -6.3597,
+        "f7": 4.8338,
+        "f8": 3.7702,
+        "f9": 33.467,
+        "f10": 6.0319,
+        "f11": -0.1687,
+        "p_control": 0.50513,
+        "p_treated": 0.48587,
+        "uplift": -0.01926,
+        "segment": "sleeping_dog",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "borderline",
+        "row": 680420,
+        "f0": 22.7635,
+        "f1": 10.0597,
+        "f2": 8.9563,
+        "f3": 4.6799,
+        "f4": 10.2805,
+        "f5": 4.1155,
+        "f6": -11.7708,
+        "f7": 4.8338,
+        "f8": 3.9554,
+        "f9": 13.1901,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.00955,
+        "p_treated": 0.01416,
+        "uplift": 0.00461,
+        "segment": "persuadable",
+        "decision_at_20pct": "skip"
+      }
+    ]
+  }
+}

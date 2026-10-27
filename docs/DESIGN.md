@@ -440,7 +440,7 @@ remedy). Scores from the S-learner; treat/skip at the 20% budget, threshold τ̂
 
 The full feature rows are in `worked_customers_dev_visit.md`.
 
-### 4.4 Placebo (`scripts/placebo.py` → `placebo_visit_s_learner.json`, `placebo_visit_r_learner.json`)
+### 4.4 Placebo (`scripts/placebo.py` → `placebo_dev_visit_s_learner.json`, `placebo_dev_visit_r_learner.json`)
 
 Treatment labels shuffled within train, each learner refitted with its deployed settings, scored on the real dev
 labels, 200 resamples:
@@ -501,6 +501,240 @@ produces it cannot be told apart on 800,000 customers, and the README will say s
 - **Criterion on test:** the paired CI of S-learner − response at the 10% budget excludes zero; the 20%, 30% and
   Qini differences and the IPW versions are reported whatever they are; the placebo CI contains zero.
 
-## 5. Test results (M4) — run once on _(date)_
+## 5. Test results (M4) — run once on 2026-10-28
+
+The test split (800,004 customers, 120,000 in control) was opened once, on 2026-10-28, for this sequence and nothing
+else: `evaluate.py --split test --final` for `visit` (all seven bundles) and `conversion` (three), `policy_eval.py
+--split test --final` (budget curves raw and IPW, profit, segments), `paired.py --split test --final` for both
+outcomes, `placebo.py --split test --final` for the S-learner (one fit on shuffled train labels), `plots.py --split
+test --final`. Every setting, budget grid, δ (0.0025855) and p0_high (0.0764) was frozen at its dev value; the IPW
+propensity was cross-fitted on test as it had been on dev. No script was run twice. `scripts/dev_test_table.py`
+builds every table below from the result JSONs (`eval/results/dev_vs_test.md`); each block ends with the verdict.
+
+### 5.1 Qini and per-1,000 — `visit` (dev 799,998 rows → test 800,004 rows, 200 resamples)
+
+ATE: dev 1.034 pp [0.914, 1.154] → test 1.034 pp [0.914, 1.153]; random = 10.34 → 10.34 per 1,000.
+
+| Learner | Dev Qini [CI] | Test Qini [CI] | Dev / 1,000 at 10% | Test at 10% | Dev at 20% | Test at 20% | Test at 30% |
+|---|---|---|---|---|---|---|---|
+| DR-learner | 0.0927 [0.0817, 0.1055] | 0.0854 [0.0743, 0.0972] | 61.5 [53.8, 68.9] | 58.5 [49.5, 66.8] | 40.4 [35.2, 45.4] | 39.8 [34.6, 44.3] | 29.1 [26.1, 32.3] |
+| response model | 0.0872 [0.0743, 0.1004] | 0.0853 [0.0736, 0.0957] | 53.5 [43.7, 64.5] | 49.0 [39.2, 57.9] | 38.4 [32.7, 44.5] | 39.2 [33.6, 44.0] | 29.4 [25.4, 32.5] |
+| S-learner | 0.0941 [0.0840, 0.1064] | 0.0853 [0.0746, 0.0955] | 66.5 [58.0, 73.9] | 62.9 [54.3, 71.5] | 41.0 [35.5, 46.0] | 38.9 [33.7, 43.5] | 28.4 [24.8, 31.4] |
+| transformed outcome | 0.0897 [0.0770, 0.1012] | 0.0845 [0.0709, 0.0963] | 63.9 [55.8, 72.1] | 58.0 [50.2, 66.3] | 39.9 [34.8, 44.7] | 37.8 [32.8, 43.0] | 28.9 [25.0, 32.4] |
+| X-learner | 0.0898 [0.0786, 0.1017] | 0.0845 [0.0716, 0.0959] | 61.5 [53.4, 68.8] | 61.2 [52.5, 68.8] | 39.4 [34.3, 44.7] | 37.8 [32.7, 42.1] | 29.3 [25.8, 32.3] |
+| R-learner | 0.0938 [0.0819, 0.1060] | 0.0844 [0.0727, 0.0966] | 63.0 [54.7, 70.7] | 59.5 [50.2, 67.4] | 40.0 [34.4, 45.0] | 39.2 [33.8, 43.9] | 28.9 [25.7, 32.0] |
+| T-learner | 0.0867 [0.0733, 0.0995] | 0.0759 [0.0634, 0.0873] | 59.8 [51.7, 66.8] | 53.6 [45.5, 62.7] | 38.9 [33.8, 43.7] | 36.5 [31.9, 40.8] | 27.9 [24.3, 31.0] |
+
+**Does test confirm dev? Mostly.** Every test Qini sits inside its dev CI, every CI stays far from zero, and the
+learners remain inseparable from one another. But every tuned learner lost 0.007–0.009 (S 0.0941 → 0.0853, R 0.0938 →
+0.0844, DR 0.0927 → 0.0854) while the untuned ones lost 0.002–0.005 (response 0.0872 → 0.0853, X and TO −0.005): the
+optimism of choosing settings on dev, worth about 0.005 of Qini, and on test the response model ties the S-learner on
+Qini to four decimals. The per-1,000 numbers at 10% replicate inside their CIs (S 66.5 → 62.9, response 53.5 → 49.0).
+The T-learner drops most (0.0867 → 0.0759) and is the only learner whose test value approaches its dev lower bound.
+
+### 5.2 Paired differences — `visit`
+
+| Difference | Statistic | Dev [CI] | Test [CI] | Test excludes 0 |
+|---|---|---|---|---|
+| S-learner − response model | Qini | 0.0069 [0.0007, 0.0135] | -0.0001 [-0.0053, 0.0067] | no |
+| S-learner − response model | per 1,000 at 10% | 13.0 [6.4, 19.2] | 13.9 [6.5, 21.6] | yes |
+| S-learner − response model | per 1,000 at 20% | 2.6 [0.0, 4.8] | -0.4 [-2.5, 2.1] | no |
+| S-learner − response model | per 1,000 at 30% | 0.7 [-0.3, 2.0] | -0.9 [-2.2, 0.2] | no |
+| R-learner − response model | Qini | 0.0067 [-0.0017, 0.0169] | -0.0009 [-0.0100, 0.0096] | no |
+| R-learner − response model | per 1,000 at 10% | 9.5 [2.8, 15.8] | 10.6 [4.3, 17.5] | yes |
+| R-learner − response model | per 1,000 at 20% | 1.6 [-1.2, 4.3] | -0.0 [-3.1, 2.9] | no |
+| R-learner − response model | per 1,000 at 30% | 0.3 [-1.4, 2.0] | -0.5 [-2.0, 1.4] | no |
+
+**Confirms the headline, not the halo.** S − response at 10%: +13.0 [6.4, 19.2] on dev → **+13.9 [6.5, 21.6] on test;
+the CI excludes zero and the §9 criterion is met.** R − response at 10% replicates the same way (+9.5 → +10.6 [4.3,
+17.5]). The two dev results that sat on the edge did not replicate, and their test values fall outside the dev CI:
+the Qini difference (dev +0.0069 [0.0007, 0.0135] → test −0.0001 [−0.0053, 0.0067]) and the 20% difference (dev +2.6
+[0.0, 4.8] → test −0.4 [−2.5, 2.1]). One explanation covers both: Qini integrates the whole budget range, the 20–100%
+part of it is where the response model is as good, and the S-learner's dev edge there was partly the selection of its
+settings on dev (its dev Qini was the maximum of four configurations). The advantage that survives is exactly the one
+a tight-budget decision needs.
+
+### 5.3 Budget curves — incremental visits per 1,000 contacts, raw / IPW (dev → test)
+
+Propensity for IPW, cross-fitted on each split: dev AUC 0.5095 → test AUC 0.5093.
+
+| Model | Budget | Dev raw [CI] | Test raw [CI] | Dev IPW | Test IPW |
+|---|---|---|---|---|---|
+| random | 5% | 5.5 [-0.4, 10.0] | 9.2 [3.9, 14.6] | 2.2 | 5.6 |
+| random | 10% | 9.2 [5.9, 12.8] | 9.0 [5.2, 12.7] | 6.5 | 5.8 |
+| random | 20% | 10.4 [8.0, 12.9] | 9.9 [7.4, 12.6] | 7.7 | 6.7 |
+| random | 30% | 10.0 [7.9, 12.3] | 11.3 [9.0, 13.4] | 7.4 | 8.2 |
+| response model | 5% | 72.1 [55.3, 87.0] | 55.5 [42.5, 69.4] | 75.3 | 58.8 |
+| response model | 10% | 53.5 [43.7, 64.5] | 49.0 [39.2, 57.9] | 52.5 | 46.8 |
+| response model | 20% | 38.4 [32.7, 44.5] | 39.2 [33.6, 44.0] | 33.5 | 33.1 |
+| response model | 30% | 29.5 [25.6, 33.6] | 29.4 [25.4, 32.5] | 23.9 | 23.1 |
+| S-learner | 5% | 91.4 [78.9, 103.7] | 84.7 [71.8, 99.4] | 89.2 | 80.8 |
+| S-learner | 10% | 66.6 [58.0, 73.9] | 62.9 [54.3, 71.5] | 61.9 | 56.9 |
+| S-learner | 20% | 41.0 [35.5, 46.0] | 38.9 [33.7, 43.5] | 35.7 | 33.1 |
+| S-learner | 30% | 30.2 [26.7, 33.9] | 28.4 [24.8, 31.4] | 24.7 | 22.6 |
+| R-learner | 5% | 97.3 [86.5, 110.4] | 88.1 [76.6, 100.8] | 94.7 | 84.0 |
+| R-learner | 10% | 63.0 [54.7, 70.7] | 59.5 [50.2, 67.4] | 58.8 | 54.2 |
+| R-learner | 20% | 40.0 [34.4, 45.0] | 39.2 [33.8, 43.9] | 34.1 | 32.9 |
+| R-learner | 30% | 29.8 [26.0, 33.3] | 28.9 [25.7, 32.0] | 23.8 | 22.7 |
+
+**Confirms, with the 5% point lower on test for every model.** The 5% numbers are the noisiest (40,000 customers, 6,000 in
+control): response 72.1 → 55.5, S 91.4 → 84.7, R 97.3 → 88.1, all inside the dev CI, the response model's at its edge.
+From 10% upward the curves replicate within 1–4 per 1,000. The IPW-weighted curves behave exactly as on dev: the same
+propensity quality (AUC 0.509 vs 0.510), lower than raw by about a quarter from the 15–20% budget upward and beyond
+the raw CI half-width there (the rows are listed in `policy_test_visit.json`), identical rankings.
+
+### 5.4 Profit under the stated economics (dev → test)
+
+Value per visit 2.0, contact cost 0.1 (assumptions); marginal break-even 50 per 1,000 contacts.
+
+| Model | Best budget raw (IPW), dev → test | Max profit per 1,000 customers, dev → test | Break-even budget raw (IPW), dev → test |
+|---|---|---|---|
+| random | 1% (1%) → 1% (1%) | -1.0 → -0.9 | — (—) → — (—) |
+| response model | 5% (5%) → 6% (5%) | 2.2 → 0.7 | 11% (11%) → 9% (8%) |
+| S-learner | 8% (4%) → 6% (4%) | 4.8 → 3.6 | 14% (12%) → 14% (11%) |
+| R-learner | 5% (4%) → 5% (5%) | 4.7 → 3.8 | 14% (12%) → 13% (11%) |
+
+**Confirms the guidance; the response model's best case is weaker on test.** Best budgets 5–6% and break-even 13–14%
+(11% IPW) for the uplift pair, 9% for the response model; at 20% every policy loses money on test as on dev. The
+response model's maximum profit falls from 2.2 to 0.7 per 1,000 customers because its 5–6% per-1,000 fell from 72 to
+55; the S-learner's falls from 4.8 to 3.6; on test the uplift learner's best profit is five times the response model's.
+These are point estimates on a 1% grid under assumed economics: the budget guidance is the robust part, the profit
+multiples are not.
+
+### 5.5 Segments with the S-learner (dev → test; δ and p0_high fixed at the dev values)
+
+| Segment | Dev share | Test share | Dev observed uplift [CI] | Test observed uplift [CI] |
+|---|---|---|---|---|
+| persuadable | 25.3% | 25.4% | +3.46 pp [3.04, 3.88] | +3.23 pp [2.80, 3.65] |
+| sure_thing | 0.9% | 0.9% | +0.70 pp [-2.40, 3.81] | +2.05 pp [-1.11, 5.20] |
+| lost_cause | 73.6% | 73.6% | +0.07 pp [0.03, 0.11] | +0.03 pp [-0.00, 0.07] |
+| sleeping_dog | 0.2% | 0.2% | +0.08 pp [-6.79, 6.95] | +10.12 pp [3.35, 16.88] |
+| τ̂ < 0 (any size) | 6.5% | 6.6% | -0.02 pp [-0.44, 0.39] | +0.31 pp [-0.10, 0.72] |
+
+**Shares identical; three of four observed uplifts replicate; the sleeping-dog group reverses.** Persuadables +3.46 →
++3.23 pp (inside the dev CI), sure things and lost causes inside their wide CIs, the τ̂ < 0 group zero on dev and
++0.31 pp [−0.10, 0.72] on test. The 1,505 customers the model flags as sleeping dogs on test show **+10.1 pp [3.4,
+16.9]** of observed uplift, outside the dev CI of [−6.8, 7.0] and clearly positive. Dev and test are two independent
+samples of the same tiny group (242 control rows on test; a 49% base rate), and together they say the group is helped
+by contact, not hurt: the model's negative τ̂ there (mean −0.5 pp) is noise around a large positive effect in a
+high-base-rate region. On test the sleeping-dog label is not merely unverified, it is wrong for the group it names.
+The product keeps the four-segment vocabulary but acts on this label only as "no predicted gain", and the README says so.
+
+### 5.6 Placebo (treatment shuffled in train, deployed settings)
+
+| Learner | Scored on | Placebo Qini [CI] | Contains 0 |
+|---|---|---|---|
+| S-learner | dev | -0.0022 [-0.0136, +0.0095] | yes |
+| R-learner | dev | +0.0008 [-0.0127, +0.0126] | yes |
+| S-learner | test | -0.0155 [-0.0287, -0.0024] | NO |
+
+**The single-shuffle placebo criterion fails on test by a hair, and the criterion is the problem.** The same placebo
+model (one shuffle of the train labels, seed 7, deployed settings) scores −0.0022 [−0.0136, 0.0095] on dev and
+−0.0155 [−0.0287, −0.0024] on test. Two things are true at once: the sign is negative, so this is not leakage (which
+would produce a positive Qini), and the test CI excludes zero. The bootstrap CI covers the sampling of customers with
+the placebo ranking held fixed; it does not cover the randomness of the shuffle itself, which is the larger source of
+variance here, because the true uplift is so concentrated (the top decile holds 60% of it) that any chance split on
+the shuffled treatment flag inside a high-base-rate region moves a large block of true uplift to the top or the
+bottom of the ranking. The right null is the spread of placebo Qini over several shuffles, scored on dev: five further shuffles of the S-learner on dev (seeds 1–5, `eval/results/placebo_null/`) score +0.027, −0.036, −0.051, −0.073 and −0.032, so with seed 7 the six-shuffle null spans **−0.073 to +0.027** (SD 0.036), five times wider than any single shuffle's customer-bootstrap CI; the test placebo of −0.0155 sits inside it.
+The deployed model's test Qini, 0.0853, lies far outside that spread. Proposed replacement for the placebo line of §9,
+for authorisation: "the deployed learner's Qini lies outside the range of at least five placebo shuffles scored on
+dev, and the single test-split placebo has |Qini| no larger than the widest of them". The criterion as written was
+met on dev and not on test; this document records both.
+
+### 5.7 Qini and per-1,000 — `conversion` (dev 799,998 rows → test 800,004 rows, 200 resamples)
+
+ATE: dev 0.122 pp [0.094, 0.150] → test 0.125 pp [0.097, 0.152]; random = 1.22 → 1.25 per 1,000.
+
+| Learner | Dev Qini [CI] | Test Qini [CI] | Dev / 1,000 at 10% | Test at 10% | Dev at 20% | Test at 20% | Test at 30% |
+|---|---|---|---|---|---|---|---|
+| S-learner | 0.2020 [0.1402, 0.2675] | 0.2175 [0.1568, 0.2824] | 8.7 [5.8, 11.5] | 9.5 [6.7, 12.2] | 5.4 [3.8, 6.6] | 5.6 [4.3, 6.9] | 4.0 [3.1, 4.9] |
+| response model | 0.1974 [0.1341, 0.2549] | 0.2148 [0.1555, 0.2746] | 8.8 [5.9, 11.8] | 9.4 [6.8, 12.2] | 5.2 [3.7, 6.6] | 5.5 [4.2, 6.7] | 3.8 [3.0, 4.6] |
+| R-learner | 0.1666 [0.1096, 0.2241] | 0.2000 [0.1389, 0.2668] | 7.7 [5.1, 10.4] | 8.8 [6.0, 11.8] | 4.7 [3.3, 6.0] | 5.2 [3.7, 6.6] | 3.8 [2.8, 4.7] |
+
+**Confirms.** All three Qini values rise slightly on test (S 0.202 → 0.218, response 0.197 → 0.215, R 0.167 → 0.200)
+and stay inside their dev CIs; the per-1,000 numbers move by less than one conversion.
+
+### 5.8 Paired differences — `conversion`
+
+| Difference | Statistic | Dev [CI] | Test [CI] | Test excludes 0 |
+|---|---|---|---|---|
+| S-learner − response model | Qini | 0.0046 [-0.0045, 0.0189] | 0.0026 [-0.0059, 0.0157] | no |
+| S-learner − response model | per 1,000 at 10% | -0.1 [-0.7, 0.4] | 0.1 [-0.4, 0.6] | no |
+| S-learner − response model | per 1,000 at 20% | 0.2 [-0.0, 0.4] | 0.1 [-0.1, 0.4] | no |
+| S-learner − response model | per 1,000 at 30% | 0.1 [-0.0, 0.2] | 0.2 [0.0, 0.3] | yes |
+| R-learner − response model | Qini | -0.0309 [-0.0527, -0.0001] | -0.0148 [-0.0420, 0.0096] | no |
+| R-learner − response model | per 1,000 at 10% | -1.1 [-2.0, -0.1] | -0.6 [-1.4, 0.2] | no |
+| R-learner − response model | per 1,000 at 20% | -0.5 [-0.9, -0.0] | -0.3 [-0.8, 0.0] | no |
+| R-learner − response model | per 1,000 at 30% | -0.2 [-0.4, 0.1] | -0.1 [-0.4, 0.2] | no |
+
+**Confirms that nothing separates them.** Seven of the eight test differences include zero; the eighth, S − response at
+30%, is +0.17 conversions per 1,000 contacts [0.03, 0.31]: one of eight statistics, on a scale where the ATE is 1.25,
+and not a basis for anything. The R-learner's dev deficit shrinks on test (Qini −0.031 → −0.015) and its CIs now
+include zero.
+
+### 5.9 Uplift by decile on test, deployed pair (`deciles_test_visit_s_learner.csv`, `deciles_test_visit_r_learner.csv`, `deciles_test_s_learner.png`)
+
+Observed uplift per decile of the score (bin 1 = highest predicted uplift), treated minus control visit rate, with the mean predicted uplift:
+
+| Decile | S-learner observed [95% CI] | S-learner predicted | R-learner observed [95% CI] | R-learner predicted |
+|---|---|---|---|---|
+| 1 | +6.29 pp [5.44, 7.13] | +5.73 pp | +5.95 pp [5.11, 6.79] | +6.05 pp |
+| 2 | +0.79 pp [0.20, 1.38] | +0.88 pp | +1.05 pp [0.52, 1.59] | +1.06 pp |
+| 3 | +0.08 pp [-0.30, 0.46] | +0.29 pp | +0.20 pp [-0.14, 0.53] | +0.36 pp |
+| 4 | +0.17 pp [-0.05, 0.38] | +0.11 pp | +0.20 pp [-0.03, 0.43] | +0.15 pp |
+| 5 | +0.12 pp [-0.04, 0.27] | +0.06 pp | +0.10 pp [-0.04, 0.24] | +0.07 pp |
+| 6 | +0.09 pp [-0.01, 0.18] | +0.03 pp | +0.02 pp [-0.09, 0.14] | +0.04 pp |
+| 7 | +0.03 pp [-0.05, 0.10] | +0.01 pp | +0.05 pp [-0.01, 0.11] | +0.02 pp |
+| 8 | +0.01 pp [-0.05, 0.06] | +0.00 pp | +0.02 pp [-0.02, 0.07] | +0.01 pp |
+| 9 | +0.01 pp [-0.04, 0.06] | +0.00 pp | -0.00 pp [-0.05, 0.05] | +0.01 pp |
+| 10 | +0.22 pp [-0.05, 0.49] | -0.01 pp | +0.25 pp [-0.19, 0.69] | -0.18 pp |
+
+**Confirms.** Top decile ≥ 2 × ATE: S +6.29 pp = 6.1 × the test ATE of 1.03 pp (dev 6.66), R +5.95 pp (dev 6.30); bottom
+decile ≤ ATE: S +0.22 pp [−0.05, 0.49], R +0.25 pp [−0.19, 0.69] (dev +0.01 and −0.14). No decile where contact hurts,
+on either split. Calibration as on dev: order right everywhere, the top decile under-predicted by about half a point.
+The decile plot for the S-learner was rendered from this CSV (`plots.py` had drawn the DR-learner's, the top test Qini
+by 0.0001, under its "best by Qini" rule; the test split was not read again).
+
+### 5.10 The verdict on the acceptance criteria (CLAUDE.md §9)
+
+| Criterion | Result on test |
+|---|---|
+| Synthetic: every uplift learner Spearman ≥ 0.6 with the truth, the response model not | met in M1 (0.66–0.88; −0.08) |
+| Paired bootstrap, best uplift − response, incremental visits per 1,000 at 10%: CI excludes 0 | **met: +13.9 [6.5, 21.6]** |
+| Differences at 20%, 30% and in Qini, reported whatever they are | −0.4 [−2.5, 2.1]; −0.9 [−2.2, 0.2]; −0.0001 [−0.0053, 0.0067] |
+| Placebo Qini CI contains 0 | **not met on test** (−0.0155 [−0.0287, −0.0024]); met on dev (−0.0022 [−0.0136, 0.0095]); negative, not leakage; see §5.6 |
+| Decile table: top ≥ 2 × ATE, bottom ≤ ATE | met (6.1 × ATE; +0.22 pp) |
+| Policy at 20%: per-1,000 for uplift vs response vs random with CIs, share of the total effect | 38.9 [33.7, 43.5] vs 39.2 [33.6, 44.0] vs 9.9 [7.4, 12.6]; shares 75% / 76% / 20% |
+| `/score` p50 < 30 ms; pytest green without data; CI green; README on one screen | M5; 21 tests green; CI green; README rewritten |
+
+What test adds to dev in one sentence: **the uplift advantage is real and worth about 14 incremental visits per
+1,000 contacts at a 10% budget, it is gone by 20%, and nothing else about the deployed model changed except the
+discovery that its sleeping-dog label points at customers who are helped.**
 
 ## 6. What I would do differently
+
+- **Check the randomization before writing the spec.** The spec assumed a clean RCT (max |SMD| < 0.02) and arm rates
+  from memory; both were wrong (§1). Half a day of M1 went into understanding an imbalance that a ten-line check on
+  day one would have surfaced, and the IPW-weighted estimators (§4.2) would have been in the design from the start
+  rather than added as a correction.
+- **Write the acceptance criterion as a paired test from the beginning.** "Non-overlapping CIs" between two models
+  scored on the same customers was the wrong test (§3.5 vs §4.1); the paired bootstrap costs nothing extra because the
+  resamples are shared anyway. The criterion was changed at M3 with authorisation, before any test run, but a reader
+  is right to ask whether it would have been changed had the dev result gone the other way. Fix criteria before the
+  data, and fix the *right* ones.
+- **Tune the τ model on a synthetic world first, then on dev.** The loose starter settings overfit noise (§2); the
+  M1 synthetic check caught it, but only because the acceptance bar there was quantitative (Spearman ≥ 0.6). More of
+  the pipeline deserves a known-truth check — in particular the segments, whose sleeping-dog label cannot be
+  validated on Criteo (§4.3) but can on the synthetic world where sleeping dogs exist by construction.
+- **Pick a dataset with interpretable features or run the Hillstrom bonus early.** Every worked customer in §4.3 is a
+  row of anonymous numbers; the product can say *that* someone is persuadable, not *why*. The interpretable
+  multi-treatment dataset was planned as M6 and should have been M2.
+- **Budget the evaluation compute up front.** 200-resample bootstraps of seven models cost 8–12 minutes per split per
+  outcome on a laptop; the joint resample loop (§3) and the paired block (§4.1) were written mid-project when the
+  first bootstrap ran long. Writing `bootstrap_block` first would have saved an hour and a lot of care about which
+  numbers were comparable.
+- **Decide the deployed pair's rule before seeing dev.** It was fixed at M3 (CLAUDE.md §9), after the dev tables
+  existed; it happens to be a rule that any sensible analyst would write, but it should have been in the M0 spec.
+- **Report conversion as the first line, not the second**, in any real campaign where conversions are what gets paid
+  for: §4.5 shows that the ranking is strong and the learner choice is undecidable at 800k customers. The honest
+  product answer on a rare outcome is "use the simplest model and a bigger holdout", and the README now says so.

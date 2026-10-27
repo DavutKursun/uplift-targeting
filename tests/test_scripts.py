@@ -71,6 +71,10 @@ def test_train_evaluate_policy_placebo(ws):
     assert "s_learner-response" in pr["pairs"] and "qini" in pr["pairs"]["s_learner-response"]
     assert plots.main(["--split", "dev", "--best", "s_learner", *common]) == 0
     assert all((ws["out"] / f).exists() for f in ("qini_curves_dev.png", "deciles_dev_s_learner.png", "budget_curve_dev.png", "profit_curve_dev.png"))
+    assert placebo.main(["--split", "test", "--learner", "s_learner", "--fast", "--splits-dir", str(ws["splits"]), "--out", str(ws["out"])]) == 3
     assert placebo.main(["--learner", "s_learner", "--fast", "--resamples", "20", "--splits-dir", str(ws["splits"]), "--out", str(ws["out"])]) == 0
-    pl = json.loads((ws["out"] / "placebo_visit_s_learner.json").read_text())
-    assert "qini_placebo" in pl
+    pl = json.loads((ws["out"] / "placebo_dev_visit_s_learner.json").read_text())
+    assert "qini_placebo" in pl and pl["split"] == "dev"
+    assert policy_eval.main(["--split", "dev", "--segments-model", "s_learner", "--delta", "0.004", "--p0-high", "0.12", "--fast", "--resamples", "5", *common]) == 0
+    pol2 = json.loads((ws["out"] / "policy_dev_visit.json").read_text())
+    assert pol2["segments"]["delta"] == 0.004 and pol2["segments"]["thresholds_source"] == "fixed on the command line"

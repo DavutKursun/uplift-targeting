@@ -5,72 +5,62 @@ milestone; after each milestone stop, show how to run it, and wait for Davut's O
 Do not spawn review or refuter sub-agents; verify with the scripts and tests and
 report directly. Section 0 says where we are.
 
-## 0. Status (updated 2026-10-28 — Milestones 1, 2 and 3 done)
+## 0. Status (updated 2026-10-28 — Milestones 1–4 done; the test split has been used, once)
 
-**Starter, M1, M2 and M3 are done and committed; start at Milestone 4 below.** Repo: `github.com/DavutKursun/uplift-targeting`
-(public). `pytest -q` → 21 passed without the raw data. Every number lives in `docs/DESIGN.md` (§1–2 M1, §3 M2, §4 M3)
-with the script that produced it; nothing has read the test split.
+**Start at Milestone 5 below.** Repo: `github.com/DavutKursun/uplift-targeting` (public). `pytest -q` → 21 passed without
+the raw data. Every number lives in `docs/DESIGN.md` (§1–2 M1, §3 M2, §4 M3, §5 test, §6 retrospective) with the
+script that produced it; `README.md` carries the test results and the decision table; `docs/model_card.md` is filled.
+**The test split was opened once, on 2026-10-28 (§2); do not read it again — M5 and M6 use dev only.**
 
-Implemented: `uplift/config.py`, `schema.py`, `data.py` (chunked loader → float32 parquet, stratified subsample and
-splits, randomization check, ATE with CI), `synthetic.py` (a campaign with known τ(x)), `learners.py` (response model,
-S, T, X, transformed outcome, R, DR; one interface; LightGBM; cross-fitting; `Settings.categorical`, `Settings.tau_rounds`,
-`settings_from` for CLI overrides, `propensity_oof` for IPW weights), `metrics.py` (Qini, AUUC, uplift by decile,
-policy value with the share of the total effect, `bootstrap_block` = one stratified resample loop per model,
-`paired_block` = the same resamples for two models → paired-difference CIs, `budget_block` = raw and IPW-weighted
-policy value with CIs, PEHE), `policy.py` (budget → threshold, `budget_curves` with profit under `Economics`,
-`breakeven`, segments and `segment_report`); `scripts/download.py`, `build_splits.py`, `ate_report.py`,
-`synthetic_check.py`, `m1_diagnostics.py`, `train.py` (`--cls-params`, `--reg-params`, `--rounds`, `--tau-rounds`,
-`--estimate-propensity`, `--categorical N`), `tune.py`, `evaluate.py` (refuses `--split test` without `--final`),
-`paired.py`, `ablation_table.py`, `policy_eval.py` (budget curves raw + IPW, break-even, segments, worked customers),
-`placebo.py`, `plots.py` (Qini curves, deciles, budget and profit curves); `tests/`. NOT yet: `app.py`,
-Dockerfile/Space, model card, GIF, README results.
+Implemented: `uplift/` (config, schema, data, synthetic, learners with `settings_from` / `propensity_oof`, metrics with
+`bootstrap_block` / `paired_block` / `budget_block`, policy with `budget_curves` / `breakeven` / `segment_report`);
+`scripts/` download, build_splits, ate_report, synthetic_check, m1_diagnostics, train, tune, evaluate, paired,
+ablation_table, policy_eval, placebo (`--split`, `--seed`), plots, dev_test_table; `tests/` (21). Deployed bundles:
+`models/s_learner-visit.joblib` (deployed), `models/r_learner-visit.joblib` (cross-check), `models/s_learner-conversion.joblib`,
+plus the other learners' bundles; `eval/results/` holds every dev and test table and the four test plots.
+NOT yet: `app.py`, Dockerfile/Space, GIF, latency benchmark.
 
-Done in M1 (2026-10-27): raw file from Criteo's Hugging Face org (the AI Lab link is dead, §3.1); chunked load, 4M-row
-stratified subsample, splits 2,399,998 / 799,998 / 800,004; visit 3.82% → 4.85%, ATE +1.03 pp [0.97, 1.10] on train;
-§3.2 corrected to the measured values. Randomization is imperfect (max |SMD| 0.049, AUC 0.508, every adjustment puts the
-visit ATE near 0.8 pp): raw stays primary, adjusted is the caveat (DESIGN.md §1.4). Synthetic ground truth at n = 200k:
-all six uplift learners Spearman 0.66–0.88 with the truth, response model −0.08; LightGBM defaults re-chosen on it.
+Done in M1–M3: see DESIGN.md §1–4. Headlines: the randomization is imperfect (AUC 0.51, adjusted ATE ≈ 0.8 vs raw
+1.03 pp; raw primary, IPW reported); all six uplift learners recover a synthetic truth (Spearman 0.66–0.88) and the
+response model does not (−0.08); seven learners on dev are inseparable on Qini (0.087–0.094); tuning once on dev
+(S 31 leaves / 300 rounds; R, DR τ min_data_in_leaf 20,000 / 300 rounds); ablations rejected; §9 criterion replaced
+(authorised) by the paired 10%-budget difference; deployed pair S + R by the fixed rule; on dev S − response +13.0
+[6.4, 19.2] per 1,000 at 10%; profit guidance 5–8% / break-even 14%; sleeping dogs not demonstrated; placebo ≈ 0;
+conversion undecidable.
 
-Done in M2 (2026-10-28, dev, 200-resample CIs; DESIGN.md §3): all seven learners on `visit`; dev Qini after tuning once
-(S: 31 leaves / 300 rounds; R, DR τ: 7 leaves / min_data_in_leaf 20,000 / 300 rounds): S 0.0941 [0.084, 0.106],
-R 0.0938, DR 0.0927, response 0.0872 [0.074, 0.100]; ablations (estimated propensity, categorical columns) rejected by
-the pre-fixed CI-lower-bound rule; every learner passes the decile checks (S top decile 6.7 pp = 6.4 × ATE, bottom
-0.0 pp); no decile where contact hurts.
+Done in M4 (2026-10-28, test, once; DESIGN.md §5, `eval/results/dev_vs_test.md`):
+- **Criterion met:** S − response at 10% = **+13.9 [6.5, 21.6]** incremental visits per 1,000 (dev +13.0); R − response
+  +10.6 [4.3, 17.5]. Reported whatever they are: at 20% −0.4 [−2.5, 2.1], at 30% −0.9 [−2.2, 0.2], Qini −0.0001
+  [−0.0053, 0.0067] — the dev Qini and 20% edges did not replicate (selection on dev; the response model ties the
+  S-learner on test Qini, 0.0853 each). Every test Qini is inside its dev CI; tuned learners lost ≈ 0.008.
+- **Budget curves and profit confirm:** S 84.7 / 62.9 / 38.9 / 28.4 per 1,000 at 5 / 10 / 20 / 30%, response 55.5 /
+  49.0 / 39.2 / 29.4, random ≈ 10; IPW about a quarter lower from 15–20% upward, rankings unchanged; best budget 5–6%,
+  break-even 13–14% (11% IPW), at 20% every policy loses; S best profit 3.6 vs response 0.7 per 1,000 customers.
+- **Segments:** shares identical; persuadables +3.23 pp [2.80, 3.65]; **the flagged sleeping dogs (0.2%) show +10.1 pp
+  [3.4, 16.9] on test** (dev +0.1 [−6.8, 7.0]): helped, not hurt; the label is acted on only as "no predicted gain".
+- **Placebo:** the single-shuffle placebo scores −0.0155 [−0.0287, −0.0024] on test (dev −0.0022 [−0.0136, 0.0095]):
+  negative, so not leakage, but the "CI contains 0" line of §9 is **not met on test**. Cause: a single shuffle's
+  ranking is one random draw and its customer-bootstrap CI understates the null spread (DESIGN.md §5.6, with the
+  spread over five dev shuffles). **Proposed §9 wording, awaiting authorisation:** "the deployed learner's Qini lies
+  outside the range of at least five placebo shuffles scored on dev, and the test-split placebo's |Qini| is no larger
+  than the widest of them". §9 is unchanged until then.
+- **Deciles (deployed pair):** S top +6.29 pp = 6.1 × ATE, bottom +0.22 pp [−0.05, 0.49]; R +5.95 / +0.25. Checks met.
+- **Conversion:** Qini S 0.218 [0.157, 0.282], response 0.215 [0.156, 0.275], R 0.200; paired S − response includes
+  0 everywhere except +0.17 [0.03, 0.31] per 1,000 at 30%; nothing separates them.
+- README results, decision table and honest notes; model card; DESIGN.md §5–6; `scripts/dev_test_table.py`.
 
-Done in M3 (2026-10-28, dev; DESIGN.md §4):
-- **§9 criterion replaced (authorised):** paired bootstrap of best uplift − response, the 10%-budget difference must
-  exclude 0. **Deployed pair by the fixed rule: `s_learner` deployed, `r_learner` cross-check.**
-- **Paired differences (visit):** S − response: Qini +0.0069 [0.0007, 0.0135]; per 1,000 at 10% **+13.0 [6.4, 19.2]**,
-  at 20% +2.6 [0.0, 4.8], at 30% +0.7 [−0.3, 2.0]. R − response: +9.5 [2.8, 15.8] at 10%, the rest include 0. The
-  deployed learner meets the criterion on dev.
-- **Budget curves 5–50%, raw and IPW-weighted** (`policy_dev_visit.csv`, two plots): S 91 / 67 / 49 / 41 / 30 / 20
-  per 1,000 at 5 / 10 / 15 / 20 / 30 / 50%, response 72 / 54 / 43 / 38 / 29 / 20, random ≈ 10. IPW (propensity
-  cross-fitted on dev, AUC 0.510) is lower by a near-constant factor ≈ 0.75–0.80 from the 20–25% budget upward (beyond
-  the raw CI half-width), the §1.4 level effect; at 5–10% the two agree; no ranking changes. Both are reported.
-- **Profit under the stated economics** (2.00 per visit, 0.10 per contact — assumptions; marginal break-even 50 per
-  1,000): random never profitable; response best at 5% (2.2 per 1,000 customers), break-even 11%; S best at 8% (4.8),
-  break-even 14%; R best at 5% (4.7), break-even 14%. Contact 5–8%, never more than 12–14%; at 20% everyone loses.
-- **Segments (S-learner, δ = ATE/4, p0_high = 2 × control rate):** persuadable 25.3% with observed +3.46 pp [3.04,
-  3.88]; sure thing 0.9%; lost cause 73.6% (+0.07 pp [0.03, 0.11]); sleeping dog 0.2% (+0.08 pp [−6.8, 7.0]); τ̂ < 0:
-  6.5% with −0.02 pp [−0.44, 0.39]. **Sleeping dogs are not demonstrated**; the label ships with that caveat. Five
-  worked customers in `worked_customers_dev_visit.md` (anonymous features, stated).
-- **Placebo** (shuffled treatment, deployed settings, 200 resamples): S −0.0022 [−0.0136, 0.0095], R +0.0008
-  [−0.0127, 0.0126]; both contain 0.
-- **Conversion** (settings from visit): dev ATE 0.122 pp; Qini S 0.202 [0.140, 0.268], response 0.197 [0.134, 0.255],
-  R 0.167 [0.110, 0.224]; paired S − response includes 0 at every budget; R − response is negative and excludes 0 at
-  10 and 20%. The CIs are the result: nothing on conversion separates uplift from response targeting.
-
-**Milestone 4 (do next) — the single test run, then the write-up.** In one session, in this order, once:
-`evaluate.py --split test --final` for `visit` and `conversion` (all bundles present for each outcome, 200 resamples;
-decile tables); `paired.py --split test --final` for `s_learner-response,r_learner-response` at 10 / 20 / 30% for both
-outcomes; `policy_eval.py --split test --final --models random,response,s_learner,r_learner --segments-model s_learner`
-(budget curves raw and IPW, profit, break-even, segments, worked customers); `placebo.py` is a train-side check and is
-not rerun; `plots.py --split test --final`. Write the date of the run into this section and into DESIGN.md §5; fill §5
-with the test tables next to their dev counterparts and the criterion verdict (the paired 10% CI); fill §6. Then the
-model card (`docs/model_card.md`), and the README: results table on one screen, the "response vs uplift: when it
-matters" decision table (per 1,000 and profit at 5 / 10 / 20 / 30% for random, response, S), the data licence, the
-limitations (imperfect randomization, anonymous features, sleeping dogs unverified, conversion CIs). `pytest` green,
-commit "Milestone 4: test results, model card, README", push. Report and stop. The test split is opened exactly once.
+**Milestone 5 (do next) — serve and ship.** `app.py`: FastAPI with `POST /score` (12 features → uplift, p_control,
+p_treated, segment, decision under the budget, threshold, model, version, latency_ms), `POST /score/batch` (≤ 1,000),
+`GET /policy?budget=` (threshold, expected incremental visits per 1,000 contacts and profit under the stated economics,
+from the committed dev budget table), `GET /health`; Gradio at `/ui` with tabs Customer (pick a dev customer or edit
+features; response model and S-learner side by side; segment; treat / skip), Budget (slider 5–50% → incremental visits,
+profit, threshold, the four-segment breakdown; response vs uplift curves), Evidence (the committed test plots and
+tables, the paired difference, the placebo note, the CIs), About (RCT, imbalance, anonymous features, sleeping dogs,
+licence). Thresholds for the budget come from the S-learner's dev scores (never test); the segment δ and p0_high are
+the dev values. `scripts/bench_latency.py` (p50 / p95 for `/score`, target p50 < 30 ms on cpu-basic),
+`scripts/demo_gif.py`, Dockerfile for a Hugging Face Space (Docker SDK, cpu-basic, port 7860), `.github/workflows/ci.yml`
+unchanged plus an API smoke test in `tests/`. README: live link, GIF, one-screen results. Commit "Milestone 5: FastAPI +
+Gradio, latency, Space, GIF", push. Report and stop. The test split stays closed.
 
 macOS notes: Python 3.11 venv at `.venv`; 8 GB RAM. The raw CSV must be read in chunks (the loader does); never load it whole.
 
@@ -96,6 +86,9 @@ tests, one look at the test set), and a decision product on top. Rare in portfol
   holdout give unbiased uplift for any targeting rule. No observational-data claims.
 - **One look at the test split.** Hyperparameters, learner choice and budget curves are chosen on dev;
   `scripts/evaluate.py --split test` needs `--final` and runs once; the date goes into this file.
+  **Test run: 2026-10-28** — `evaluate.py --split test --final` (visit, conversion), `policy_eval.py --split test --final`,
+  `paired.py --split test --final` (visit, conversion), `placebo.py --split test --final` (s_learner), `plots.py --split test
+  --final`, each exactly once, in that order, with the dev settings, budgets, δ and p0_high frozen (DESIGN.md §5).
 - **Ground truth where it exists.** Every learner is first validated on synthetic data with known τ(x) (PEHE,
   correlation with the truth); a learner that cannot recover a known effect is not trusted on real data.
 - **The response model is always in the table.** The project's point is the gap between targeting on P(Y|T=1)

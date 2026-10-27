@@ -5,7 +5,7 @@ one chosen model: the four segments with the observed uplift inside each (the sl
 and five worked customers (one per segment plus one on the budget threshold).
 
 Usage: python scripts/policy_eval.py --split dev [--outcome visit] [--models random,response,s_learner,r_learner]
-       [--segments-model s_learner] [--delta-share-of-ate 0.25] [--resamples 200] [--fast] [--final]
+       [--segments-model s_learner] [--delta-share-of-ate 0.25 | --delta D --p0-high P] [--resamples 200] [--fast] [--final]
 Writes policy_<split>_<outcome>.{csv,json} and worked_customers_<split>_<outcome>.{json,md}. `--split test` needs `--final`.
 """
 
@@ -56,7 +56,9 @@ def main(argv=None) -> int:
     ap.add_argument("--outcome", default=PRIMARY_OUTCOME, choices=["visit", "conversion"])
     ap.add_argument("--models", default="random,response,s_learner,r_learner")
     ap.add_argument("--segments-model", default="s_learner")
-    ap.add_argument("--delta-share-of-ate", type=float, default=0.25, help="δ for segments as a share of the ATE")
+    ap.add_argument("--delta-share-of-ate", type=float, default=0.25, help="δ for segments as a share of the ATE of the split")
+    ap.add_argument("--delta", type=float, default=None, help="fixed δ (e.g. the dev value) instead of a share of this split's ATE")
+    ap.add_argument("--p0-high", type=float, default=None, help="fixed p0_high (e.g. the dev value) instead of 2 × this split's control rate")
     ap.add_argument("--resamples", type=int, default=BOOTSTRAP_RESAMPLES)
     ap.add_argument("--fast", action="store_true", help="small-data settings for the propensity model (smoke runs)")
     ap.add_argument("--models-dir", type=Path, default=MODELS)
@@ -103,9 +105,11 @@ def main(argv=None) -> int:
         m = learners[a.segments_model]
         p0, _ = m.predict_outcomes(X)
         tau = scores[a.segments_model]
-        delta, p0_high = a.delta_share_of_ate * base["ate"], 2 * base["rate_control"]
+        delta = a.delta if a.delta is not None else a.delta_share_of_ate * base["ate"]
+        p0_high = a.p0_high if a.p0_high is not None else 2 * base["rate_control"]
         rep = segment_report(y, t, p0, tau, delta, p0_high)
         rep["model"] = a.segments_model
+        rep["thresholds_source"] = "fixed on the command line" if (a.delta is not None or a.p0_high is not None) else "derived from this split"
         rep["share_tau_negative"] = rep["tau_negative"]["share"]
         out["segments"] = rep
         thr = threshold_for_budget(tau, 0.2)
