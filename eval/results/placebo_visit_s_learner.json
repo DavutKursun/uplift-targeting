@@ -1,0 +1,23 @@
+{
+  "learner": "s_learner",
+  "outcome": "visit",
+  "settings": {
+    "rounds": 300,
+    "tau_rounds": 300,
+    "cls_params": {
+      "num_leaves": 31,
+      "min_data_in_leaf": 2000
+    },
+    "reg_params": {
+      "num_leaves": 7,
+      "min_data_in_leaf": 5000
+    }
+  },
+  "qini_placebo": {
+    "point": -0.0021667899288433717,
+    "ci_low": -0.013573117381778672,
+    "ci_high": 0.009512877428690183,
+    "n_resamples": 200
+  },
+  "contains_zero": true
+}

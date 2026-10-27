@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import ate_report
 import build_splits
 import evaluate
+import paired
 import placebo
+import plots
 import policy_eval
 import synthetic_check
 import train
@@ -59,9 +61,16 @@ def test_train_evaluate_policy_placebo(ws):
     summ = json.loads((ws["out"] / "dev-summary-visit.json").read_text())
     assert {m["model"] for m in summ["metrics"]} == {"response", "s_learner", "r_learner"} and (ws["out"] / "deciles_dev_visit_r_learner.csv").exists()
     assert policy_eval.main(["--split", "test", *common]) == 3
-    assert policy_eval.main(["--split", "dev", "--segments-model", "r_learner", *common]) == 0
+    assert policy_eval.main(["--split", "dev", "--segments-model", "r_learner", "--fast", "--resamples", "10", *common]) == 0
     pol = json.loads((ws["out"] / "policy_dev_visit.json").read_text())
     assert "segments" in pol and abs(sum(pol["segments"]["shares"].values()) - 1) < 1e-6
+    assert "breakeven" in pol and "raw_vs_ipw" in pol and len(pol["worked_customers"]["rows"]) >= 2 and (ws["out"] / "policy_dev_visit.csv").exists()
+    assert paired.main(["--split", "test", *common]) == 3
+    assert paired.main(["--split", "dev", "--pairs", "s_learner-response", "--resamples", "10", *common]) == 0
+    pr = json.loads((ws["out"] / "paired_dev_visit.json").read_text())
+    assert "s_learner-response" in pr["pairs"] and "qini" in pr["pairs"]["s_learner-response"]
+    assert plots.main(["--split", "dev", "--best", "s_learner", *common]) == 0
+    assert all((ws["out"] / f).exists() for f in ("qini_curves_dev.png", "deciles_dev_s_learner.png", "budget_curve_dev.png", "profit_curve_dev.png"))
     assert placebo.main(["--learner", "s_learner", "--fast", "--resamples", "20", "--splits-dir", str(ws["splits"]), "--out", str(ws["out"])]) == 0
-    pl = json.loads((ws["out"] / "placebo_visit.json").read_text())
+    pl = json.loads((ws["out"] / "placebo_visit_s_learner.json").read_text())
     assert "qini_placebo" in pl

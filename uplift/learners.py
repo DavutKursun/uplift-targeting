@@ -308,3 +308,31 @@ def fast_settings(rounds: int = 120) -> Settings:
     cls = {**CLS_PARAMS, "learning_rate": 0.1, "min_data_in_leaf": 50, "num_leaves": 15}
     reg = {**REG_PARAMS, "learning_rate": 0.1, "min_data_in_leaf": 100, "num_leaves": 7}
     return Settings(cls, reg, rounds, folds=3)
+
+
+def settings_from(params=None, cls_params=None, reg_params=None, rounds: int | None = None, tau_rounds: int | None = None,
+                  estimate_propensity: bool = False, categorical=(), fast: bool = False) -> Settings:
+    """Settings from CLI-style overrides: `params` applies to every model of a learner, `cls_params` only to the outcome /
+    nuisance classifiers, `reg_params` only to the τ regressions (each a dict or a JSON string)."""
+    import json
+
+    s = fast_settings() if fast else Settings()
+    for raw, targets in ((params, ("cls_params", "reg_params")), (cls_params, ("cls_params",)), (reg_params, ("reg_params",))):
+        if raw:
+            over = json.loads(raw) if isinstance(raw, str) else dict(raw)
+            for name in targets:
+                getattr(s, name).update(over)
+    if rounds:
+        s.rounds = rounds
+    if tau_rounds:
+        s.tau_rounds = tau_rounds
+    s.estimate_propensity = bool(estimate_propensity)
+    s.categorical = tuple(categorical or ())
+    return s
+
+
+def propensity_oof(X, t, settings: Settings | None = None) -> np.ndarray:
+    """Cross-fitted P(T = 1 | X) for every row (K folds, LightGBM), clipped to [0.02, 0.98]: the weights of the
+    IPW-weighted policy value. Fitted on the split being evaluated, so no row's weight comes from a model that saw it."""
+    X, t = np.asarray(X, dtype=np.float32), np.asarray(t).astype(int)
+    return _propensity(X, t, settings or Settings(), float(t.mean()), True)

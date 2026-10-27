@@ -200,3 +200,44 @@ def test_categorical_codes_and_tau_rounds(world):
     assert np.isfinite(u).all() and spearman(world["truth"], u) > 0.3
     p0, p1 = m.predict_outcomes(world["Xd"][:50])
     assert p0.shape == (50,) and (0 <= p0).all() and (p1 <= 1).all()
+
+
+# --- M3: paired differences, IPW policy value, budget curves, segments ------------------------------------------
+def test_paired_and_budget_blocks(world):
+    from uplift.metrics import bootstrap_block, budget_block, paired_block
+
+    yd, td, truth = world["yd"], world["td"], world["truth"]
+    rng = np.random.default_rng(3)
+    scores = {"a": truth, "a_copy": truth.copy(), "rand": rng.random(len(yd))}
+    res = paired_block(yd, td, scores, [("a", "a_copy"), ("a", "rand")], budgets=(0.1, 0.2), n_resamples=25)
+    assert all(v["point"] == 0 and v["ci_low"] == 0 and v["ci_high"] == 0 and not v["excludes_zero"] for v in res["pairs"]["a-a_copy"].values())
+    better = res["pairs"]["a-rand"]
+    assert better["qini"]["point"] > 0 and better["qini"]["ci_low"] <= better["qini"]["point"] <= better["qini"]["ci_high"]
+    single = bootstrap_block(yd, td, truth, (0.1, 0.2), 25)  # same resamples, same numbers
+    assert np.isclose(res["models"]["a"]["qini"]["point"], single["qini"]["point"]) and np.isclose(res["models"]["a"]["qini"]["ci_low"], single["qini"]["ci_low"])
+    assert np.isclose(res["models"]["a"]["0.2"]["point"], single["policy"]["0.2"]["point"]) and np.isclose(res["models"]["a"]["0.2"]["ci_high"], single["policy"]["0.2"]["ci_high"])
+    e = np.full(len(yd), td.mean())  # a constant propensity makes the IPW estimate the raw one
+    blk = budget_block(yd, td, truth, e, (0.1, 0.3), n_resamples=10)
+    for b in ("0.1", "0.3"):
+        assert np.isclose(blk["raw"][b]["point"], blk["ipw"][b]["point"]) and blk["raw"][b]["ci_low"] <= blk["raw"][b]["point"] <= blk["raw"][b]["ci_high"]
+    assert 0 < blk["share_of_total"]["0.3"] <= 1.5 and blk["n_targeted"]["0.1"] == round(0.1 * len(yd))
+
+
+def test_budget_curves_breakeven_and_segment_report(world, fitted):
+    from uplift.learners import fast_settings, propensity_oof
+    from uplift.policy import breakeven, budget_curves, segment_report
+
+    yd, td, Xd = world["yd"], world["td"], world["Xd"]
+    e = propensity_oof(Xd, td, fast_settings(40))
+    assert e.shape == td.shape and (0.02 <= e).all() and (e <= 0.98).all() and abs(e.mean() - td.mean()) < 0.05
+    s = fitted["s_learner"].predict_uplift(Xd)
+    tab = budget_curves(yd, td, {"s_learner": s}, e, budgets=(0.1, 0.2), n_resamples=10)
+    assert set(tab["model"]) == {"random", "s_learner"} and len(tab) == 4
+    row = tab[(tab["model"] == "s_learner") & (tab["budget"] == 0.1)].iloc[0]
+    assert row["ci_low"] <= row["incremental_per_1000"] <= row["ci_high"] and np.isfinite(row["ipw_per_1000"]) and np.isfinite(row["profit_per_1000_customers"])
+    be = breakeven(yd, td, s, e, step=0.05, max_budget=0.5)
+    assert be["marginal_threshold_per_1000"] == 50.0 and 0.05 <= be["raw"]["profit_max_budget"] <= 0.5 and "breakeven_budget" in be["ipw"]
+    p0, _ = fitted["s_learner"].predict_outcomes(Xd)
+    rep = segment_report(yd, td, p0, s, delta=0.005, p0_high=0.13)
+    assert abs(sum(rep["shares"].values()) - 1) < 1e-6 and set(rep["observed"]) == {"persuadable", "sure_thing", "lost_cause", "sleeping_dog"}
+    assert rep["observed"]["persuadable"]["n"] > 1000 and "ate" in rep["observed"]["persuadable"] and "share" in rep["tau_negative"]

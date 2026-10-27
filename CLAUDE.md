@@ -5,60 +5,72 @@ milestone; after each milestone stop, show how to run it, and wait for Davut's O
 Do not spawn review or refuter sub-agents; verify with the scripts and tests and
 report directly. Section 0 says where we are.
 
-## 0. Status (updated 2026-10-28 — Milestones 1 and 2 done)
+## 0. Status (updated 2026-10-28 — Milestones 1, 2 and 3 done)
 
-**Starter, M1 and M2 are done and committed; start at Milestone 3 below.** Repo: `github.com/DavutKursun/uplift-targeting`
-(public). `pytest -q` → 19 passed without the raw data. Every number lives in `docs/DESIGN.md` (§1–2 for M1, §3 for M2)
+**Starter, M1, M2 and M3 are done and committed; start at Milestone 4 below.** Repo: `github.com/DavutKursun/uplift-targeting`
+(public). `pytest -q` → 21 passed without the raw data. Every number lives in `docs/DESIGN.md` (§1–2 M1, §3 M2, §4 M3)
 with the script that produced it; nothing has read the test split.
 
 Implemented: `uplift/config.py`, `schema.py`, `data.py` (chunked loader → float32 parquet, stratified subsample and
 splits, randomization check, ATE with CI), `synthetic.py` (a campaign with known τ(x)), `learners.py` (response model,
-S, T, X, transformed outcome, R, DR; one interface; LightGBM; cross-fitting; `Settings.categorical` maps coded columns
-to LightGBM categoricals, `Settings.tau_rounds` sets the τ regressions' rounds), `metrics.py` (Qini, AUUC, uplift by
-decile, policy value with the share of the total effect, `bootstrap_block` = one stratified resample loop for every
-statistic, PEHE), `policy.py` (budget → threshold, incremental per 1,000, profit, segments); `scripts/download.py`,
-`build_splits.py`, `ate_report.py`, `synthetic_check.py`, `m1_diagnostics.py`, `train.py` (`--cls-params`,
-`--reg-params`, `--rounds`, `--tau-rounds`, `--estimate-propensity`, `--categorical N`), `tune.py`, `evaluate.py`
-(refuses `--split test` without `--final`), `ablation_table.py`, `plots.py`, `policy_eval.py`, `placebo.py`; `tests/`.
-NOT yet: `app.py`, Dockerfile/Space, model card, GIF.
+S, T, X, transformed outcome, R, DR; one interface; LightGBM; cross-fitting; `Settings.categorical`, `Settings.tau_rounds`,
+`settings_from` for CLI overrides, `propensity_oof` for IPW weights), `metrics.py` (Qini, AUUC, uplift by decile,
+policy value with the share of the total effect, `bootstrap_block` = one stratified resample loop per model,
+`paired_block` = the same resamples for two models → paired-difference CIs, `budget_block` = raw and IPW-weighted
+policy value with CIs, PEHE), `policy.py` (budget → threshold, `budget_curves` with profit under `Economics`,
+`breakeven`, segments and `segment_report`); `scripts/download.py`, `build_splits.py`, `ate_report.py`,
+`synthetic_check.py`, `m1_diagnostics.py`, `train.py` (`--cls-params`, `--reg-params`, `--rounds`, `--tau-rounds`,
+`--estimate-propensity`, `--categorical N`), `tune.py`, `evaluate.py` (refuses `--split test` without `--final`),
+`paired.py`, `ablation_table.py`, `policy_eval.py` (budget curves raw + IPW, break-even, segments, worked customers),
+`placebo.py`, `plots.py` (Qini curves, deciles, budget and profit curves); `tests/`. NOT yet: `app.py`,
+Dockerfile/Space, model card, GIF, README results.
 
 Done in M1 (2026-10-27): raw file from Criteo's Hugging Face org (the AI Lab link is dead, §3.1); chunked load, 4M-row
-stratified subsample, splits 2,399,998 / 799,998 / 800,004; the experiment on train: visit 3.82% → 4.85%, ATE +1.03 pp
-[0.97, 1.10]; conversion 0.196% → 0.302%, +0.106 pp [0.089, 0.122]; §3.2 corrected to the measured values. Randomization
-is imperfect: max |SMD| 0.049, treatment weakly predictable (AUC 0.508), every covariate adjustment puts the visit ATE
-near 0.8 pp — raw stays primary, adjusted is the caveat (DESIGN.md §1.4). Synthetic ground truth at n = 200k: all six
-uplift learners Spearman 0.66–0.88 with the truth, response model −0.08; LightGBM defaults re-chosen on it.
+stratified subsample, splits 2,399,998 / 799,998 / 800,004; visit 3.82% → 4.85%, ATE +1.03 pp [0.97, 1.10] on train;
+§3.2 corrected to the measured values. Randomization is imperfect (max |SMD| 0.049, AUC 0.508, every adjustment puts the
+visit ATE near 0.8 pp): raw stays primary, adjusted is the caveat (DESIGN.md §1.4). Synthetic ground truth at n = 200k:
+all six uplift learners Spearman 0.66–0.88 with the truth, response model −0.08; LightGBM defaults re-chosen on it.
 
-Done in M2 (2026-10-28, all on dev, 200-resample stratified bootstrap CIs; DESIGN.md §3):
-- **All seven learners on `visit`.** Fit times with the defaults 4–33 s each, 105 s for all seven, peak RSS 0.91 GB;
-  evaluation 7.6–11.5 min, peak RSS 0.4 GB. Dev Qini after tuning: S 0.0941 [0.084, 0.106], R 0.0938, DR 0.0927,
-  X 0.0898, TO 0.0897, response 0.0872 [0.074, 0.100], T 0.0867 — all seven inside one another's CIs, every CI far
-  from zero. Random = 10.3 incremental visits per 1,000 contacts at any budget.
-- **Tuning once on dev Qini** (`tune.py`, four configurations each): S-learner (31 leaves, min_data_in_leaf 2,000,
-  300 rounds, +0.003); R and DR τ model (7 leaves, min_data_in_leaf 20,000, 300 rounds, +0.006 each; nuisances keep
-  the defaults). The other four learners keep the defaults. Bundles in `models/` are the tuned ones
-  (`eval/results/models_visit.json`).
-- **Ablations on R and DR** (rule fixed in advance: higher Qini CI lower bound wins, ties → simpler): estimated
-  propensity changes nothing (±0.0015) — the M1 imbalance moves the level of the effect, not the ranking; categorical
-  handling of f1, f3, f4, f5, f11 costs 0.004–0.005. Base (known e, numeric features) carries to M3.
-- **Deciles** (every learner passes both checks): S-learner top decile +6.66 pp [5.81, 7.50] = 6.4 × ATE, holding
-  64% of the total effect; bottom decile +0.01 pp [−0.26, 0.29]. No decile where contact hurts; R and DR put a negative
-  point estimate in their bottom decile but the CIs contain zero. Plots: `eval/results/qini_curves_dev.png`,
-  `deciles_dev_s_learner.png`.
-- **Response-model contrast at 20%:** response 38.4 [32.7, 44.5] per 1,000 (74% of the total effect), best uplift
-  41.0 [35.5, 46.0] (79%), random 10.3 (20%); at 10% the gap is 53.5 vs 66.6. On Criteo the effect is nearly
-  proportional to the base rate, so the response model is a strong baseline; the uplift learners win at tight budgets
-  and are never worse. **The §9 criterion "non-overlapping Qini CIs vs the response model" is not met on dev** and will
-  be reported as such in M4, not softened.
+Done in M2 (2026-10-28, dev, 200-resample CIs; DESIGN.md §3): all seven learners on `visit`; dev Qini after tuning once
+(S: 31 leaves / 300 rounds; R, DR τ: 7 leaves / min_data_in_leaf 20,000 / 300 rounds): S 0.0941 [0.084, 0.106],
+R 0.0938, DR 0.0927, response 0.0872 [0.074, 0.100]; ablations (estimated propensity, categorical columns) rejected by
+the pre-fixed CI-lower-bound rule; every learner passes the decile checks (S top decile 6.7 pp = 6.4 × ATE, bottom
+0.0 pp); no decile where contact hurts.
 
-**Milestone 3 (do next):** on dev, for every saved model and the random reference: budget curves 5–50% raw *and*
-IPW-weighted with the cross-fitted propensity (the robustness check to §1.4), profit under the stated economics
-(`config.Economics`, named as assumptions), the four segments for the best learner (δ = ATE / 4, p0_high = 2 × control
-rate, as `policy_eval.py` does) with shares and the observed uplift among predicted sleeping dogs (τ < 0) with a CI,
-the placebo (`placebo.py`, best learner, Qini CI must contain 0), a calibration plot of predicted vs observed uplift by
-decile, paired-bootstrap CIs for the difference best-uplift − response at each budget (same resamples), and the
-`conversion` outcome end to end (`train.py --outcome conversion`, `evaluate.py --outcome conversion`; the CIs are the
-result). DESIGN.md §4. Report and stop. Never open the test split.
+Done in M3 (2026-10-28, dev; DESIGN.md §4):
+- **§9 criterion replaced (authorised):** paired bootstrap of best uplift − response, the 10%-budget difference must
+  exclude 0. **Deployed pair by the fixed rule: `s_learner` deployed, `r_learner` cross-check.**
+- **Paired differences (visit):** S − response: Qini +0.0069 [0.0007, 0.0135]; per 1,000 at 10% **+13.0 [6.4, 19.2]**,
+  at 20% +2.6 [0.0, 4.8], at 30% +0.7 [−0.3, 2.0]. R − response: +9.5 [2.8, 15.8] at 10%, the rest include 0. The
+  deployed learner meets the criterion on dev.
+- **Budget curves 5–50%, raw and IPW-weighted** (`policy_dev_visit.csv`, two plots): S 91 / 67 / 49 / 41 / 30 / 20
+  per 1,000 at 5 / 10 / 15 / 20 / 30 / 50%, response 72 / 54 / 43 / 38 / 29 / 20, random ≈ 10. IPW (propensity
+  cross-fitted on dev, AUC 0.510) is lower by a near-constant factor ≈ 0.75–0.80 from the 20–25% budget upward (beyond
+  the raw CI half-width), the §1.4 level effect; at 5–10% the two agree; no ranking changes. Both are reported.
+- **Profit under the stated economics** (2.00 per visit, 0.10 per contact — assumptions; marginal break-even 50 per
+  1,000): random never profitable; response best at 5% (2.2 per 1,000 customers), break-even 11%; S best at 8% (4.8),
+  break-even 14%; R best at 5% (4.7), break-even 14%. Contact 5–8%, never more than 12–14%; at 20% everyone loses.
+- **Segments (S-learner, δ = ATE/4, p0_high = 2 × control rate):** persuadable 25.3% with observed +3.46 pp [3.04,
+  3.88]; sure thing 0.9%; lost cause 73.6% (+0.07 pp [0.03, 0.11]); sleeping dog 0.2% (+0.08 pp [−6.8, 7.0]); τ̂ < 0:
+  6.5% with −0.02 pp [−0.44, 0.39]. **Sleeping dogs are not demonstrated**; the label ships with that caveat. Five
+  worked customers in `worked_customers_dev_visit.md` (anonymous features, stated).
+- **Placebo** (shuffled treatment, deployed settings, 200 resamples): S −0.0022 [−0.0136, 0.0095], R +0.0008
+  [−0.0127, 0.0126]; both contain 0.
+- **Conversion** (settings from visit): dev ATE 0.122 pp; Qini S 0.202 [0.140, 0.268], response 0.197 [0.134, 0.255],
+  R 0.167 [0.110, 0.224]; paired S − response includes 0 at every budget; R − response is negative and excludes 0 at
+  10 and 20%. The CIs are the result: nothing on conversion separates uplift from response targeting.
+
+**Milestone 4 (do next) — the single test run, then the write-up.** In one session, in this order, once:
+`evaluate.py --split test --final` for `visit` and `conversion` (all bundles present for each outcome, 200 resamples;
+decile tables); `paired.py --split test --final` for `s_learner-response,r_learner-response` at 10 / 20 / 30% for both
+outcomes; `policy_eval.py --split test --final --models random,response,s_learner,r_learner --segments-model s_learner`
+(budget curves raw and IPW, profit, break-even, segments, worked customers); `placebo.py` is a train-side check and is
+not rerun; `plots.py --split test --final`. Write the date of the run into this section and into DESIGN.md §5; fill §5
+with the test tables next to their dev counterparts and the criterion verdict (the paired 10% CI); fill §6. Then the
+model card (`docs/model_card.md`), and the README: results table on one screen, the "response vs uplift: when it
+matters" decision table (per 1,000 and profit at 5 / 10 / 20 / 30% for random, response, S), the data licence, the
+limitations (imperfect randomization, anonymous features, sleeping dogs unverified, conversion CIs). `pytest` green,
+commit "Milestone 4: test results, model card, README", push. Report and stop. The test split is opened exactly once.
 
 macOS notes: Python 3.11 venv at `.venv`; 8 GB RAM. The raw CSV must be read in chunks (the loader does); never load it whole.
 
@@ -210,8 +222,13 @@ interpretable features and a best-arm policy; uplift with a neural τ model; est
 ## 9. Acceptance criteria
 
 - Synthetic: every uplift learner reaches Spearman ≥ 0.6 with the true τ at n = 200k; the response model does not.
-- Test (`visit`): the best uplift learner's normalised Qini beats the response model's with non-overlapping 95%
-  CIs; the placebo Qini CI contains 0.
+- Test (`visit`): paired bootstrap (same resamples for both models) of best uplift minus response: the CI of the
+  difference in incremental visits per 1,000 at the 10% budget excludes 0; the differences at 20% and 30% and in Qini
+  are reported whatever they are; the placebo Qini CI contains 0. (Changed at M3, authorised: the earlier
+  "non-overlapping Qini CIs" criterion compares two marginal CIs, which is the wrong test for two models scored on
+  the same customers.) Deployed pair, rule fixed at M3 before the test run: the learner with the highest dev Qini
+  whose CI lower bound is within 0.005 of the best, ties to the simpler one (→ `s_learner`), with `r_learner` as the
+  cross-check.
 - Decile table on test: top-decile observed uplift ≥ 2 × ATE; the bottom decile's observed uplift ≤ ATE.
 - Policy at a 20% budget: incremental visits per 1,000 contacts for uplift vs response vs random reported with
   CIs; the share of total incremental effect captured stated.

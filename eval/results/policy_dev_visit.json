@@ -1,0 +1,494 @@
+{
+  "split": "dev",
+  "outcome": "visit",
+  "n": 799998,
+  "n_resamples": 200,
+  "ate": {
+    "n_treated": 679999,
+    "n_control": 119999,
+    "rate_treated": 0.048543,
+    "rate_control": 0.0382,
+    "ate": 0.010342,
+    "ci_low": 0.009144,
+    "ci_high": 0.011541,
+    "relative_uplift": 0.2707,
+    "se": 0.0006116
+  },
+  "random_per_1000": 10.34,
+  "economics": {
+    "value_per_response": 2.0,
+    "contact_cost": 0.1,
+    "stated_as": "assumptions, not measured",
+    "marginal_threshold_per_1000": 50.0
+  },
+  "propensity": {
+    "auc_oof": 0.5095,
+    "p1": 0.8388,
+    "p99": 0.8903,
+    "mean": 0.85
+  },
+  "budgets": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5
+  ],
+  "raw_vs_ipw": {
+    "max_abs_difference_per_1000": 6.169,
+    "rows_where_difference_exceeds_ci_halfwidth": [
+      {
+        "model": "random",
+        "budget": 0.2,
+        "incremental_per_1000": 10.396,
+        "ipw_per_1000": 7.698,
+        "raw_ci_halfwidth": 2.443
+      },
+      {
+        "model": "random",
+        "budget": 0.25,
+        "incremental_per_1000": 9.853,
+        "ipw_per_1000": 7.208,
+        "raw_ci_halfwidth": 2.398
+      },
+      {
+        "model": "random",
+        "budget": 0.3,
+        "incremental_per_1000": 10.035,
+        "ipw_per_1000": 7.389,
+        "raw_ci_halfwidth": 2.186
+      },
+      {
+        "model": "random",
+        "budget": 0.35,
+        "incremental_per_1000": 10.14,
+        "ipw_per_1000": 7.473,
+        "raw_ci_halfwidth": 2.077
+      },
+      {
+        "model": "random",
+        "budget": 0.4,
+        "incremental_per_1000": 10.408,
+        "ipw_per_1000": 7.819,
+        "raw_ci_halfwidth": 1.852
+      },
+      {
+        "model": "random",
+        "budget": 0.45,
+        "incremental_per_1000": 10.181,
+        "ipw_per_1000": 7.601,
+        "raw_ci_halfwidth": 1.941
+      },
+      {
+        "model": "random",
+        "budget": 0.5,
+        "incremental_per_1000": 9.991,
+        "ipw_per_1000": 7.38,
+        "raw_ci_halfwidth": 1.853
+      },
+      {
+        "model": "response",
+        "budget": 0.25,
+        "incremental_per_1000": 33.476,
+        "ipw_per_1000": 27.947,
+        "raw_ci_halfwidth": 4.854
+      },
+      {
+        "model": "response",
+        "budget": 0.3,
+        "incremental_per_1000": 29.488,
+        "ipw_per_1000": 23.935,
+        "raw_ci_halfwidth": 3.993
+      },
+      {
+        "model": "response",
+        "budget": 0.35,
+        "incremental_per_1000": 26.568,
+        "ipw_per_1000": 21.073,
+        "raw_ci_halfwidth": 3.398
+      },
+      {
+        "model": "response",
+        "budget": 0.4,
+        "incremental_per_1000": 23.958,
+        "ipw_per_1000": 18.645,
+        "raw_ci_halfwidth": 2.849
+      },
+      {
+        "model": "response",
+        "budget": 0.45,
+        "incremental_per_1000": 21.658,
+        "ipw_per_1000": 16.565,
+        "raw_ci_halfwidth": 2.589
+      },
+      {
+        "model": "response",
+        "budget": 0.5,
+        "incremental_per_1000": 20.007,
+        "ipw_per_1000": 15.108,
+        "raw_ci_halfwidth": 2.454
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.25,
+        "incremental_per_1000": 34.795,
+        "ipw_per_1000": 29.264,
+        "raw_ci_halfwidth": 4.276
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.3,
+        "incremental_per_1000": 30.212,
+        "ipw_per_1000": 24.66,
+        "raw_ci_halfwidth": 3.596
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.35,
+        "incremental_per_1000": 26.847,
+        "ipw_per_1000": 21.412,
+        "raw_ci_halfwidth": 3.144
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.4,
+        "incremental_per_1000": 24.406,
+        "ipw_per_1000": 19.138,
+        "raw_ci_halfwidth": 2.624
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.45,
+        "incremental_per_1000": 21.907,
+        "ipw_per_1000": 16.87,
+        "raw_ci_halfwidth": 2.363
+      },
+      {
+        "model": "s_learner",
+        "budget": 0.5,
+        "incremental_per_1000": 20.117,
+        "ipw_per_1000": 15.346,
+        "raw_ci_halfwidth": 2.202
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.2,
+        "incremental_per_1000": 39.998,
+        "ipw_per_1000": 34.119,
+        "raw_ci_halfwidth": 5.293
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.25,
+        "incremental_per_1000": 34.223,
+        "ipw_per_1000": 28.054,
+        "raw_ci_halfwidth": 4.233
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.3,
+        "incremental_per_1000": 29.754,
+        "ipw_per_1000": 23.788,
+        "raw_ci_halfwidth": 3.651
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.35,
+        "incremental_per_1000": 26.564,
+        "ipw_per_1000": 20.909,
+        "raw_ci_halfwidth": 3.197
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.4,
+        "incremental_per_1000": 23.905,
+        "ipw_per_1000": 18.536,
+        "raw_ci_halfwidth": 2.829
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.45,
+        "incremental_per_1000": 21.726,
+        "ipw_per_1000": 16.585,
+        "raw_ci_halfwidth": 2.508
+      },
+      {
+        "model": "r_learner",
+        "budget": 0.5,
+        "incremental_per_1000": 20.098,
+        "ipw_per_1000": 15.192,
+        "raw_ci_halfwidth": 2.194
+      }
+    ]
+  },
+  "breakeven": {
+    "random": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.01,
+        "max_profit_per_1000_customers": -0.989,
+        "breakeven_budget": null,
+        "per_1000_at_profit_max": 0.55
+      },
+      "ipw": {
+        "profit_max_budget": 0.01,
+        "max_profit_per_1000_customers": -1.069,
+        "breakeven_budget": null,
+        "per_1000_at_profit_max": -3.47
+      }
+    },
+    "response": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 2.21,
+        "breakeven_budget": 0.11,
+        "per_1000_at_profit_max": 72.1
+      },
+      "ipw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 2.53,
+        "breakeven_budget": 0.11,
+        "per_1000_at_profit_max": 75.3
+      }
+    },
+    "s_learner": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.08,
+        "max_profit_per_1000_customers": 4.781,
+        "breakeven_budget": 0.14,
+        "per_1000_at_profit_max": 79.88
+      },
+      "ipw": {
+        "profit_max_budget": 0.04,
+        "max_profit_per_1000_customers": 4.273,
+        "breakeven_budget": 0.12,
+        "per_1000_at_profit_max": 103.41
+      }
+    },
+    "r_learner": {
+      "marginal_threshold_per_1000": 50.0,
+      "grid_step": 0.01,
+      "raw": {
+        "profit_max_budget": 0.05,
+        "max_profit_per_1000_customers": 4.726,
+        "breakeven_budget": 0.14,
+        "per_1000_at_profit_max": 97.26
+      },
+      "ipw": {
+        "profit_max_budget": 0.04,
+        "max_profit_per_1000_customers": 4.536,
+        "breakeven_budget": 0.12,
+        "per_1000_at_profit_max": 106.7
+      }
+    }
+  },
+  "segments": {
+    "delta": 0.0025855,
+    "p0_high": 0.0764,
+    "shares": {
+      "persuadable": 0.2532,
+      "sure_thing": 0.0086,
+      "lost_cause": 0.7363,
+      "sleeping_dog": 0.0019
+    },
+    "observed": {
+      "persuadable": {
+        "n": 202574,
+        "share": 0.2532,
+        "n_control": 29482,
+        "mean_tau_hat": 0.02678,
+        "mean_p0_hat": 0.1359,
+        "n_treated": 173092,
+        "rate_treated": 0.165577,
+        "rate_control": 0.130995,
+        "ate": 0.034582,
+        "ci_low": 0.030351,
+        "ci_high": 0.038812,
+        "relative_uplift": 0.264,
+        "se": 0.0021586
+      },
+      "sure_thing": {
+        "n": 6872,
+        "share": 0.0086,
+        "n_control": 1065,
+        "mean_tau_hat": 0.00047,
+        "mean_p0_hat": 0.35133,
+        "n_treated": 5807,
+        "rate_treated": 0.34975,
+        "rate_control": 0.342723,
+        "ate": 0.007027,
+        "ci_low": -0.024005,
+        "ci_high": 0.03806,
+        "relative_uplift": 0.0205,
+        "se": 0.0158329
+      },
+      "lost_cause": {
+        "n": 589015,
+        "share": 0.7363,
+        "n_control": 89213,
+        "mean_tau_hat": 0.00043,
+        "mean_p0_hat": 0.00314,
+        "n_treated": 499802,
+        "rate_treated": 0.003451,
+        "rate_control": 0.00278,
+        "ate": 0.000672,
+        "ci_low": 0.00029,
+        "ci_high": 0.001053,
+        "relative_uplift": 0.2416,
+        "se": 0.0001948
+      },
+      "sleeping_dog": {
+        "n": 1537,
+        "share": 0.0019,
+        "n_control": 239,
+        "mean_tau_hat": -0.00529,
+        "mean_p0_hat": 0.48263,
+        "n_treated": 1298,
+        "rate_treated": 0.456857,
+        "rate_control": 0.456067,
+        "ate": 0.00079,
+        "ci_low": -0.067925,
+        "ci_high": 0.069505,
+        "relative_uplift": 0.0017,
+        "se": 0.0350588
+      }
+    },
+    "tau_negative": {
+      "n": 52162,
+      "share": 0.0652,
+      "n_control": 7818,
+      "mean_tau_hat": -0.00023,
+      "mean_p0_hat": 0.03317,
+      "n_treated": 44344,
+      "rate_treated": 0.031098,
+      "rate_control": 0.031338,
+      "ate": -0.00024,
+      "ci_low": -0.004427,
+      "ci_high": 0.003946,
+      "relative_uplift": -0.0077,
+      "se": 0.002136
+    },
+    "model": "s_learner",
+    "share_tau_negative": 0.0652
+  },
+  "worked_customers": {
+    "threshold_at_20pct": 0.004585,
+    "rows": [
+      {
+        "role": "persuadable",
+        "row": 513472,
+        "f0": 12.8346,
+        "f1": 10.6795,
+        "f2": 8.3457,
+        "f3": -3.4783,
+        "f4": 10.2805,
+        "f5": 1.6242,
+        "f6": -20.9826,
+        "f7": 8.0039,
+        "f8": 3.803,
+        "f9": 37.4402,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.33283,
+        "p_treated": 0.5901,
+        "uplift": 0.25727,
+        "segment": "persuadable",
+        "decision_at_20pct": "treat"
+      },
+      {
+        "role": "sure_thing",
+        "row": 384765,
+        "f0": 12.6164,
+        "f1": 10.0597,
+        "f2": 8.2308,
+        "f3": 4.6799,
+        "f4": 12.5949,
+        "f5": 4.1155,
+        "f6": 0.2944,
+        "f7": 4.8338,
+        "f8": 3.6844,
+        "f9": 56.2157,
+        "f10": 5.8492,
+        "f11": -0.3374,
+        "p_control": 0.82785,
+        "p_treated": 0.82904,
+        "uplift": 0.00119,
+        "segment": "sure_thing",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "lost_cause",
+        "row": 30,
+        "f0": 22.3844,
+        "f1": 10.0597,
+        "f2": 8.2144,
+        "f3": 4.6799,
+        "f4": 10.2805,
+        "f5": 4.1155,
+        "f6": -1.2882,
+        "f7": 4.8338,
+        "f8": 3.9719,
+        "f9": 13.1901,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.00044,
+        "p_treated": 0.00044,
+        "uplift": -0.0,
+        "segment": "lost_cause",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "sleeping_dog",
+        "row": 11094,
+        "f0": 25.3689,
+        "f1": 10.0597,
+        "f2": 8.3094,
+        "f3": 4.6799,
+        "f4": 14.0029,
+        "f5": 4.1155,
+        "f6": -1.2882,
+        "f7": 4.8338,
+        "f8": 3.7726,
+        "f9": 31.4775,
+        "f10": 6.1742,
+        "f11": -0.1687,
+        "p_control": 0.51251,
+        "p_treated": 0.49428,
+        "uplift": -0.01823,
+        "segment": "sleeping_dog",
+        "decision_at_20pct": "skip"
+      },
+      {
+        "role": "borderline",
+        "row": 15888,
+        "f0": 12.6164,
+        "f1": 10.0597,
+        "f2": 8.3376,
+        "f3": 4.6799,
+        "f4": 10.2805,
+        "f5": 4.1155,
+        "f6": 0.2944,
+        "f7": 4.8338,
+        "f8": 3.8826,
+        "f9": 29.6421,
+        "f10": 5.3004,
+        "f11": -0.1687,
+        "p_control": 0.0796,
+        "p_treated": 0.08418,
+        "uplift": 0.00458,
+        "segment": "persuadable",
+        "decision_at_20pct": "treat"
+      }
+    ]
+  }
+}

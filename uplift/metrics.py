@@ -198,3 +198,101 @@ def pehe(tau_true, tau_pred) -> float:
 
 def spearman(a, b) -> float:
     return float(spearmanr(np.asarray(a, dtype=float), np.asarray(b, dtype=float)).statistic)
+
+
+# --- M3: paired differences and IPW-weighted policy value, one resample loop each -----------------------------------
+def _ci(v) -> tuple[float, float]:
+    v = np.asarray(v, dtype=float)
+    return float(np.nanpercentile(v, 2.5)), float(np.nanpercentile(v, 97.5))
+
+
+def _ipw_policy_sorted(y_o, t_o, e_o, k: int) -> float:
+    """Hájek IPW uplift per 1,000 among the top k of an ordering: weights 1/ê for treated rows and 1/(1 − ê) for control
+    rows of the targeted set (the M1 imbalance correction); nan when an arm is empty."""
+    yk, tk, ek = y_o[:k], t_o[:k], e_o[:k]
+    w1, w0 = (tk == 1) / ek, (tk == 0) / (1 - ek)
+    if w1.sum() == 0 or w0.sum() == 0:
+        return np.nan
+    return float(((w1 * yk).sum() / w1.sum() - (w0 * yk).sum() / w0.sum()) * 1000)
+
+
+def paired_block(y, t, scores: dict, pairs, budgets=(0.1, 0.2, 0.3), n_resamples: int = BOOTSTRAP_RESAMPLES, seed: int = SEED) -> dict:
+    """Every model's normalised Qini and incremental per 1,000 at each budget, and for every pair (a, b) the difference
+    a − b, all from the SAME stratified resamples: the difference's CI is a paired bootstrap, the right test for two
+    models scored on the same customers. The per-model numbers equal `bootstrap_block`'s."""
+    y, t = np.asarray(y, dtype=float), np.asarray(t).astype(int)
+    scores = {k: np.asarray(v, dtype=float) for k, v in scores.items()}
+    names = list(scores)
+    n = len(y)
+    ks = [max(int(round(n * b)), 1) for b in budgets]
+
+    def stats(y_, t_, idx):
+        perfect_area = _qini_area_sorted(*_sorted(y_, t_, perfect_score(y_, t_)))
+        out = {}
+        for name in names:
+            s_ = scores[name] if idx is None else scores[name][idx]
+            y_o, t_o = _sorted(y_, t_, s_)
+            q = _qini_area_sorted(y_o, t_o) / perfect_area if perfect_area > 0 else 0.0
+            out[name] = np.array([q] + [_policy_sorted(y_o, t_o, k) for k in ks], dtype=float)
+        return out
+
+    rng = np.random.default_rng(seed)
+    idx_t, idx_c = np.flatnonzero(t == 1), np.flatnonzero(t == 0)
+    point = stats(y, t, None)
+    draws = {name: [] for name in names}
+    for _ in range(n_resamples):
+        idx = np.concatenate([rng.choice(idx_t, len(idx_t)), rng.choice(idx_c, len(idx_c))])
+        st = stats(y[idx], t[idx], idx)
+        for name in names:
+            draws[name].append(st[name])
+    draws = {name: np.asarray(v, dtype=float).reshape(n_resamples, len(ks) + 1) for name, v in draws.items()}
+    keys = ["qini"] + [str(b) for b in budgets]
+
+    def block(pt, dr):
+        out = {}
+        for j, key in enumerate(keys):
+            lo, hi = _ci(dr[:, j]) if n_resamples else (np.nan, np.nan)
+            out[key] = {"point": float(pt[j]), "ci_low": lo, "ci_high": hi}
+        return out
+
+    models = {name: block(point[name], draws[name]) for name in names}
+    out_pairs = {}
+    for a, b in pairs:
+        d = block(point[a] - point[b], draws[a] - draws[b])
+        for v in d.values():
+            v["excludes_zero"] = bool(v["ci_low"] > 0 or v["ci_high"] < 0)
+        out_pairs[f"{a}-{b}"] = d
+    return {"n_resamples": n_resamples, "budgets": list(budgets), "models": models, "pairs": out_pairs}
+
+
+def budget_block(y, t, score, e_hat, budgets, n_resamples: int = BOOTSTRAP_RESAMPLES, seed: int = SEED) -> dict:
+    """Incremental responses per 1,000 contacts at each budget, raw (treated minus control rate inside the targeted set)
+    and IPW-weighted (Hájek with the propensity ê), with CIs from one stratified resample loop; plus the raw share of
+    the total incremental effect and the number targeted. n_resamples = 0 gives point estimates only."""
+    y, t = np.asarray(y, dtype=float), np.asarray(t).astype(int)
+    score, e_hat = np.asarray(score, dtype=float), np.asarray(e_hat, dtype=float)
+    n = len(y)
+    ks = [max(int(round(n * b)), 1) for b in budgets]
+
+    def stats(y_, t_, s_, e_):
+        order = _order(s_)
+        y_o, t_o, e_o = y_[order], t_[order], e_[order]
+        return np.array([[_policy_sorted(y_o, t_o, k), _ipw_policy_sorted(y_o, t_o, e_o, k)] for k in ks], dtype=float)
+
+    rng = np.random.default_rng(seed)
+    idx_t, idx_c = np.flatnonzero(t == 1), np.flatnonzero(t == 0)
+    point = stats(y, t, score, e_hat)
+    draws = []
+    for _ in range(n_resamples):
+        idx = np.concatenate([rng.choice(idx_t, len(idx_t)), rng.choice(idx_c, len(idx_c))])
+        draws.append(stats(y[idx], t[idx], score[idx], e_hat[idx]))
+    draws = np.asarray(draws, dtype=float) if draws else None
+    total = (y[t == 1].mean() - y[t == 0].mean()) * n
+    out = {"budgets": list(budgets), "n_resamples": n_resamples, "raw": {}, "ipw": {}, "share_of_total": {}, "n_targeted": {}}
+    for j, b in enumerate(budgets):
+        for col, key in enumerate(("raw", "ipw")):
+            lo, hi = _ci(draws[:, j, col]) if draws is not None else (np.nan, np.nan)
+            out[key][str(b)] = {"point": float(point[j, col]), "ci_low": lo, "ci_high": hi}
+        out["share_of_total"][str(b)] = float(point[j, 0] / 1000 * ks[j] / total) if total > 0 else None
+        out["n_targeted"][str(b)] = int(ks[j])
+    return out

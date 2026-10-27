@@ -328,9 +328,178 @@ resamples, which `bootstrap_block` already draws) is the right test for M3.
 - The dev split has now been used for learner choice, tuning and two ablations; every number above is a dev number
   and the test split is still unopened.
 
-## 4. Decisions (M3)
-Budget curves, profit under the stated economics, segments, sleeping dogs, placebo, calibration of uplift by decile,
-the `conversion` outcome.
+## 4. Decisions (M3, 2026-10-28)
+
+Everything in this section is a dev number (799,998 customers, 119,999 in control); the test split is still unopened.
+Deployed pair, by the rule fixed in CLAUDE.md §9 before any test run: the learner with the highest dev Qini whose CI
+lower bound is within 0.005 of the best, ties to the simpler one. On dev that is the **S-learner** (0.0941, lower
+bound 0.0840) with the **R-learner** (0.0938, lower bound 0.0819) as the cross-check; the DR-learner (0.0927, 0.0817)
+also qualifies but is neither best nor simpler.
+
+### 4.1 Paired differences against the response model (`scripts/paired.py` → `eval/results/paired_dev_visit.md`)
+
+Two models scored on the same customers are compared on the same stratified resamples (`metrics.paired_block`), so
+the CI of the difference is a paired bootstrap; two overlapping marginal CIs, as in §3.5, say nothing about the
+difference. 200 resamples; `visit`; random targeting = 10.3 incremental visits per 1,000 at every budget.
+
+| Difference | Normalised Qini | Incremental visits / 1,000 at 10% | at 20% | at 30% |
+|---|---|---|---|---|
+| S-learner − response | **+0.0069 [0.0007, 0.0135]** | **+13.0 [6.4, 19.2]** | **+2.6 [0.0, 4.8]** | +0.7 [−0.3, 2.0] |
+| R-learner − response | +0.0067 [−0.0017, 0.0169] | **+9.5 [2.8, 15.8]** | +1.6 [−1.2, 4.3] | +0.3 [−1.4, 2.0] |
+
+Bold: the CI excludes zero. The paired CI at the 10% budget is ± 6.4 wide where the marginal CIs of §3.1 were ± 8 to
+± 10: the pairing removes the noise the two models share. The deployed learner clears the §9 criterion on dev (the 10%
+difference excludes zero) and, as a bonus, so does its Qini difference; the 20% difference just excludes zero
+(lower bound 0.005) and the 30% one does not. The R-learner clears the 10% criterion only. This is the quantitative
+form of §3.5: uplift targeting pays where the budget is tight, and the advantage fades by 30%.
+
+### 4.2 Budget curves, raw and IPW-weighted (`scripts/policy_eval.py` → `policy_dev_visit.csv`, `budget_curve_dev.png`, `profit_curve_dev.png`)
+
+For random targeting, the response model and the deployed pair, at budgets 5–50%: the observed uplift inside the
+targeted set (treated minus control visit rate) per 1,000 contacts, raw as everywhere else in this document, and
+**IPW-weighted** with a propensity cross-fitted on dev itself (five folds, LightGBM; out-of-fold AUC 0.510, 1st–99th
+percentile 0.84–0.89): each treated row in the targeted set weighted 1/ê, each control row 1/(1 − ê), Hájek-normalised.
+This is the correction for the imbalance found in §1.4. CIs from 200 stratified resamples of the same loop.
+
+| Budget | random raw / IPW | response raw / IPW | S-learner raw / IPW | R-learner raw / IPW | S-learner raw 95% CI |
+|---|---|---|---|---|---|
+| 5% | 5.5 / 2.2 | 72.1 / 75.3 | 91.4 / 89.2 | 97.3 / 94.7 | [78.9, 103.7] |
+| 10% | 9.2 / 6.5 | 53.5 / 52.5 | 66.6 / 61.9 | 63.0 / 58.8 | [58.0, 74.0] |
+| 15% | 9.9 / 7.2 | 42.8 / 39.1 | 49.2 / 44.2 | 47.5 / 42.1 | [41.9, 55.0] |
+| 20% | 10.4 / 7.7 | 38.4 / 33.5 | 41.0 / 35.7 | 40.0 / 34.1 | [35.5, 46.0] |
+| 30% | 10.0 / 7.4 | 29.5 / 23.9 | 30.2 / 24.7 | 29.8 / 23.8 | [26.7, 33.9] |
+| 50% | 10.0 / 7.4 | 20.0 / 15.1 | 20.1 / 15.3 | 20.1 / 15.2 | [18.0, 22.4] |
+
+The full table, with CIs for every model and both estimators and the share of the total effect, is `policy_dev_visit.csv`.
+
+**Where raw and IPW differ by more than the CI.** Everywhere from the 20–25% budget upward, for all four models: the
+IPW number is lower by a near-constant factor of about 0.75–0.80 (random 10.4 → 7.7 at 20%; S-learner 20.1 → 15.3 at
+50%; the largest gap is 6.2 per 1,000, R-learner at 25%), while the raw CI half-width there is 2–5. At 5–10% the two
+agree within 1–5 per 1,000, inside the CI. The factor is the one §1.4 found for the ATE (0.77 vs 1.03 pp): the
+imbalance lives in the bulk of low-uplift customers, not in the high-uplift tail that a tight budget selects. So the
+correction changes the *level* of every broad-budget number by about a quarter and changes no ranking and no
+decision at the budgets that matter; both versions stay in the tables, raw as primary, IPW as the honest second line.
+
+**Profit under the stated economics** (`config.Economics`: 2.00 of value per incremental visit, 0.10 per contact —
+assumptions, not measurements; only their ratio matters). One more contact pays only while the targeted set still
+yields more than contact_cost / value = **50 incremental visits per 1,000 contacts**, so the curves above say when to
+stop. Cumulative profit per 1,000 customers of the population, from the 1%-step grid (point estimates):
+
+| Model | Profit-maximising budget, raw (IPW) | Profit there, per 1,000 customers | Break-even budget, raw (IPW) |
+|---|---|---|---|
+| random | never profitable | −1.0 at 1% | — |
+| response model | 5% (5%) | 2.2 (2.5) | 11% (11%) |
+| S-learner | 8% (4%) | 4.8 (4.3) | 14% (12%) |
+| R-learner | 5% (4%) | 4.7 (4.5) | 14% (12%) |
+
+Under these assumptions the campaign should contact roughly the top 5–8% and never more than 12–14%; at its best
+budget the deployed learner earns about twice the response model's best profit (4.8 vs 2.2 per 1,000 customers) and
+the whole gain comes from the tight-budget region of §4.1. At 20% every policy already loses money, random loses at
+every budget, and a value-to-cost ratio of 50 instead of 20 would move every break-even past 50% — the README states
+the assumption next to the number.
+
+### 4.3 Segments with the S-learner (`policy_dev_visit.json` → `segments`, `worked_customers_dev_visit.md`)
+
+Segments from the model's own P(visit | control) = f(x, 0) and τ̂: persuadable τ̂ > δ; sleeping dog τ̂ < −δ; otherwise
+sure thing if P(visit | control) ≥ p0_high else lost cause, with δ = 0.25 × ATE = 0.26 pp and p0_high = 2 × the control
+visit rate = 7.64%. Inside each segment the observed uplift (treated minus control rate) is what the randomised
+assignment allows us to check.
+
+| Segment | Share | Customers | Control rows | Mean τ̂ | Mean P(visit \| control) | Observed uplift [95% CI] |
+|---|---|---|---|---|---|---|
+| persuadable | 25.3% | 202,574 | 29,482 | +2.68 pp | 13.6% | **+3.46 pp [3.04, 3.88]** |
+| sure thing | 0.9% | 6,872 | 1,065 | +0.05 pp | 35.1% | +0.70 pp [−2.40, 3.81] |
+| lost cause | 73.6% | 589,015 | 89,213 | +0.04 pp | 0.3% | +0.07 pp [0.03, 0.11] |
+| sleeping dog | 0.2% | 1,537 | 239 | −0.53 pp | 48.3% | +0.08 pp [−6.79, 6.95] |
+| τ̂ < 0 (any size) | 6.5% | 52,162 | 7,818 | −0.02 pp | 3.3% | −0.02 pp [−0.44, 0.39] |
+
+- **Sleeping dogs are not demonstrated.** The 1,537 customers the model calls sleeping dogs show +0.08 pp with a CI
+  of ± 7 pp (239 control rows), and the much larger τ̂ < 0 group shows −0.02 pp [−0.44, 0.39]: zero, not negative.
+  Nothing in this data says that the ad hurts anyone; the label is the model's, and the product will show it with
+  that caveat. The decision for those customers is the same either way: skip, because there is nothing to gain.
+- **Sure things barely exist here** (0.9%): the customers most likely to visit anyway are also the ones the ad moves
+  most (persuadables have a 13.6% base rate and a 3.5 pp effect), which is the proportional-effect structure that
+  made the response model competitive in §3.5.
+- **Lost causes are three quarters of the population** with a real but tiny effect, +0.07 pp [0.03, 0.11]: a contact
+  there buys 0.0014 of value for 0.10 of cost. The persuadable quarter carries the campaign: its 3.46 pp effect is
+  3.3 × the ATE and, as in §3.4, its top decile carries 6.7 pp.
+- Calibration inside the segments is fair: the persuadables' mean τ̂ (2.68 pp) under-states their observed 3.46 pp,
+  the same under-prediction at the top as in §3.4.
+
+**Five worked customers** (one per segment plus one on the 20% threshold; features are Criteo's anonymous f0–f11, so a
+row shows what the service returns, not why — the stated limitation, with the interpretable Hillstrom bonus as the
+remedy). Scores from the S-learner; treat/skip at the 20% budget, threshold τ̂ ≥ 0.46 pp.
+
+| Role | P(visit \| control) | P(visit \| treated) | τ̂ | Segment | Decision at 20% | Where it sits |
+|---|---|---|---|---|---|---|
+| persuadable | 33.3% | 59.0% | +25.7 pp | persuadable | treat | the highest τ̂ on dev (f6 = −21.0, f9 = 37.4) |
+| sure thing | 82.8% | 82.9% | +0.1 pp | sure thing | skip | visits anyway; the response model would rank it first |
+| lost cause | 0.04% | 0.04% | 0.0 pp | lost cause | skip | the lowest base rate on dev |
+| sleeping dog | 51.3% | 49.4% | −1.8 pp | sleeping dog | skip | the most negative τ̂; the label is unverified (above) |
+| borderline | 8.0% | 8.4% | +0.46 pp | persuadable | treat | exactly on the 20% threshold; skip at any tighter budget |
+
+The full feature rows are in `worked_customers_dev_visit.md`.
+
+### 4.4 Placebo (`scripts/placebo.py` → `placebo_visit_s_learner.json`, `placebo_visit_r_learner.json`)
+
+Treatment labels shuffled within train, each learner refitted with its deployed settings, scored on the real dev
+labels, 200 resamples:
+
+| Learner | Placebo Qini [95% CI] | Contains 0 |
+|---|---|---|
+| S-learner (31 leaves, 300 rounds) | −0.0022 [−0.0136, 0.0095] | yes |
+| R-learner (τ: 7 leaves, min_data_in_leaf 20,000, 300 rounds) | +0.0008 [−0.0127, 0.0126] | yes |
+
+A pipeline that could manufacture a Qini from nothing would show it here; the real Qini of 0.094 is seven placebo
+standard errors away from zero.
+
+### 4.5 The `conversion` outcome (`dev-summary-conversion.md`, `paired_dev_conversion.md`, `deciles_dev_conversion_*.csv`)
+
+The same pipeline on the rare outcome, with the settings chosen on `visit` (the spec's rule: tune once on the primary
+outcome): S-learner, R-learner and the response model trained on `conversion`, evaluated on dev with 200 resamples.
+Dev ATE 0.122 pp [0.094, 0.150]; random targeting = 1.22 incremental conversions per 1,000 contacts.
+
+| Model | Normalised Qini [95% CI] | Conversions / 1,000 at 10% [CI] | at 20% [CI] | at 30% [CI] | Share of total at 10% |
+|---|---|---|---|---|---|
+| S-learner | 0.202 [0.140, 0.268] | 8.7 [5.8, 11.5] | 5.4 [3.8, 6.6] | 3.8 [2.8, 4.7] | 71% |
+| response model | 0.197 [0.134, 0.255] | 8.8 [5.9, 11.8] | 5.2 [3.7, 6.6] | 3.7 [2.7, 4.6] | 72% |
+| R-learner | 0.167 [0.110, 0.224] | 7.7 [5.1, 10.4] | 4.7 [3.3, 6.0] | 3.5 [2.6, 4.4] | 63% |
+
+Paired differences, same resamples:
+
+| Difference | Qini | / 1,000 at 10% | at 20% | at 30% |
+|---|---|---|---|---|
+| S-learner − response | +0.005 [−0.005, 0.019] | −0.1 [−0.7, 0.4] | +0.2 [−0.0, 0.4] | +0.1 [−0.0, 0.2] |
+| R-learner − response | **−0.031 [−0.053, −0.000]** | **−1.1 [−2.0, −0.1]** | **−0.5 [−0.9, −0.0]** | −0.2 [−0.4, 0.1] |
+
+The S-learner's top decile carries +0.87 pp [0.59, 1.15], seven times the ATE and 71% of the whole effect; its bottom
+decile is −0.01 pp [−0.04, 0.02]. The R-learner's bottom decile holds +0.08 pp [0.01, 0.15] of *positive* observed
+uplift: at a 0.3% base rate the pseudo-outcome regression misranks a converting group to the bottom, which is what
+costs it a paired 1.1 conversions per 1,000 at the 10% budget against the response model.
+
+**The honest sentence.** On conversion the CIs are the result: the effect is 1.2 conversions per 1,000 contacts, the
+best policy's 20% number is 5.4 with a CI of ± 1.4 (a quarter of the estimate), the paired difference between the
+S-learner and the response model is ± 0.5 per 1,000 around zero at every budget, and the R-learner is measurably
+worse. Nothing on this outcome separates uplift targeting from response targeting; the ranking *is* real (every Qini
+CI is far from zero, and it is more concentrated than for visits because conversions are rarer), but which model
+produces it cannot be told apart on 800,000 customers, and the README will say so instead of printing 0.202 against
+0.197 as if it meant something.
+
+### 4.6 What carries to M4
+
+- **Deployed pair:** S-learner deployed, R-learner as the cross-check (rule in CLAUDE.md §9). On conversion the
+  same S-learner bundle is the one to serve; the R-learner is not.
+- **The decision the product makes:** under the stated economics, contact the top 5–8% by predicted uplift and stop
+  by 12–14%; at a 20% budget the campaign loses money with any model. The budget slider in M5 shows profit next to
+  incremental visits so the user sees both.
+- **Segments:** labels from the S-learner's own P(visit | control) and τ̂ with δ = ATE / 4 and p0_high = 2 × control
+  rate; the sleeping-dog label is shown with the caveat that the data does not confirm harm (§4.3).
+- **The single test run (M4):** `evaluate.py --split test --final` for visit and conversion, `paired.py --split test
+  --final` with the pairs above and budgets 10 / 20 / 30%, `policy_eval.py --split test --final` with the dev
+  budgets, `placebo.py` on test for the deployed learner, the segment table on test; every dev number above gets its
+  test counterpart once, and the date goes into CLAUDE.md §0 and DESIGN.md §5.
+- **Criterion on test:** the paired CI of S-learner − response at the 10% budget excludes zero; the 20%, 30% and
+  Qini differences and the IPW versions are reported whatever they are; the placebo CI contains zero.
 
 ## 5. Test results (M4) — run once on _(date)_
 

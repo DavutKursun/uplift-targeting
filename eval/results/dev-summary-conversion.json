@@ -1,0 +1,258 @@
+{
+  "split": "dev",
+  "outcome": "conversion",
+  "run_date": "2026-10-28",
+  "n": 799998,
+  "n_resamples": 200,
+  "models_dir": "/Users/davutkursun/Downloads/uplift-targeting/models",
+  "ate": {
+    "n_treated": 679999,
+    "n_control": 119999,
+    "rate_treated": 0.003143,
+    "rate_control": 0.001925,
+    "ate": 0.001218,
+    "ci_low": 0.000936,
+    "ci_high": 0.001499,
+    "relative_uplift": 0.6325,
+    "se": 0.0001436
+  },
+  "random_per_1000": 1.22,
+  "metrics": [
+    {
+      "model": "s_learner",
+      "qini": 0.202,
+      "qini_ci_low": 0.1402,
+      "qini_ci_high": 0.2675,
+      "auuc": 0.000503,
+      "per_1000_at_10pct": 8.68,
+      "per_1000_at_20pct": 5.38,
+      "per_1000_at_30pct": 3.79,
+      "per_1000_at_10pct_ci": "[5.8, 11.5]",
+      "per_1000_at_20pct_ci": "[3.8, 6.6]",
+      "per_1000_at_30pct_ci": "[2.8, 4.7]",
+      "share_of_total_at_10pct": 0.713,
+      "share_of_total_at_20pct": 0.8833,
+      "share_of_total_at_30pct": 0.933
+    },
+    {
+      "model": "response",
+      "qini": 0.1974,
+      "qini_ci_low": 0.1341,
+      "qini_ci_high": 0.2549,
+      "auuc": 0.000492,
+      "per_1000_at_10pct": 8.81,
+      "per_1000_at_20pct": 5.2,
+      "per_1000_at_30pct": 3.71,
+      "per_1000_at_10pct_ci": "[5.9, 11.8]",
+      "per_1000_at_20pct_ci": "[3.7, 6.6]",
+      "per_1000_at_30pct_ci": "[2.7, 4.6]",
+      "share_of_total_at_10pct": 0.7236,
+      "share_of_total_at_20pct": 0.8534,
+      "share_of_total_at_30pct": 0.9139
+    },
+    {
+      "model": "r_learner",
+      "qini": 0.1666,
+      "qini_ci_low": 0.1096,
+      "qini_ci_high": 0.2241,
+      "auuc": 0.000415,
+      "per_1000_at_10pct": 7.73,
+      "per_1000_at_20pct": 4.7,
+      "per_1000_at_30pct": 3.54,
+      "per_1000_at_10pct_ci": "[5.1, 10.4]",
+      "per_1000_at_20pct_ci": "[3.3, 6.0]",
+      "per_1000_at_30pct_ci": "[2.6, 4.4]",
+      "share_of_total_at_10pct": 0.6348,
+      "share_of_total_at_20pct": 0.7721,
+      "share_of_total_at_30pct": 0.8728
+    }
+  ],
+  "deciles": {
+    "r_learner": [
+      {
+        "bin": 1,
+        "n": 79999,
+        "uplift_observed": 0.00773,
+        "uplift_predicted": 0.00859
+      },
+      {
+        "bin": 2,
+        "n": 80000,
+        "uplift_observed": 0.00073,
+        "uplift_predicted": 0.00055
+      },
+      {
+        "bin": 3,
+        "n": 80000,
+        "uplift_observed": 0.00068,
+        "uplift_predicted": 0.00021
+      },
+      {
+        "bin": 4,
+        "n": 80000,
+        "uplift_observed": -0.00013,
+        "uplift_predicted": 7e-05
+      },
+      {
+        "bin": 5,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 6,
+        "n": 79999,
+        "uplift_observed": 0.00024,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 7,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 8,
+        "n": 80000,
+        "uplift_observed": 7e-05,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 9,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 10,
+        "n": 80000,
+        "uplift_observed": 0.00076,
+        "uplift_predicted": -0.00065
+      }
+    ],
+    "response": [
+      {
+        "bin": 1,
+        "n": 79999,
+        "uplift_observed": 0.00881,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 2,
+        "n": 80000,
+        "uplift_observed": 0.00058,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 3,
+        "n": 80000,
+        "uplift_observed": 0.00027,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 4,
+        "n": 80000,
+        "uplift_observed": 0.00024,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 5,
+        "n": 80000,
+        "uplift_observed": -5e-05,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 6,
+        "n": 79999,
+        "uplift_observed": 0.00014,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 7,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 8,
+        "n": 80000,
+        "uplift_observed": 9e-05,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 9,
+        "n": 80000,
+        "uplift_observed": 4e-05,
+        "uplift_predicted": null
+      },
+      {
+        "bin": 10,
+        "n": 80000,
+        "uplift_observed": 4e-05,
+        "uplift_predicted": null
+      }
+    ],
+    "s_learner": [
+      {
+        "bin": 1,
+        "n": 79999,
+        "uplift_observed": 0.00868,
+        "uplift_predicted": 0.00789
+      },
+      {
+        "bin": 2,
+        "n": 80000,
+        "uplift_observed": 0.00091,
+        "uplift_predicted": 0.00049
+      },
+      {
+        "bin": 3,
+        "n": 80000,
+        "uplift_observed": 0.00011,
+        "uplift_predicted": 0.00013
+      },
+      {
+        "bin": 4,
+        "n": 80000,
+        "uplift_observed": 0.00018,
+        "uplift_predicted": 5e-05
+      },
+      {
+        "bin": 5,
+        "n": 80000,
+        "uplift_observed": 1e-05,
+        "uplift_predicted": 3e-05
+      },
+      {
+        "bin": 6,
+        "n": 79999,
+        "uplift_observed": 8e-05,
+        "uplift_predicted": 1e-05
+      },
+      {
+        "bin": 7,
+        "n": 80000,
+        "uplift_observed": 0.00012,
+        "uplift_predicted": 1e-05
+      },
+      {
+        "bin": 8,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": 1e-05
+      },
+      {
+        "bin": 9,
+        "n": 80000,
+        "uplift_observed": 6e-05,
+        "uplift_predicted": 0.0
+      },
+      {
+        "bin": 10,
+        "n": 80000,
+        "uplift_observed": -0.00012,
+        "uplift_predicted": 0.0
+      }
+    ]
+  }
+}

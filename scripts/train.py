@@ -26,25 +26,13 @@ sys.path.insert(0, str(ROOT))
 
 from uplift.config import MODELS, PRIMARY_OUTCOME, RESULTS, SPLITS
 from uplift.data import load_split, xty
-from uplift.learners import LEARNERS, Settings, categorical_columns, fast_settings, fit_learner
+from uplift.learners import LEARNERS, Settings, categorical_columns, fit_learner, settings_from
 from uplift.metrics import auuc, policy_value, qini_coefficient
 
 
 def build_settings(a, X) -> Settings:
-    settings = fast_settings() if a.fast else Settings()
-    for raw, targets in ((a.params, ("cls_params", "reg_params")), (a.cls_params, ("cls_params",)), (a.reg_params, ("reg_params",))):
-        if raw:
-            over = json.loads(raw)
-            for name in targets:
-                getattr(settings, name).update(over)
-    if a.rounds:
-        settings.rounds = a.rounds
-    if a.tau_rounds:
-        settings.tau_rounds = a.tau_rounds
-    settings.estimate_propensity = a.estimate_propensity
-    if a.categorical:
-        settings.categorical = categorical_columns(X, a.categorical)
-    return settings
+    return settings_from(a.params, a.cls_params, a.reg_params, a.rounds, a.tau_rounds, a.estimate_propensity,
+                         categorical_columns(X, a.categorical) if a.categorical else (), fast=a.fast)
 
 
 def main(argv=None) -> int:
