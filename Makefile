@@ -1,4 +1,4 @@
-.PHONY: setup setup-dev test splits ate synth train eval-dev tune plots-dev policy-dev paired-dev placebo smoke app
+.PHONY: setup setup-dev test splits ate synth train eval-dev tune plots-dev policy-dev paired-dev placebo smoke serving app bench api-test
 
 PY ?= python
 
@@ -30,5 +30,11 @@ placebo:
 	$(PY) scripts/placebo.py
 smoke:            ## the whole chain on a synthetic export (no real data)
 	$(PY) -m pytest -q tests/test_scripts.py
+serving:          ## the dev policy grid, 2,000 anonymous dev customers and the version file under models/serving/
+	$(PY) scripts/export_serving.py
 app:
 	$(PY) -m uvicorn app:app --port 7860
+bench:            ## /score p50 / p95 in-process and over HTTP, batch-1,000 throughput
+	$(PY) scripts/bench_latency.py
+api-test:
+	$(PY) -m pytest -q tests/test_app.py

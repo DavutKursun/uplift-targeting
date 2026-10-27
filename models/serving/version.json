@@ -1,0 +1,9 @@
+{
+  "version": "0e104dc",
+  "built": "2026-10-28",
+  "deployed": {
+    "visit": "s_learner-visit.joblib",
+    "cross_check": "r_learner-visit.joblib"
+  },
+  "note": "thresholds and policy numbers come from the dev split; the test split was used once for the reported results"
+}

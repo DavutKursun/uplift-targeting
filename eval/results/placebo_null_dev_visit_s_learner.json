@@ -1,0 +1,80 @@
+{
+  "learner": "s_learner",
+  "outcome": "visit",
+  "split": "dev",
+  "n": 799998,
+  "settings": {
+    "rounds": 300,
+    "tau_rounds": 300,
+    "cls_params": {
+      "num_leaves": 31,
+      "min_data_in_leaf": 2000
+    },
+    "reg_params": {
+      "num_leaves": 7,
+      "min_data_in_leaf": 5000
+    }
+  },
+  "n_shuffles": 5,
+  "shuffles": [
+    {
+      "shuffle_seed": 1,
+      "qini_placebo": {
+        "point": 0.02684483521463985,
+        "ci_low": 0.018974902263660748,
+        "ci_high": 0.03720273508860501,
+        "n_resamples": 100
+      },
+      "contains_zero": false
+    },
+    {
+      "shuffle_seed": 2,
+      "qini_placebo": {
+        "point": -0.035583784487028765,
+        "ci_low": -0.04650722863501661,
+        "ci_high": -0.026150694681646457,
+        "n_resamples": 100
+      },
+      "contains_zero": false
+    },
+    {
+      "shuffle_seed": 3,
+      "qini_placebo": {
+        "point": -0.05108530759362227,
+        "ci_low": -0.06367052297467612,
+        "ci_high": -0.04120146841309072,
+        "n_resamples": 100
+      },
+      "contains_zero": false
+    },
+    {
+      "shuffle_seed": 4,
+      "qini_placebo": {
+        "point": -0.07317855490493562,
+        "ci_low": -0.08817050017122481,
+        "ci_high": -0.0618928394636138,
+        "n_resamples": 100
+      },
+      "contains_zero": false
+    },
+    {
+      "shuffle_seed": 5,
+      "qini_placebo": {
+        "point": -0.032237187439287183,
+        "ci_low": -0.04592112985015979,
+        "ci_high": -0.02024519222381409,
+        "n_resamples": 100
+      },
+      "contains_zero": false
+    }
+  ],
+  "spread": {
+    "min": -0.07318,
+    "max": 0.02684,
+    "mean": -0.03305,
+    "sd": 0.03718
+  },
+  "rule": "the null is the spread of Qini over the shuffles; a real model's Qini must lie outside it; each shuffle's bootstrap CI is reported, not used",
+  "compare_qini": 0.0853,
+  "outside_spread": true
+}

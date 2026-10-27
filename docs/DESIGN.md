@@ -635,11 +635,14 @@ would produce a positive Qini), and the test CI excludes zero. The bootstrap CI 
 the placebo ranking held fixed; it does not cover the randomness of the shuffle itself, which is the larger source of
 variance here, because the true uplift is so concentrated (the top decile holds 60% of it) that any chance split on
 the shuffled treatment flag inside a high-base-rate region moves a large block of true uplift to the top or the
-bottom of the ranking. The right null is the spread of placebo Qini over several shuffles, scored on dev: five further shuffles of the S-learner on dev (seeds 1–5, `eval/results/placebo_null/`) score +0.027, −0.036, −0.051, −0.073 and −0.032, so with seed 7 the six-shuffle null spans **−0.073 to +0.027** (SD 0.036), five times wider than any single shuffle's customer-bootstrap CI; the test placebo of −0.0155 sits inside it.
-The deployed model's test Qini, 0.0853, lies far outside that spread. Proposed replacement for the placebo line of §9,
-for authorisation: "the deployed learner's Qini lies outside the range of at least five placebo shuffles scored on
-dev, and the single test-split placebo has |Qini| no larger than the widest of them". The criterion as written was
-met on dev and not on test; this document records both.
+bottom of the ranking. The right null is the spread of placebo Qini over independent shuffles, and that is now the criterion (CLAUDE.md §9,
+changed at M5 with authorisation): `scripts/placebo.py --shuffles 5` fits five independent shuffles of the train labels
+with the deployed settings and scores each on dev (`eval/results/placebo_null_dev_visit_s_learner.json`): Qini +0.027, -0.036, -0.051, -0.073, -0.032,
+a null spanning **-0.073 to +0.027** (SD 0.037), five times wider than any single shuffle's
+customer-bootstrap CI. **Verdict: the deployed model's test Qini, 0.0853, lies outside that spread; the criterion is met.**
+The single-shuffle CIs stay in the table above as reported numbers; the test placebo's −0.0155 sits inside the null,
+as a placebo should. The earlier wording, "the placebo Qini CI contains 0", was met on dev and not on test, and this
+document records both.
 
 ### 5.7 Qini and per-1,000 — `conversion` (dev 799,998 rows → test 800,004 rows, 200 resamples)
 
@@ -702,7 +705,7 @@ by 0.0001, under its "best by Qini" rule; the test split was not read again).
 | Synthetic: every uplift learner Spearman ≥ 0.6 with the truth, the response model not | met in M1 (0.66–0.88; −0.08) |
 | Paired bootstrap, best uplift − response, incremental visits per 1,000 at 10%: CI excludes 0 | **met: +13.9 [6.5, 21.6]** |
 | Differences at 20%, 30% and in Qini, reported whatever they are | −0.4 [−2.5, 2.1]; −0.9 [−2.2, 0.2]; −0.0001 [−0.0053, 0.0067] |
-| Placebo Qini CI contains 0 | **not met on test** (−0.0155 [−0.0287, −0.0024]); met on dev (−0.0022 [−0.0136, 0.0095]); negative, not leakage; see §5.6 |
+| Placebo: the deployed model's test Qini lies outside the spread of five placebo shuffles scored on dev (criterion changed at M5, authorised) | **met**: null -0.073 to +0.027, test Qini 0.0853. The earlier single-shuffle "CI contains 0" was met on dev (−0.0022 [−0.0136, 0.0095]) and not on test (−0.0155 [−0.0287, −0.0024]); see §5.6 |
 | Decile table: top ≥ 2 × ATE, bottom ≤ ATE | met (6.1 × ATE; +0.22 pp) |
 | Policy at 20%: per-1,000 for uplift vs response vs random with CIs, share of the total effect | 38.9 [33.7, 43.5] vs 39.2 [33.6, 44.0] vs 9.9 [7.4, 12.6]; shares 75% / 76% / 20% |
 | `/score` p50 < 30 ms; pytest green without data; CI green; README on one screen | M5; 21 tests green; CI green; README rewritten |

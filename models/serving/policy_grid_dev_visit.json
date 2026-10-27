@@ -1,0 +1,2554 @@
+{
+ "split": "dev",
+ "outcome": "visit",
+ "n": 799998,
+ "built": "2026-10-28",
+ "ate": {
+  "n_treated": 679999,
+  "n_control": 119999,
+  "rate_treated": 0.048543,
+  "rate_control": 0.0382,
+  "ate": 0.010342,
+  "ci_low": 0.009144,
+  "ci_high": 0.011541,
+  "relative_uplift": 0.2707,
+  "se": 0.0006116
+ },
+ "random_per_1000": 10.34,
+ "economics": {
+  "value_per_visit": 2.0,
+  "contact_cost": 0.1,
+  "marginal_threshold_per_1000": 50.0,
+  "stated_as": "assumptions"
+ },
+ "segments": {
+  "delta": 0.0025855,
+  "p0_high": 0.0764,
+  "names": [
+   "persuadable",
+   "sure_thing",
+   "lost_cause",
+   "sleeping_dog"
+  ]
+ },
+ "budgets": [
+  0.01,
+  0.02,
+  0.03,
+  0.04,
+  0.05,
+  0.06,
+  0.07,
+  0.08,
+  0.09,
+  0.1,
+  0.11,
+  0.12,
+  0.13,
+  0.14,
+  0.15,
+  0.16,
+  0.17,
+  0.18,
+  0.19,
+  0.2,
+  0.21,
+  0.22,
+  0.23,
+  0.24,
+  0.25,
+  0.26,
+  0.27,
+  0.28,
+  0.29,
+  0.3,
+  0.31,
+  0.32,
+  0.33,
+  0.34,
+  0.35,
+  0.36,
+  0.37,
+  0.38,
+  0.39,
+  0.4,
+  0.41,
+  0.42,
+  0.43,
+  0.44,
+  0.45,
+  0.46,
+  0.47,
+  0.48,
+  0.49,
+  0.5
+ ],
+ "models": {
+  "s_learner": {
+   "bundle": "s_learner-visit.joblib",
+   "grid": [
+    {
+     "budget": 0.01,
+     "threshold": 0.1222185,
+     "n_targeted": 8000,
+     "per_1000": 156.099,
+     "ipw_per_1000": 155.399,
+     "share_of_total": 0.1509,
+     "profit_per_1000_contacts": 212.197,
+     "ipw_profit_per_1000_contacts": 210.798,
+     "profit_per_1000_customers": 2.122,
+     "ipw_profit_per_1000_customers": 2.108,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.02,
+     "threshold": 0.0881575,
+     "n_targeted": 16000,
+     "per_1000": 128.275,
+     "ipw_per_1000": 127.906,
+     "share_of_total": 0.2481,
+     "profit_per_1000_contacts": 156.551,
+     "ipw_profit_per_1000_contacts": 155.812,
+     "profit_per_1000_customers": 3.131,
+     "ipw_profit_per_1000_customers": 3.1162,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.03,
+     "threshold": 0.0667633,
+     "n_targeted": 24000,
+     "per_1000": 122.785,
+     "ipw_per_1000": 121.043,
+     "share_of_total": 0.3562,
+     "profit_per_1000_contacts": 145.57,
+     "ipw_profit_per_1000_contacts": 142.086,
+     "profit_per_1000_customers": 4.3671,
+     "ipw_profit_per_1000_customers": 4.2626,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.04,
+     "threshold": 0.0521853,
+     "n_targeted": 32000,
+     "per_1000": 105.447,
+     "ipw_per_1000": 103.411,
+     "share_of_total": 0.4078,
+     "profit_per_1000_contacts": 110.894,
+     "ipw_profit_per_1000_contacts": 106.821,
+     "profit_per_1000_customers": 4.4358,
+     "ipw_profit_per_1000_customers": 4.2729,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.05,
+     "threshold": 0.0418307,
+     "n_targeted": 40000,
+     "per_1000": 91.444,
+     "ipw_per_1000": 89.224,
+     "share_of_total": 0.4421,
+     "profit_per_1000_contacts": 82.887,
+     "ipw_profit_per_1000_contacts": 78.447,
+     "profit_per_1000_customers": 4.1444,
+     "ipw_profit_per_1000_customers": 3.9224,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.06,
+     "threshold": 0.0339871,
+     "n_targeted": 48000,
+     "per_1000": 86.433,
+     "ipw_per_1000": 83.221,
+     "share_of_total": 0.5014,
+     "profit_per_1000_contacts": 72.866,
+     "ipw_profit_per_1000_contacts": 66.442,
+     "profit_per_1000_customers": 4.372,
+     "ipw_profit_per_1000_customers": 3.9865,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.07,
+     "threshold": 0.0274933,
+     "n_targeted": 56000,
+     "per_1000": 81.421,
+     "ipw_per_1000": 77.601,
+     "share_of_total": 0.5511,
+     "profit_per_1000_contacts": 62.843,
+     "ipw_profit_per_1000_contacts": 55.203,
+     "profit_per_1000_customers": 4.399,
+     "ipw_profit_per_1000_customers": 3.8642,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.08,
+     "threshold": 0.0224329,
+     "n_targeted": 64000,
+     "per_1000": 79.884,
+     "ipw_per_1000": 75.28,
+     "share_of_total": 0.6179,
+     "profit_per_1000_contacts": 59.768,
+     "ipw_profit_per_1000_contacts": 50.56,
+     "profit_per_1000_customers": 4.7814,
+     "ipw_profit_per_1000_customers": 4.0448,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.09,
+     "threshold": 0.0185716,
+     "n_targeted": 72000,
+     "per_1000": 71.472,
+     "ipw_per_1000": 66.862,
+     "share_of_total": 0.622,
+     "profit_per_1000_contacts": 42.944,
+     "ipw_profit_per_1000_contacts": 33.725,
+     "profit_per_1000_customers": 3.865,
+     "ipw_profit_per_1000_customers": 3.0353,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.1,
+     "threshold": 0.0159899,
+     "n_targeted": 80000,
+     "per_1000": 66.554,
+     "ipw_per_1000": 61.87,
+     "share_of_total": 0.6435,
+     "profit_per_1000_contacts": 33.108,
+     "ipw_profit_per_1000_contacts": 23.741,
+     "profit_per_1000_customers": 3.3108,
+     "ipw_profit_per_1000_customers": 2.3741,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.11,
+     "threshold": 0.013795,
+     "n_targeted": 88000,
+     "per_1000": 62.667,
+     "ipw_per_1000": 57.931,
+     "share_of_total": 0.6665,
+     "profit_per_1000_contacts": 25.334,
+     "ipw_profit_per_1000_contacts": 15.861,
+     "profit_per_1000_customers": 2.7867,
+     "ipw_profit_per_1000_customers": 1.7447,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.12,
+     "threshold": 0.0119137,
+     "n_targeted": 96000,
+     "per_1000": 56.429,
+     "ipw_per_1000": 51.699,
+     "share_of_total": 0.6547,
+     "profit_per_1000_contacts": 12.857,
+     "ipw_profit_per_1000_contacts": 3.398,
+     "profit_per_1000_customers": 1.5429,
+     "ipw_profit_per_1000_customers": 0.4077,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.13,
+     "threshold": 0.0103608,
+     "n_targeted": 104000,
+     "per_1000": 53.525,
+     "ipw_per_1000": 48.702,
+     "share_of_total": 0.6728,
+     "profit_per_1000_contacts": 7.049,
+     "ipw_profit_per_1000_contacts": -2.596,
+     "profit_per_1000_customers": 0.9164,
+     "ipw_profit_per_1000_customers": -0.3375,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.14,
+     "threshold": 0.0090941,
+     "n_targeted": 112000,
+     "per_1000": 51.414,
+     "ipw_per_1000": 46.471,
+     "share_of_total": 0.696,
+     "profit_per_1000_contacts": 2.828,
+     "ipw_profit_per_1000_contacts": -7.059,
+     "profit_per_1000_customers": 0.3959,
+     "ipw_profit_per_1000_customers": -0.9883,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.15,
+     "threshold": 0.0080934,
+     "n_targeted": 120000,
+     "per_1000": 49.179,
+     "ipw_per_1000": 44.156,
+     "share_of_total": 0.7133,
+     "profit_per_1000_contacts": -1.641,
+     "ipw_profit_per_1000_contacts": -11.688,
+     "profit_per_1000_customers": -0.2462,
+     "ipw_profit_per_1000_customers": -1.7531,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.16,
+     "threshold": 0.0072018,
+     "n_targeted": 128000,
+     "per_1000": 47.086,
+     "ipw_per_1000": 42.058,
+     "share_of_total": 0.7284,
+     "profit_per_1000_contacts": -5.827,
+     "ipw_profit_per_1000_contacts": -15.883,
+     "profit_per_1000_customers": -0.9324,
+     "ipw_profit_per_1000_customers": -2.5414,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.17,
+     "threshold": 0.0064477,
+     "n_targeted": 136000,
+     "per_1000": 45.022,
+     "ipw_per_1000": 39.923,
+     "share_of_total": 0.74,
+     "profit_per_1000_contacts": -9.956,
+     "ipw_profit_per_1000_contacts": -20.155,
+     "profit_per_1000_customers": -1.6926,
+     "ipw_profit_per_1000_customers": -3.4263,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.18,
+     "threshold": 0.005724,
+     "n_targeted": 144000,
+     "per_1000": 43.891,
+     "ipw_per_1000": 38.713,
+     "share_of_total": 0.7639,
+     "profit_per_1000_contacts": -12.218,
+     "ipw_profit_per_1000_contacts": -22.575,
+     "profit_per_1000_customers": -2.1993,
+     "ipw_profit_per_1000_customers": -4.0634,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.19,
+     "threshold": 0.0051289,
+     "n_targeted": 152000,
+     "per_1000": 42.912,
+     "ipw_per_1000": 37.667,
+     "share_of_total": 0.7883,
+     "profit_per_1000_contacts": -14.176,
+     "ipw_profit_per_1000_contacts": -24.666,
+     "profit_per_1000_customers": -2.6934,
+     "ipw_profit_per_1000_customers": -4.6866,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.2,
+     "threshold": 0.0045846,
+     "n_targeted": 160000,
+     "per_1000": 40.967,
+     "ipw_per_1000": 35.715,
+     "share_of_total": 0.7922,
+     "profit_per_1000_contacts": -18.066,
+     "ipw_profit_per_1000_contacts": -28.57,
+     "profit_per_1000_customers": -3.6133,
+     "ipw_profit_per_1000_customers": -5.714,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.21,
+     "threshold": 0.0041431,
+     "n_targeted": 168000,
+     "per_1000": 39.569,
+     "ipw_per_1000": 34.277,
+     "share_of_total": 0.8034,
+     "profit_per_1000_contacts": -20.863,
+     "ipw_profit_per_1000_contacts": -31.446,
+     "profit_per_1000_customers": -4.3812,
+     "ipw_profit_per_1000_customers": -6.6037,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.22,
+     "threshold": 0.0037422,
+     "n_targeted": 176000,
+     "per_1000": 37.892,
+     "ipw_per_1000": 32.564,
+     "share_of_total": 0.806,
+     "profit_per_1000_contacts": -24.216,
+     "ipw_profit_per_1000_contacts": -34.871,
+     "profit_per_1000_customers": -5.3275,
+     "ipw_profit_per_1000_customers": -7.6717,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.23,
+     "threshold": 0.0033826,
+     "n_targeted": 184000,
+     "per_1000": 36.738,
+     "ipw_per_1000": 31.311,
+     "share_of_total": 0.817,
+     "profit_per_1000_contacts": -26.524,
+     "ipw_profit_per_1000_contacts": -37.378,
+     "profit_per_1000_customers": -6.1005,
+     "ipw_profit_per_1000_customers": -8.597,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.24,
+     "threshold": 0.0030278,
+     "n_targeted": 192000,
+     "per_1000": 35.919,
+     "ipw_per_1000": 30.426,
+     "share_of_total": 0.8335,
+     "profit_per_1000_contacts": -28.161,
+     "ipw_profit_per_1000_contacts": -39.148,
+     "profit_per_1000_customers": -6.7587,
+     "ipw_profit_per_1000_customers": -9.3956,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.25,
+     "threshold": 0.0026859,
+     "n_targeted": 200000,
+     "per_1000": 34.795,
+     "ipw_per_1000": 29.264,
+     "share_of_total": 0.8411,
+     "profit_per_1000_contacts": -30.41,
+     "ipw_profit_per_1000_contacts": -41.472,
+     "profit_per_1000_customers": -7.6025,
+     "ipw_profit_per_1000_customers": -10.368,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.26,
+     "threshold": 0.002391,
+     "n_targeted": 207999,
+     "per_1000": 33.657,
+     "ipw_per_1000": 28.132,
+     "share_of_total": 0.8461,
+     "profit_per_1000_contacts": -32.686,
+     "ipw_profit_per_1000_contacts": -43.736,
+     "profit_per_1000_customers": -8.4984,
+     "ipw_profit_per_1000_customers": -11.3714,
+     "segments_among_targeted": {
+      "persuadable": 0.9739,
+      "sure_thing": 0.0019,
+      "lost_cause": 0.0242,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.27,
+     "threshold": 0.0021758,
+     "n_targeted": 215999,
+     "per_1000": 32.691,
+     "ipw_per_1000": 27.142,
+     "share_of_total": 0.8534,
+     "profit_per_1000_contacts": -34.617,
+     "ipw_profit_per_1000_contacts": -45.717,
+     "profit_per_1000_customers": -9.3467,
+     "ipw_profit_per_1000_customers": -12.3435,
+     "segments_among_targeted": {
+      "persuadable": 0.9378,
+      "sure_thing": 0.0036,
+      "lost_cause": 0.0586,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.28,
+     "threshold": 0.0019726,
+     "n_targeted": 223999,
+     "per_1000": 31.552,
+     "ipw_per_1000": 25.999,
+     "share_of_total": 0.8542,
+     "profit_per_1000_contacts": -36.896,
+     "ipw_profit_per_1000_contacts": -48.002,
+     "profit_per_1000_customers": -10.3308,
+     "ipw_profit_per_1000_customers": -13.4405,
+     "segments_among_targeted": {
+      "persuadable": 0.9043,
+      "sure_thing": 0.005,
+      "lost_cause": 0.0906,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.29,
+     "threshold": 0.0017973,
+     "n_targeted": 231999,
+     "per_1000": 30.687,
+     "ipw_per_1000": 25.137,
+     "share_of_total": 0.8605,
+     "profit_per_1000_contacts": -38.626,
+     "ipw_profit_per_1000_contacts": -49.727,
+     "profit_per_1000_customers": -11.2017,
+     "ipw_profit_per_1000_customers": -14.4208,
+     "segments_among_targeted": {
+      "persuadable": 0.8732,
+      "sure_thing": 0.0062,
+      "lost_cause": 0.1206,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.3,
+     "threshold": 0.0016493,
+     "n_targeted": 239999,
+     "per_1000": 30.212,
+     "ipw_per_1000": 24.66,
+     "share_of_total": 0.8763,
+     "profit_per_1000_contacts": -39.576,
+     "ipw_profit_per_1000_contacts": -50.68,
+     "profit_per_1000_customers": -11.8728,
+     "ipw_profit_per_1000_customers": -15.204,
+     "segments_among_targeted": {
+      "persuadable": 0.8441,
+      "sure_thing": 0.0071,
+      "lost_cause": 0.1489,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.31,
+     "threshold": 0.0015036,
+     "n_targeted": 247999,
+     "per_1000": 29.716,
+     "ipw_per_1000": 24.167,
+     "share_of_total": 0.8907,
+     "profit_per_1000_contacts": -40.568,
+     "ipw_profit_per_1000_contacts": -51.665,
+     "profit_per_1000_customers": -12.5759,
+     "ipw_profit_per_1000_customers": -16.0163,
+     "segments_among_targeted": {
+      "persuadable": 0.8167,
+      "sure_thing": 0.0079,
+      "lost_cause": 0.1755,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.32,
+     "threshold": 0.0013476,
+     "n_targeted": 255999,
+     "per_1000": 28.906,
+     "ipw_per_1000": 23.388,
+     "share_of_total": 0.8944,
+     "profit_per_1000_contacts": -42.188,
+     "ipw_profit_per_1000_contacts": -53.223,
+     "profit_per_1000_customers": -13.5,
+     "ipw_profit_per_1000_customers": -17.0314,
+     "segments_among_targeted": {
+      "persuadable": 0.7913,
+      "sure_thing": 0.0088,
+      "lost_cause": 0.1999,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.33,
+     "threshold": 0.0012441,
+     "n_targeted": 263999,
+     "per_1000": 28.337,
+     "ipw_per_1000": 22.835,
+     "share_of_total": 0.9042,
+     "profit_per_1000_contacts": -43.327,
+     "ipw_profit_per_1000_contacts": -54.329,
+     "profit_per_1000_customers": -14.2977,
+     "ipw_profit_per_1000_customers": -17.9286,
+     "segments_among_targeted": {
+      "persuadable": 0.7673,
+      "sure_thing": 0.0091,
+      "lost_cause": 0.2236,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.34,
+     "threshold": 0.0011561,
+     "n_targeted": 271999,
+     "per_1000": 27.659,
+     "ipw_per_1000": 22.185,
+     "share_of_total": 0.9093,
+     "profit_per_1000_contacts": -44.682,
+     "ipw_profit_per_1000_contacts": -55.629,
+     "profit_per_1000_customers": -15.1918,
+     "ipw_profit_per_1000_customers": -18.914,
+     "segments_among_targeted": {
+      "persuadable": 0.7448,
+      "sure_thing": 0.0095,
+      "lost_cause": 0.2457,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.35,
+     "threshold": 0.0010654,
+     "n_targeted": 279999,
+     "per_1000": 26.847,
+     "ipw_per_1000": 21.412,
+     "share_of_total": 0.9085,
+     "profit_per_1000_contacts": -46.306,
+     "ipw_profit_per_1000_contacts": -57.176,
+     "profit_per_1000_customers": -16.207,
+     "ipw_profit_per_1000_customers": -20.0115,
+     "segments_among_targeted": {
+      "persuadable": 0.7234,
+      "sure_thing": 0.0097,
+      "lost_cause": 0.2669,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.36,
+     "threshold": 0.0009943,
+     "n_targeted": 287999,
+     "per_1000": 26.272,
+     "ipw_per_1000": 20.869,
+     "share_of_total": 0.9145,
+     "profit_per_1000_contacts": -47.456,
+     "ipw_profit_per_1000_contacts": -58.263,
+     "profit_per_1000_customers": -17.0843,
+     "ipw_profit_per_1000_customers": -20.9746,
+     "segments_among_targeted": {
+      "persuadable": 0.7032,
+      "sure_thing": 0.0098,
+      "lost_cause": 0.287,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.37,
+     "threshold": 0.0009202,
+     "n_targeted": 295999,
+     "per_1000": 25.573,
+     "ipw_per_1000": 20.212,
+     "share_of_total": 0.9149,
+     "profit_per_1000_contacts": -48.854,
+     "ipw_profit_per_1000_contacts": -59.576,
+     "profit_per_1000_customers": -18.0761,
+     "ipw_profit_per_1000_customers": -22.0431,
+     "segments_among_targeted": {
+      "persuadable": 0.684,
+      "sure_thing": 0.0099,
+      "lost_cause": 0.3061,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.38,
+     "threshold": 0.0008806,
+     "n_targeted": 303999,
+     "per_1000": 25.297,
+     "ipw_per_1000": 19.955,
+     "share_of_total": 0.9295,
+     "profit_per_1000_contacts": -49.405,
+     "ipw_profit_per_1000_contacts": -60.089,
+     "profit_per_1000_customers": -18.774,
+     "ipw_profit_per_1000_customers": -22.8338,
+     "segments_among_targeted": {
+      "persuadable": 0.6662,
+      "sure_thing": 0.0099,
+      "lost_cause": 0.3239,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.39,
+     "threshold": 0.0008459,
+     "n_targeted": 311999,
+     "per_1000": 24.85,
+     "ipw_per_1000": 19.547,
+     "share_of_total": 0.9371,
+     "profit_per_1000_contacts": -50.299,
+     "ipw_profit_per_1000_contacts": -60.907,
+     "profit_per_1000_customers": -19.6167,
+     "ipw_profit_per_1000_customers": -23.7537,
+     "segments_among_targeted": {
+      "persuadable": 0.6483,
+      "sure_thing": 0.0098,
+      "lost_cause": 0.3419,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.4,
+     "threshold": 0.0008063,
+     "n_targeted": 319999,
+     "per_1000": 24.406,
+     "ipw_per_1000": 19.138,
+     "share_of_total": 0.9439,
+     "profit_per_1000_contacts": -51.188,
+     "ipw_profit_per_1000_contacts": -61.725,
+     "profit_per_1000_customers": -20.4752,
+     "ipw_profit_per_1000_customers": -24.6899,
+     "segments_among_targeted": {
+      "persuadable": 0.633,
+      "sure_thing": 0.0098,
+      "lost_cause": 0.3572,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.41,
+     "threshold": 0.000773,
+     "n_targeted": 327999,
+     "per_1000": 23.823,
+     "ipw_per_1000": 18.594,
+     "share_of_total": 0.9444,
+     "profit_per_1000_contacts": -52.355,
+     "ipw_profit_per_1000_contacts": -62.812,
+     "profit_per_1000_customers": -21.4654,
+     "ipw_profit_per_1000_customers": -25.753,
+     "segments_among_targeted": {
+      "persuadable": 0.6169,
+      "sure_thing": 0.0097,
+      "lost_cause": 0.3734,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.42,
+     "threshold": 0.0007403,
+     "n_targeted": 335999,
+     "per_1000": 23.418,
+     "ipw_per_1000": 18.234,
+     "share_of_total": 0.951,
+     "profit_per_1000_contacts": -53.163,
+     "ipw_profit_per_1000_contacts": -63.533,
+     "profit_per_1000_customers": -22.3286,
+     "ipw_profit_per_1000_customers": -26.6837,
+     "segments_among_targeted": {
+      "persuadable": 0.6019,
+      "sure_thing": 0.0096,
+      "lost_cause": 0.3886,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.43,
+     "threshold": 0.0007257,
+     "n_targeted": 343999,
+     "per_1000": 22.782,
+     "ipw_per_1000": 17.639,
+     "share_of_total": 0.9472,
+     "profit_per_1000_contacts": -54.436,
+     "ipw_profit_per_1000_contacts": -64.722,
+     "profit_per_1000_customers": -23.4073,
+     "ipw_profit_per_1000_customers": -27.8305,
+     "segments_among_targeted": {
+      "persuadable": 0.5888,
+      "sure_thing": 0.0095,
+      "lost_cause": 0.4017,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.44,
+     "threshold": 0.000689,
+     "n_targeted": 351999,
+     "per_1000": 22.32,
+     "ipw_per_1000": 17.228,
+     "share_of_total": 0.9495,
+     "profit_per_1000_contacts": -55.361,
+     "ipw_profit_per_1000_contacts": -65.545,
+     "profit_per_1000_customers": -24.3588,
+     "ipw_profit_per_1000_customers": -28.8396,
+     "segments_among_targeted": {
+      "persuadable": 0.5754,
+      "sure_thing": 0.0094,
+      "lost_cause": 0.4153,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.45,
+     "threshold": 0.0006433,
+     "n_targeted": 359999,
+     "per_1000": 21.907,
+     "ipw_per_1000": 16.87,
+     "share_of_total": 0.9532,
+     "profit_per_1000_contacts": -56.186,
+     "ipw_profit_per_1000_contacts": -66.261,
+     "profit_per_1000_customers": -25.2835,
+     "ipw_profit_per_1000_customers": -29.8173,
+     "segments_among_targeted": {
+      "persuadable": 0.5623,
+      "sure_thing": 0.0094,
+      "lost_cause": 0.4282,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.46,
+     "threshold": 0.0006093,
+     "n_targeted": 367999,
+     "per_1000": 21.597,
+     "ipw_per_1000": 16.615,
+     "share_of_total": 0.9606,
+     "profit_per_1000_contacts": -56.806,
+     "ipw_profit_per_1000_contacts": -66.771,
+     "profit_per_1000_customers": -26.1309,
+     "ipw_profit_per_1000_customers": -30.7145,
+     "segments_among_targeted": {
+      "persuadable": 0.5503,
+      "sure_thing": 0.0094,
+      "lost_cause": 0.4404,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.47,
+     "threshold": 0.0005847,
+     "n_targeted": 375999,
+     "per_1000": 21.285,
+     "ipw_per_1000": 16.349,
+     "share_of_total": 0.9673,
+     "profit_per_1000_contacts": -57.431,
+     "ipw_profit_per_1000_contacts": -67.301,
+     "profit_per_1000_customers": -26.9925,
+     "ipw_profit_per_1000_customers": -31.6315,
+     "segments_among_targeted": {
+      "persuadable": 0.5386,
+      "sure_thing": 0.0093,
+      "lost_cause": 0.4521,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.48,
+     "threshold": 0.0005487,
+     "n_targeted": 383999,
+     "per_1000": 20.908,
+     "ipw_per_1000": 16.033,
+     "share_of_total": 0.9704,
+     "profit_per_1000_contacts": -58.184,
+     "ipw_profit_per_1000_contacts": -67.935,
+     "profit_per_1000_customers": -27.9284,
+     "ipw_profit_per_1000_customers": -32.6088,
+     "segments_among_targeted": {
+      "persuadable": 0.527,
+      "sure_thing": 0.0092,
+      "lost_cause": 0.4638,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.49,
+     "threshold": 0.0005177,
+     "n_targeted": 391999,
+     "per_1000": 20.512,
+     "ipw_per_1000": 15.683,
+     "share_of_total": 0.9718,
+     "profit_per_1000_contacts": -58.976,
+     "ipw_profit_per_1000_contacts": -68.634,
+     "profit_per_1000_customers": -28.8983,
+     "ipw_profit_per_1000_customers": -33.6307,
+     "segments_among_targeted": {
+      "persuadable": 0.5168,
+      "sure_thing": 0.0092,
+      "lost_cause": 0.4741,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.5,
+     "threshold": 0.0004851,
+     "n_targeted": 399999,
+     "per_1000": 20.117,
+     "ipw_per_1000": 15.346,
+     "share_of_total": 0.9725,
+     "profit_per_1000_contacts": -59.766,
+     "ipw_profit_per_1000_contacts": -69.309,
+     "profit_per_1000_customers": -29.8832,
+     "ipw_profit_per_1000_customers": -34.6545,
+     "segments_among_targeted": {
+      "persuadable": 0.5061,
+      "sure_thing": 0.0091,
+      "lost_cause": 0.4848,
+      "sleeping_dog": 0.0
+     }
+    }
+   ],
+   "breakeven": {
+    "marginal_threshold_per_1000": 50.0,
+    "grid_step": 0.01,
+    "raw": {
+     "profit_max_budget": 0.08,
+     "max_profit_per_1000_customers": 4.781,
+     "breakeven_budget": 0.14,
+     "per_1000_at_profit_max": 79.88
+    },
+    "ipw": {
+     "profit_max_budget": 0.04,
+     "max_profit_per_1000_customers": 4.273,
+     "breakeven_budget": 0.12,
+     "per_1000_at_profit_max": 103.41
+    }
+   },
+   "score_meaning": "estimated uplift in visit probability"
+  },
+  "r_learner": {
+   "bundle": "r_learner-visit.joblib",
+   "grid": [
+    {
+     "budget": 0.01,
+     "threshold": 0.1333994,
+     "n_targeted": 8000,
+     "per_1000": 153.071,
+     "ipw_per_1000": 157.933,
+     "share_of_total": 0.148,
+     "profit_per_1000_contacts": 206.142,
+     "ipw_profit_per_1000_contacts": 215.865,
+     "profit_per_1000_customers": 2.0614,
+     "ipw_profit_per_1000_customers": 2.1587,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.02,
+     "threshold": 0.092273,
+     "n_targeted": 16000,
+     "per_1000": 122.692,
+     "ipw_per_1000": 126.498,
+     "share_of_total": 0.2373,
+     "profit_per_1000_contacts": 145.384,
+     "ipw_profit_per_1000_contacts": 152.995,
+     "profit_per_1000_customers": 2.9077,
+     "ipw_profit_per_1000_customers": 3.0599,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.03,
+     "threshold": 0.0675027,
+     "n_targeted": 24000,
+     "per_1000": 112.603,
+     "ipw_per_1000": 112.825,
+     "share_of_total": 0.3266,
+     "profit_per_1000_contacts": 125.206,
+     "ipw_profit_per_1000_contacts": 125.651,
+     "profit_per_1000_customers": 3.7562,
+     "ipw_profit_per_1000_customers": 3.7695,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.04,
+     "threshold": 0.0523437,
+     "n_targeted": 32000,
+     "per_1000": 108.879,
+     "ipw_per_1000": 106.702,
+     "share_of_total": 0.4211,
+     "profit_per_1000_contacts": 117.757,
+     "ipw_profit_per_1000_contacts": 113.403,
+     "profit_per_1000_customers": 4.7103,
+     "ipw_profit_per_1000_customers": 4.5361,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.05,
+     "threshold": 0.0424964,
+     "n_targeted": 40000,
+     "per_1000": 97.264,
+     "ipw_per_1000": 94.69,
+     "share_of_total": 0.4702,
+     "profit_per_1000_contacts": 94.529,
+     "ipw_profit_per_1000_contacts": 89.38,
+     "profit_per_1000_customers": 4.7265,
+     "ipw_profit_per_1000_customers": 4.469,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.06,
+     "threshold": 0.0354529,
+     "n_targeted": 48000,
+     "per_1000": 85.423,
+     "ipw_per_1000": 82.873,
+     "share_of_total": 0.4956,
+     "profit_per_1000_contacts": 70.846,
+     "ipw_profit_per_1000_contacts": 65.746,
+     "profit_per_1000_customers": 4.2508,
+     "ipw_profit_per_1000_customers": 3.9448,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.07,
+     "threshold": 0.0300022,
+     "n_targeted": 56000,
+     "per_1000": 78.603,
+     "ipw_per_1000": 75.613,
+     "share_of_total": 0.532,
+     "profit_per_1000_contacts": 57.206,
+     "ipw_profit_per_1000_contacts": 51.227,
+     "profit_per_1000_customers": 4.0044,
+     "ipw_profit_per_1000_customers": 3.5859,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.08,
+     "threshold": 0.0255424,
+     "n_targeted": 64000,
+     "per_1000": 71.256,
+     "ipw_per_1000": 67.75,
+     "share_of_total": 0.5512,
+     "profit_per_1000_contacts": 42.511,
+     "ipw_profit_per_1000_contacts": 35.5,
+     "profit_per_1000_customers": 3.4009,
+     "ipw_profit_per_1000_customers": 2.84,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.09,
+     "threshold": 0.0217806,
+     "n_targeted": 72000,
+     "per_1000": 67.096,
+     "ipw_per_1000": 63.351,
+     "share_of_total": 0.5839,
+     "profit_per_1000_contacts": 34.192,
+     "ipw_profit_per_1000_contacts": 26.703,
+     "profit_per_1000_customers": 3.0773,
+     "ipw_profit_per_1000_customers": 2.4033,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.1,
+     "threshold": 0.0187704,
+     "n_targeted": 80000,
+     "per_1000": 63.024,
+     "ipw_per_1000": 58.831,
+     "share_of_total": 0.6094,
+     "profit_per_1000_contacts": 26.048,
+     "ipw_profit_per_1000_contacts": 17.662,
+     "profit_per_1000_customers": 2.6048,
+     "ipw_profit_per_1000_customers": 1.7662,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.11,
+     "threshold": 0.0164676,
+     "n_targeted": 88000,
+     "per_1000": 58.064,
+     "ipw_per_1000": 53.509,
+     "share_of_total": 0.6176,
+     "profit_per_1000_contacts": 16.127,
+     "ipw_profit_per_1000_contacts": 7.018,
+     "profit_per_1000_customers": 1.774,
+     "ipw_profit_per_1000_customers": 0.772,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.12,
+     "threshold": 0.0144399,
+     "n_targeted": 96000,
+     "per_1000": 55.958,
+     "ipw_per_1000": 50.969,
+     "share_of_total": 0.6493,
+     "profit_per_1000_contacts": 11.917,
+     "ipw_profit_per_1000_contacts": 1.938,
+     "profit_per_1000_customers": 1.43,
+     "ipw_profit_per_1000_customers": 0.2325,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.13,
+     "threshold": 0.0127964,
+     "n_targeted": 104000,
+     "per_1000": 52.29,
+     "ipw_per_1000": 47.062,
+     "share_of_total": 0.6573,
+     "profit_per_1000_contacts": 4.58,
+     "ipw_profit_per_1000_contacts": -5.877,
+     "profit_per_1000_customers": 0.5954,
+     "ipw_profit_per_1000_customers": -0.764,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.14,
+     "threshold": 0.0112027,
+     "n_targeted": 112000,
+     "per_1000": 50.636,
+     "ipw_per_1000": 45.32,
+     "share_of_total": 0.6854,
+     "profit_per_1000_contacts": 1.272,
+     "ipw_profit_per_1000_contacts": -9.359,
+     "profit_per_1000_customers": 0.1781,
+     "ipw_profit_per_1000_customers": -1.3103,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.15,
+     "threshold": 0.0097465,
+     "n_targeted": 120000,
+     "per_1000": 47.478,
+     "ipw_per_1000": 42.127,
+     "share_of_total": 0.6886,
+     "profit_per_1000_contacts": -5.044,
+     "ipw_profit_per_1000_contacts": -15.747,
+     "profit_per_1000_customers": -0.7566,
+     "ipw_profit_per_1000_customers": -2.362,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.16,
+     "threshold": 0.0087234,
+     "n_targeted": 128000,
+     "per_1000": 45.751,
+     "ipw_per_1000": 40.192,
+     "share_of_total": 0.7078,
+     "profit_per_1000_contacts": -8.499,
+     "ipw_profit_per_1000_contacts": -19.615,
+     "profit_per_1000_customers": -1.3598,
+     "ipw_profit_per_1000_customers": -3.1384,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.17,
+     "threshold": 0.0077732,
+     "n_targeted": 136000,
+     "per_1000": 44.121,
+     "ipw_per_1000": 38.457,
+     "share_of_total": 0.7252,
+     "profit_per_1000_contacts": -11.758,
+     "ipw_profit_per_1000_contacts": -23.086,
+     "profit_per_1000_customers": -1.9989,
+     "ipw_profit_per_1000_customers": -3.9246,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.18,
+     "threshold": 0.0068408,
+     "n_targeted": 144000,
+     "per_1000": 41.96,
+     "ipw_per_1000": 36.242,
+     "share_of_total": 0.7303,
+     "profit_per_1000_contacts": -16.081,
+     "ipw_profit_per_1000_contacts": -27.516,
+     "profit_per_1000_customers": -2.8946,
+     "ipw_profit_per_1000_customers": -4.9529,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.19,
+     "threshold": 0.0060795,
+     "n_targeted": 152000,
+     "per_1000": 40.814,
+     "ipw_per_1000": 35.015,
+     "share_of_total": 0.7498,
+     "profit_per_1000_contacts": -18.372,
+     "ipw_profit_per_1000_contacts": -29.97,
+     "profit_per_1000_customers": -3.4906,
+     "ipw_profit_per_1000_customers": -5.6942,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.2,
+     "threshold": 0.005508,
+     "n_targeted": 160000,
+     "per_1000": 39.998,
+     "ipw_per_1000": 34.119,
+     "share_of_total": 0.7735,
+     "profit_per_1000_contacts": -20.005,
+     "ipw_profit_per_1000_contacts": -31.762,
+     "profit_per_1000_customers": -4.0009,
+     "ipw_profit_per_1000_customers": -6.3525,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.21,
+     "threshold": 0.0048742,
+     "n_targeted": 168000,
+     "per_1000": 38.985,
+     "ipw_per_1000": 33.087,
+     "share_of_total": 0.7916,
+     "profit_per_1000_contacts": -22.03,
+     "ipw_profit_per_1000_contacts": -33.826,
+     "profit_per_1000_customers": -4.6263,
+     "ipw_profit_per_1000_customers": -7.1034,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.22,
+     "threshold": 0.0045172,
+     "n_targeted": 176000,
+     "per_1000": 37.928,
+     "ipw_per_1000": 31.966,
+     "share_of_total": 0.8068,
+     "profit_per_1000_contacts": -24.144,
+     "ipw_profit_per_1000_contacts": -36.068,
+     "profit_per_1000_customers": -5.3117,
+     "ipw_profit_per_1000_customers": -7.935,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.23,
+     "threshold": 0.0041761,
+     "n_targeted": 184000,
+     "per_1000": 37.038,
+     "ipw_per_1000": 30.952,
+     "share_of_total": 0.8237,
+     "profit_per_1000_contacts": -25.925,
+     "ipw_profit_per_1000_contacts": -38.095,
+     "profit_per_1000_customers": -5.9627,
+     "ipw_profit_per_1000_customers": -8.762,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.24,
+     "threshold": 0.0037998,
+     "n_targeted": 192000,
+     "per_1000": 35.463,
+     "ipw_per_1000": 29.345,
+     "share_of_total": 0.8229,
+     "profit_per_1000_contacts": -29.074,
+     "ipw_profit_per_1000_contacts": -41.31,
+     "profit_per_1000_customers": -6.9779,
+     "ipw_profit_per_1000_customers": -9.9143,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.25,
+     "threshold": 0.0035617,
+     "n_targeted": 200000,
+     "per_1000": 34.223,
+     "ipw_per_1000": 28.054,
+     "share_of_total": 0.8273,
+     "profit_per_1000_contacts": -31.554,
+     "ipw_profit_per_1000_contacts": -43.892,
+     "profit_per_1000_customers": -7.8885,
+     "ipw_profit_per_1000_customers": -10.9731,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.26,
+     "threshold": 0.0032583,
+     "n_targeted": 207999,
+     "per_1000": 33.054,
+     "ipw_per_1000": 26.895,
+     "share_of_total": 0.831,
+     "profit_per_1000_contacts": -33.892,
+     "ipw_profit_per_1000_contacts": -46.211,
+     "profit_per_1000_customers": -8.8119,
+     "ipw_profit_per_1000_customers": -12.0148,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.27,
+     "threshold": 0.0029955,
+     "n_targeted": 215999,
+     "per_1000": 32.274,
+     "ipw_per_1000": 26.157,
+     "share_of_total": 0.8425,
+     "profit_per_1000_contacts": -35.453,
+     "ipw_profit_per_1000_contacts": -47.686,
+     "profit_per_1000_customers": -9.5722,
+     "ipw_profit_per_1000_customers": -12.8753,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.28,
+     "threshold": 0.0027257,
+     "n_targeted": 223999,
+     "per_1000": 31.343,
+     "ipw_per_1000": 25.32,
+     "share_of_total": 0.8485,
+     "profit_per_1000_contacts": -37.315,
+     "ipw_profit_per_1000_contacts": -49.359,
+     "profit_per_1000_customers": -10.4482,
+     "ipw_profit_per_1000_customers": -13.8205,
+     "segments_among_targeted": {
+      "persuadable": 1.0,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.29,
+     "threshold": 0.0025814,
+     "n_targeted": 231999,
+     "per_1000": 30.49,
+     "ipw_per_1000": 24.47,
+     "share_of_total": 0.8549,
+     "profit_per_1000_contacts": -39.02,
+     "ipw_profit_per_1000_contacts": -51.061,
+     "profit_per_1000_customers": -11.3159,
+     "ipw_profit_per_1000_customers": -14.8076,
+     "segments_among_targeted": {
+      "persuadable": 0.9795,
+      "sure_thing": 0.0,
+      "lost_cause": 0.0205,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.3,
+     "threshold": 0.0022826,
+     "n_targeted": 239999,
+     "per_1000": 29.754,
+     "ipw_per_1000": 23.788,
+     "share_of_total": 0.8631,
+     "profit_per_1000_contacts": -40.492,
+     "ipw_profit_per_1000_contacts": -52.425,
+     "profit_per_1000_customers": -12.1477,
+     "ipw_profit_per_1000_customers": -15.7275,
+     "segments_among_targeted": {
+      "persuadable": 0.9539,
+      "sure_thing": 0.0012,
+      "lost_cause": 0.0449,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.31,
+     "threshold": 0.0021137,
+     "n_targeted": 247999,
+     "per_1000": 29.096,
+     "ipw_per_1000": 23.214,
+     "share_of_total": 0.8721,
+     "profit_per_1000_contacts": -41.808,
+     "ipw_profit_per_1000_contacts": -53.572,
+     "profit_per_1000_customers": -12.9603,
+     "ipw_profit_per_1000_customers": -16.6074,
+     "segments_among_targeted": {
+      "persuadable": 0.9234,
+      "sure_thing": 0.0017,
+      "lost_cause": 0.0748,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.32,
+     "threshold": 0.0019454,
+     "n_targeted": 255999,
+     "per_1000": 28.465,
+     "ipw_per_1000": 22.641,
+     "share_of_total": 0.8807,
+     "profit_per_1000_contacts": -43.069,
+     "ipw_profit_per_1000_contacts": -54.719,
+     "profit_per_1000_customers": -13.7821,
+     "ipw_profit_per_1000_customers": -17.51,
+     "segments_among_targeted": {
+      "persuadable": 0.8851,
+      "sure_thing": 0.0024,
+      "lost_cause": 0.1125,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.33,
+     "threshold": 0.0017537,
+     "n_targeted": 263999,
+     "per_1000": 27.771,
+     "ipw_per_1000": 22.009,
+     "share_of_total": 0.8861,
+     "profit_per_1000_contacts": -44.458,
+     "ipw_profit_per_1000_contacts": -55.982,
+     "profit_per_1000_customers": -14.6711,
+     "ipw_profit_per_1000_customers": -18.4741,
+     "segments_among_targeted": {
+      "persuadable": 0.8633,
+      "sure_thing": 0.0036,
+      "lost_cause": 0.1332,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.34,
+     "threshold": 0.0016381,
+     "n_targeted": 271999,
+     "per_1000": 27.158,
+     "ipw_per_1000": 21.464,
+     "share_of_total": 0.8928,
+     "profit_per_1000_contacts": -45.685,
+     "ipw_profit_per_1000_contacts": -57.071,
+     "profit_per_1000_customers": -15.5327,
+     "ipw_profit_per_1000_customers": -19.4042,
+     "segments_among_targeted": {
+      "persuadable": 0.8307,
+      "sure_thing": 0.0038,
+      "lost_cause": 0.1655,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.35,
+     "threshold": 0.0016314,
+     "n_targeted": 279999,
+     "per_1000": 26.564,
+     "ipw_per_1000": 20.909,
+     "share_of_total": 0.8989,
+     "profit_per_1000_contacts": -46.873,
+     "ipw_profit_per_1000_contacts": -58.183,
+     "profit_per_1000_customers": -16.4054,
+     "ipw_profit_per_1000_customers": -20.3639,
+     "segments_among_targeted": {
+      "persuadable": 0.8148,
+      "sure_thing": 0.0038,
+      "lost_cause": 0.1815,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.36,
+     "threshold": 0.0015245,
+     "n_targeted": 287999,
+     "per_1000": 26.057,
+     "ipw_per_1000": 20.436,
+     "share_of_total": 0.907,
+     "profit_per_1000_contacts": -47.885,
+     "ipw_profit_per_1000_contacts": -59.127,
+     "profit_per_1000_customers": -17.2387,
+     "ipw_profit_per_1000_customers": -21.2859,
+     "segments_among_targeted": {
+      "persuadable": 0.7893,
+      "sure_thing": 0.0038,
+      "lost_cause": 0.2069,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.37,
+     "threshold": 0.0014144,
+     "n_targeted": 295999,
+     "per_1000": 25.473,
+     "ipw_per_1000": 19.923,
+     "share_of_total": 0.9113,
+     "profit_per_1000_contacts": -49.055,
+     "ipw_profit_per_1000_contacts": -60.154,
+     "profit_per_1000_customers": -18.1503,
+     "ipw_profit_per_1000_customers": -22.2571,
+     "segments_among_targeted": {
+      "persuadable": 0.7727,
+      "sure_thing": 0.004,
+      "lost_cause": 0.2232,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.38,
+     "threshold": 0.001041,
+     "n_targeted": 303999,
+     "per_1000": 24.782,
+     "ipw_per_1000": 19.319,
+     "share_of_total": 0.9105,
+     "profit_per_1000_contacts": -50.436,
+     "ipw_profit_per_1000_contacts": -61.361,
+     "profit_per_1000_customers": -19.1656,
+     "ipw_profit_per_1000_customers": -23.3172,
+     "segments_among_targeted": {
+      "persuadable": 0.7523,
+      "sure_thing": 0.0051,
+      "lost_cause": 0.2425,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.39,
+     "threshold": 0.0008395,
+     "n_targeted": 311999,
+     "per_1000": 24.233,
+     "ipw_per_1000": 18.839,
+     "share_of_total": 0.9138,
+     "profit_per_1000_contacts": -51.533,
+     "ipw_profit_per_1000_contacts": -62.323,
+     "profit_per_1000_customers": -20.0979,
+     "ipw_profit_per_1000_customers": -24.3059,
+     "segments_among_targeted": {
+      "persuadable": 0.7254,
+      "sure_thing": 0.0055,
+      "lost_cause": 0.2691,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.4,
+     "threshold": 0.0008002,
+     "n_targeted": 319999,
+     "per_1000": 23.905,
+     "ipw_per_1000": 18.536,
+     "share_of_total": 0.9245,
+     "profit_per_1000_contacts": -52.19,
+     "ipw_profit_per_1000_contacts": -62.928,
+     "profit_per_1000_customers": -20.8761,
+     "ipw_profit_per_1000_customers": -25.1712,
+     "segments_among_targeted": {
+      "persuadable": 0.7122,
+      "sure_thing": 0.0055,
+      "lost_cause": 0.2823,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.41,
+     "threshold": 0.0007322,
+     "n_targeted": 327999,
+     "per_1000": 23.439,
+     "ipw_per_1000": 18.13,
+     "share_of_total": 0.9292,
+     "profit_per_1000_contacts": -53.122,
+     "ipw_profit_per_1000_contacts": -63.74,
+     "profit_per_1000_customers": -21.78,
+     "ipw_profit_per_1000_customers": -26.1333,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.42,
+     "threshold": 0.0007322,
+     "n_targeted": 335999,
+     "per_1000": 22.982,
+     "ipw_per_1000": 17.711,
+     "share_of_total": 0.9333,
+     "profit_per_1000_contacts": -54.036,
+     "ipw_profit_per_1000_contacts": -64.577,
+     "profit_per_1000_customers": -22.6951,
+     "ipw_profit_per_1000_customers": -27.1225,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.43,
+     "threshold": 0.0007322,
+     "n_targeted": 343999,
+     "per_1000": 22.528,
+     "ipw_per_1000": 17.3,
+     "share_of_total": 0.9366,
+     "profit_per_1000_contacts": -54.944,
+     "ipw_profit_per_1000_contacts": -65.4,
+     "profit_per_1000_customers": -23.6261,
+     "ipw_profit_per_1000_customers": -28.1218,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.44,
+     "threshold": 0.0007322,
+     "n_targeted": 351999,
+     "per_1000": 22.062,
+     "ipw_per_1000": 16.879,
+     "share_of_total": 0.9386,
+     "profit_per_1000_contacts": -55.876,
+     "ipw_profit_per_1000_contacts": -66.241,
+     "profit_per_1000_customers": -24.5856,
+     "ipw_profit_per_1000_customers": -29.1462,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.45,
+     "threshold": 0.0007322,
+     "n_targeted": 359999,
+     "per_1000": 21.726,
+     "ipw_per_1000": 16.585,
+     "share_of_total": 0.9453,
+     "profit_per_1000_contacts": -56.548,
+     "ipw_profit_per_1000_contacts": -66.831,
+     "profit_per_1000_customers": -25.4465,
+     "ipw_profit_per_1000_customers": -30.0739,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.46,
+     "threshold": 0.0007322,
+     "n_targeted": 367999,
+     "per_1000": 21.373,
+     "ipw_per_1000": 16.275,
+     "share_of_total": 0.9506,
+     "profit_per_1000_contacts": -57.254,
+     "ipw_profit_per_1000_contacts": -67.449,
+     "profit_per_1000_customers": -26.337,
+     "ipw_profit_per_1000_customers": -31.0266,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.47,
+     "threshold": 0.0007322,
+     "n_targeted": 375999,
+     "per_1000": 21.072,
+     "ipw_per_1000": 16.022,
+     "share_of_total": 0.9576,
+     "profit_per_1000_contacts": -57.856,
+     "ipw_profit_per_1000_contacts": -67.955,
+     "profit_per_1000_customers": -27.1922,
+     "ipw_profit_per_1000_customers": -31.9389,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.48,
+     "threshold": 0.0007322,
+     "n_targeted": 383999,
+     "per_1000": 20.657,
+     "ipw_per_1000": 15.655,
+     "share_of_total": 0.9587,
+     "profit_per_1000_contacts": -58.685,
+     "ipw_profit_per_1000_contacts": -68.69,
+     "profit_per_1000_customers": -28.169,
+     "ipw_profit_per_1000_customers": -32.9714,
+     "segments_among_targeted": {
+      "persuadable": 0.5964,
+      "sure_thing": 0.0048,
+      "lost_cause": 0.3988,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.49,
+     "threshold": 0.0006245,
+     "n_targeted": 391999,
+     "per_1000": 20.393,
+     "ipw_per_1000": 15.443,
+     "share_of_total": 0.9662,
+     "profit_per_1000_contacts": -59.213,
+     "ipw_profit_per_1000_contacts": -69.114,
+     "profit_per_1000_customers": -29.0145,
+     "ipw_profit_per_1000_customers": -33.8658,
+     "segments_among_targeted": {
+      "persuadable": 0.5463,
+      "sure_thing": 0.0045,
+      "lost_cause": 0.4492,
+      "sleeping_dog": 0.0
+     }
+    },
+    {
+     "budget": 0.5,
+     "threshold": 0.0006245,
+     "n_targeted": 399999,
+     "per_1000": 20.098,
+     "ipw_per_1000": 15.192,
+     "share_of_total": 0.9716,
+     "profit_per_1000_contacts": -59.805,
+     "ipw_profit_per_1000_contacts": -69.615,
+     "profit_per_1000_customers": -29.9024,
+     "ipw_profit_per_1000_customers": -34.8075,
+     "segments_among_targeted": {
+      "persuadable": 0.5463,
+      "sure_thing": 0.0045,
+      "lost_cause": 0.4492,
+      "sleeping_dog": 0.0
+     }
+    }
+   ],
+   "breakeven": {
+    "marginal_threshold_per_1000": 50.0,
+    "grid_step": 0.01,
+    "raw": {
+     "profit_max_budget": 0.05,
+     "max_profit_per_1000_customers": 4.726,
+     "breakeven_budget": 0.14,
+     "per_1000_at_profit_max": 97.26
+    },
+    "ipw": {
+     "profit_max_budget": 0.04,
+     "max_profit_per_1000_customers": 4.536,
+     "breakeven_budget": 0.12,
+     "per_1000_at_profit_max": 106.7
+    }
+   },
+   "score_meaning": "estimated uplift in visit probability"
+  },
+  "response": {
+   "bundle": "response-visit.joblib",
+   "grid": [
+    {
+     "budget": 0.01,
+     "threshold": 0.6243287,
+     "n_targeted": 8000,
+     "per_1000": 74.844,
+     "ipw_per_1000": 88.52,
+     "share_of_total": 0.0724,
+     "profit_per_1000_contacts": 49.688,
+     "ipw_profit_per_1000_contacts": 77.04,
+     "profit_per_1000_customers": 0.4969,
+     "ipw_profit_per_1000_customers": 0.7704
+    },
+    {
+     "budget": 0.02,
+     "threshold": 0.5296236,
+     "n_targeted": 16000,
+     "per_1000": 76.679,
+     "ipw_per_1000": 84.892,
+     "share_of_total": 0.1483,
+     "profit_per_1000_contacts": 53.359,
+     "ipw_profit_per_1000_contacts": 69.783,
+     "profit_per_1000_customers": 1.0672,
+     "ipw_profit_per_1000_customers": 1.3957
+    },
+    {
+     "budget": 0.03,
+     "threshold": 0.4556371,
+     "n_targeted": 24000,
+     "per_1000": 77.936,
+     "ipw_per_1000": 83.937,
+     "share_of_total": 0.2261,
+     "profit_per_1000_contacts": 55.871,
+     "ipw_profit_per_1000_contacts": 67.874,
+     "profit_per_1000_customers": 1.6761,
+     "ipw_profit_per_1000_customers": 2.0362
+    },
+    {
+     "budget": 0.04,
+     "threshold": 0.3914483,
+     "n_targeted": 32000,
+     "per_1000": 74.731,
+     "ipw_per_1000": 79.29,
+     "share_of_total": 0.289,
+     "profit_per_1000_contacts": 49.462,
+     "ipw_profit_per_1000_contacts": 58.581,
+     "profit_per_1000_customers": 1.9785,
+     "ipw_profit_per_1000_customers": 2.3432
+    },
+    {
+     "budget": 0.05,
+     "threshold": 0.3317956,
+     "n_targeted": 40000,
+     "per_1000": 72.096,
+     "ipw_per_1000": 75.302,
+     "share_of_total": 0.3485,
+     "profit_per_1000_contacts": 44.191,
+     "ipw_profit_per_1000_contacts": 50.604,
+     "profit_per_1000_customers": 2.2096,
+     "ipw_profit_per_1000_customers": 2.5302
+    },
+    {
+     "budget": 0.06,
+     "threshold": 0.2796234,
+     "n_targeted": 48000,
+     "per_1000": 67.312,
+     "ipw_per_1000": 69.463,
+     "share_of_total": 0.3905,
+     "profit_per_1000_contacts": 34.625,
+     "ipw_profit_per_1000_contacts": 38.925,
+     "profit_per_1000_customers": 2.0775,
+     "ipw_profit_per_1000_customers": 2.3355
+    },
+    {
+     "budget": 0.07,
+     "threshold": 0.2346057,
+     "n_targeted": 56000,
+     "per_1000": 62.287,
+     "ipw_per_1000": 63.63,
+     "share_of_total": 0.4216,
+     "profit_per_1000_contacts": 24.573,
+     "ipw_profit_per_1000_contacts": 27.26,
+     "profit_per_1000_customers": 1.7201,
+     "ipw_profit_per_1000_customers": 1.9082
+    },
+    {
+     "budget": 0.08,
+     "threshold": 0.1965977,
+     "n_targeted": 64000,
+     "per_1000": 57.55,
+     "ipw_per_1000": 58.114,
+     "share_of_total": 0.4452,
+     "profit_per_1000_contacts": 15.1,
+     "ipw_profit_per_1000_contacts": 16.228,
+     "profit_per_1000_customers": 1.208,
+     "ipw_profit_per_1000_customers": 1.2982
+    },
+    {
+     "budget": 0.09,
+     "threshold": 0.1649643,
+     "n_targeted": 72000,
+     "per_1000": 56.519,
+     "ipw_per_1000": 56.34,
+     "share_of_total": 0.4918,
+     "profit_per_1000_contacts": 13.039,
+     "ipw_profit_per_1000_contacts": 12.681,
+     "profit_per_1000_customers": 1.1735,
+     "ipw_profit_per_1000_customers": 1.1413
+    },
+    {
+     "budget": 0.1,
+     "threshold": 0.1389811,
+     "n_targeted": 80000,
+     "per_1000": 53.514,
+     "ipw_per_1000": 52.505,
+     "share_of_total": 0.5174,
+     "profit_per_1000_contacts": 7.027,
+     "ipw_profit_per_1000_contacts": 5.011,
+     "profit_per_1000_customers": 0.7027,
+     "ipw_profit_per_1000_customers": 0.5011
+    },
+    {
+     "budget": 0.11,
+     "threshold": 0.1170385,
+     "n_targeted": 88000,
+     "per_1000": 51.775,
+     "ipw_per_1000": 50.259,
+     "share_of_total": 0.5507,
+     "profit_per_1000_contacts": 3.55,
+     "ipw_profit_per_1000_contacts": 0.518,
+     "profit_per_1000_customers": 0.3905,
+     "ipw_profit_per_1000_customers": 0.057
+    },
+    {
+     "budget": 0.12,
+     "threshold": 0.0994064,
+     "n_targeted": 96000,
+     "per_1000": 48.542,
+     "ipw_per_1000": 46.527,
+     "share_of_total": 0.5632,
+     "profit_per_1000_contacts": -2.916,
+     "ipw_profit_per_1000_contacts": -6.947,
+     "profit_per_1000_customers": -0.3499,
+     "ipw_profit_per_1000_customers": -0.8336
+    },
+    {
+     "budget": 0.13,
+     "threshold": 0.0849197,
+     "n_targeted": 104000,
+     "per_1000": 47.016,
+     "ipw_per_1000": 44.356,
+     "share_of_total": 0.591,
+     "profit_per_1000_contacts": -5.969,
+     "ipw_profit_per_1000_contacts": -11.288,
+     "profit_per_1000_customers": -0.776,
+     "ipw_profit_per_1000_customers": -1.4675
+    },
+    {
+     "budget": 0.14,
+     "threshold": 0.072668,
+     "n_targeted": 112000,
+     "per_1000": 45.387,
+     "ipw_per_1000": 42.148,
+     "share_of_total": 0.6144,
+     "profit_per_1000_contacts": -9.227,
+     "ipw_profit_per_1000_contacts": -15.704,
+     "profit_per_1000_customers": -1.2917,
+     "ipw_profit_per_1000_customers": -2.1986
+    },
+    {
+     "budget": 0.15,
+     "threshold": 0.0625663,
+     "n_targeted": 120000,
+     "per_1000": 42.771,
+     "ipw_per_1000": 39.138,
+     "share_of_total": 0.6203,
+     "profit_per_1000_contacts": -14.457,
+     "ipw_profit_per_1000_contacts": -21.724,
+     "profit_per_1000_customers": -2.1686,
+     "ipw_profit_per_1000_customers": -3.2586
+    },
+    {
+     "budget": 0.16,
+     "threshold": 0.0542003,
+     "n_targeted": 128000,
+     "per_1000": 41.529,
+     "ipw_per_1000": 37.524,
+     "share_of_total": 0.6425,
+     "profit_per_1000_contacts": -16.941,
+     "ipw_profit_per_1000_contacts": -24.952,
+     "profit_per_1000_customers": -2.7106,
+     "ipw_profit_per_1000_customers": -3.9923
+    },
+    {
+     "budget": 0.17,
+     "threshold": 0.0473717,
+     "n_targeted": 136000,
+     "per_1000": 40.535,
+     "ipw_per_1000": 36.22,
+     "share_of_total": 0.6663,
+     "profit_per_1000_contacts": -18.93,
+     "ipw_profit_per_1000_contacts": -27.559,
+     "profit_per_1000_customers": -3.218,
+     "ipw_profit_per_1000_customers": -4.6851
+    },
+    {
+     "budget": 0.18,
+     "threshold": 0.0415862,
+     "n_targeted": 144000,
+     "per_1000": 39.913,
+     "ipw_per_1000": 35.386,
+     "share_of_total": 0.6947,
+     "profit_per_1000_contacts": -20.174,
+     "ipw_profit_per_1000_contacts": -29.228,
+     "profit_per_1000_customers": -3.6313,
+     "ipw_profit_per_1000_customers": -5.261
+    },
+    {
+     "budget": 0.19,
+     "threshold": 0.037094,
+     "n_targeted": 152000,
+     "per_1000": 39.163,
+     "ipw_per_1000": 34.412,
+     "share_of_total": 0.7195,
+     "profit_per_1000_contacts": -21.673,
+     "ipw_profit_per_1000_contacts": -31.175,
+     "profit_per_1000_customers": -4.118,
+     "ipw_profit_per_1000_customers": -5.9233
+    },
+    {
+     "budget": 0.2,
+     "threshold": 0.0330693,
+     "n_targeted": 160000,
+     "per_1000": 38.362,
+     "ipw_per_1000": 33.455,
+     "share_of_total": 0.7418,
+     "profit_per_1000_contacts": -23.276,
+     "ipw_profit_per_1000_contacts": -33.091,
+     "profit_per_1000_customers": -4.6551,
+     "ipw_profit_per_1000_customers": -6.6181
+    },
+    {
+     "budget": 0.21,
+     "threshold": 0.0293206,
+     "n_targeted": 168000,
+     "per_1000": 37.614,
+     "ipw_per_1000": 32.573,
+     "share_of_total": 0.7637,
+     "profit_per_1000_contacts": -24.773,
+     "ipw_profit_per_1000_contacts": -34.854,
+     "profit_per_1000_customers": -5.2023,
+     "ipw_profit_per_1000_customers": -7.3194
+    },
+    {
+     "budget": 0.22,
+     "threshold": 0.0258987,
+     "n_targeted": 176000,
+     "per_1000": 36.478,
+     "ipw_per_1000": 31.318,
+     "share_of_total": 0.7759,
+     "profit_per_1000_contacts": -27.045,
+     "ipw_profit_per_1000_contacts": -37.364,
+     "profit_per_1000_customers": -5.9499,
+     "ipw_profit_per_1000_customers": -8.2201
+    },
+    {
+     "budget": 0.23,
+     "threshold": 0.0230259,
+     "n_targeted": 184000,
+     "per_1000": 35.662,
+     "ipw_per_1000": 30.37,
+     "share_of_total": 0.7931,
+     "profit_per_1000_contacts": -28.677,
+     "ipw_profit_per_1000_contacts": -39.259,
+     "profit_per_1000_customers": -6.5957,
+     "ipw_profit_per_1000_customers": -9.0296
+    },
+    {
+     "budget": 0.24,
+     "threshold": 0.0206056,
+     "n_targeted": 192000,
+     "per_1000": 34.614,
+     "ipw_per_1000": 29.193,
+     "share_of_total": 0.8032,
+     "profit_per_1000_contacts": -30.772,
+     "ipw_profit_per_1000_contacts": -41.614,
+     "profit_per_1000_customers": -7.3852,
+     "ipw_profit_per_1000_customers": -9.9873
+    },
+    {
+     "budget": 0.25,
+     "threshold": 0.0190808,
+     "n_targeted": 200000,
+     "per_1000": 33.476,
+     "ipw_per_1000": 27.947,
+     "share_of_total": 0.8092,
+     "profit_per_1000_contacts": -33.049,
+     "ipw_profit_per_1000_contacts": -44.105,
+     "profit_per_1000_customers": -8.2622,
+     "ipw_profit_per_1000_customers": -11.0264
+    },
+    {
+     "budget": 0.26,
+     "threshold": 0.0173412,
+     "n_targeted": 207999,
+     "per_1000": 32.515,
+     "ipw_per_1000": 26.913,
+     "share_of_total": 0.8174,
+     "profit_per_1000_contacts": -34.971,
+     "ipw_profit_per_1000_contacts": -46.173,
+     "profit_per_1000_customers": -9.0923,
+     "ipw_profit_per_1000_customers": -12.0051
+    },
+    {
+     "budget": 0.27,
+     "threshold": 0.0154913,
+     "n_targeted": 215999,
+     "per_1000": 31.841,
+     "ipw_per_1000": 26.165,
+     "share_of_total": 0.8312,
+     "profit_per_1000_contacts": -36.318,
+     "ipw_profit_per_1000_contacts": -47.671,
+     "profit_per_1000_customers": -9.8058,
+     "ipw_profit_per_1000_customers": -12.8711
+    },
+    {
+     "budget": 0.28,
+     "threshold": 0.0140379,
+     "n_targeted": 223999,
+     "per_1000": 31.013,
+     "ipw_per_1000": 25.286,
+     "share_of_total": 0.8396,
+     "profit_per_1000_contacts": -37.973,
+     "ipw_profit_per_1000_contacts": -49.428,
+     "profit_per_1000_customers": -10.6325,
+     "ipw_profit_per_1000_customers": -13.8399
+    },
+    {
+     "budget": 0.29,
+     "threshold": 0.0132399,
+     "n_targeted": 231999,
+     "per_1000": 30.257,
+     "ipw_per_1000": 24.645,
+     "share_of_total": 0.8484,
+     "profit_per_1000_contacts": -39.485,
+     "ipw_profit_per_1000_contacts": -50.71,
+     "profit_per_1000_customers": -11.4508,
+     "ipw_profit_per_1000_customers": -14.7059
+    },
+    {
+     "budget": 0.3,
+     "threshold": 0.0126015,
+     "n_targeted": 239999,
+     "per_1000": 29.488,
+     "ipw_per_1000": 23.935,
+     "share_of_total": 0.8554,
+     "profit_per_1000_contacts": -41.023,
+     "ipw_profit_per_1000_contacts": -52.13,
+     "profit_per_1000_customers": -12.3069,
+     "ipw_profit_per_1000_customers": -15.6389
+    },
+    {
+     "budget": 0.31,
+     "threshold": 0.011539,
+     "n_targeted": 247999,
+     "per_1000": 28.951,
+     "ipw_per_1000": 23.4,
+     "share_of_total": 0.8678,
+     "profit_per_1000_contacts": -42.097,
+     "ipw_profit_per_1000_contacts": -53.199,
+     "profit_per_1000_customers": -13.0501,
+     "ipw_profit_per_1000_customers": -16.4917
+    },
+    {
+     "budget": 0.32,
+     "threshold": 0.010759,
+     "n_targeted": 255999,
+     "per_1000": 28.153,
+     "ipw_per_1000": 22.658,
+     "share_of_total": 0.8711,
+     "profit_per_1000_contacts": -43.694,
+     "ipw_profit_per_1000_contacts": -54.685,
+     "profit_per_1000_customers": -13.982,
+     "ipw_profit_per_1000_customers": -17.499
+    },
+    {
+     "budget": 0.33,
+     "threshold": 0.0101934,
+     "n_targeted": 263999,
+     "per_1000": 27.426,
+     "ipw_per_1000": 21.95,
+     "share_of_total": 0.8751,
+     "profit_per_1000_contacts": -45.148,
+     "ipw_profit_per_1000_contacts": -56.1,
+     "profit_per_1000_customers": -14.8989,
+     "ipw_profit_per_1000_customers": -18.513
+    },
+    {
+     "budget": 0.34,
+     "threshold": 0.0097298,
+     "n_targeted": 271999,
+     "per_1000": 26.93,
+     "ipw_per_1000": 21.453,
+     "share_of_total": 0.8853,
+     "profit_per_1000_contacts": -46.14,
+     "ipw_profit_per_1000_contacts": -57.094,
+     "profit_per_1000_customers": -15.6874,
+     "ipw_profit_per_1000_customers": -19.4121
+    },
+    {
+     "budget": 0.35,
+     "threshold": 0.0094798,
+     "n_targeted": 279999,
+     "per_1000": 26.568,
+     "ipw_per_1000": 21.073,
+     "share_of_total": 0.8991,
+     "profit_per_1000_contacts": -46.864,
+     "ipw_profit_per_1000_contacts": -57.854,
+     "profit_per_1000_customers": -16.4023,
+     "ipw_profit_per_1000_customers": -20.2489
+    },
+    {
+     "budget": 0.36,
+     "threshold": 0.0088543,
+     "n_targeted": 287999,
+     "per_1000": 26.018,
+     "ipw_per_1000": 20.558,
+     "share_of_total": 0.9057,
+     "profit_per_1000_contacts": -47.963,
+     "ipw_profit_per_1000_contacts": -58.884,
+     "profit_per_1000_customers": -17.2668,
+     "ipw_profit_per_1000_customers": -21.1983
+    },
+    {
+     "budget": 0.37,
+     "threshold": 0.0080154,
+     "n_targeted": 295999,
+     "per_1000": 25.444,
+     "ipw_per_1000": 20.006,
+     "share_of_total": 0.9102,
+     "profit_per_1000_contacts": -49.113,
+     "ipw_profit_per_1000_contacts": -59.989,
+     "profit_per_1000_customers": -18.1717,
+     "ipw_profit_per_1000_customers": -22.1958
+    },
+    {
+     "budget": 0.38,
+     "threshold": 0.0074604,
+     "n_targeted": 303999,
+     "per_1000": 24.914,
+     "ipw_per_1000": 19.531,
+     "share_of_total": 0.9154,
+     "profit_per_1000_contacts": -50.173,
+     "ipw_profit_per_1000_contacts": -60.937,
+     "profit_per_1000_customers": -19.0656,
+     "ipw_profit_per_1000_customers": -23.1562
+    },
+    {
+     "budget": 0.39,
+     "threshold": 0.0070337,
+     "n_targeted": 311999,
+     "per_1000": 24.441,
+     "ipw_per_1000": 19.094,
+     "share_of_total": 0.9216,
+     "profit_per_1000_contacts": -51.118,
+     "ipw_profit_per_1000_contacts": -61.811,
+     "profit_per_1000_customers": -19.9358,
+     "ipw_profit_per_1000_customers": -24.1063
+    },
+    {
+     "budget": 0.4,
+     "threshold": 0.0069337,
+     "n_targeted": 319999,
+     "per_1000": 23.958,
+     "ipw_per_1000": 18.645,
+     "share_of_total": 0.9266,
+     "profit_per_1000_contacts": -52.084,
+     "ipw_profit_per_1000_contacts": -62.711,
+     "profit_per_1000_customers": -20.8337,
+     "ipw_profit_per_1000_customers": -25.0843
+    },
+    {
+     "budget": 0.41,
+     "threshold": 0.006594,
+     "n_targeted": 327999,
+     "per_1000": 23.431,
+     "ipw_per_1000": 18.153,
+     "share_of_total": 0.9289,
+     "profit_per_1000_contacts": -53.138,
+     "ipw_profit_per_1000_contacts": -63.694,
+     "profit_per_1000_customers": -21.7866,
+     "ipw_profit_per_1000_customers": -26.1147
+    },
+    {
+     "budget": 0.42,
+     "threshold": 0.0063352,
+     "n_targeted": 335999,
+     "per_1000": 22.926,
+     "ipw_per_1000": 17.71,
+     "share_of_total": 0.931,
+     "profit_per_1000_contacts": -54.149,
+     "ipw_profit_per_1000_contacts": -64.58,
+     "profit_per_1000_customers": -22.7425,
+     "ipw_profit_per_1000_customers": -27.1236
+    },
+    {
+     "budget": 0.43,
+     "threshold": 0.0061314,
+     "n_targeted": 343999,
+     "per_1000": 22.482,
+     "ipw_per_1000": 17.32,
+     "share_of_total": 0.9347,
+     "profit_per_1000_contacts": -55.035,
+     "ipw_profit_per_1000_contacts": -65.36,
+     "profit_per_1000_customers": -23.6651,
+     "ipw_profit_per_1000_customers": -28.1049
+    },
+    {
+     "budget": 0.44,
+     "threshold": 0.0058801,
+     "n_targeted": 351999,
+     "per_1000": 21.937,
+     "ipw_per_1000": 16.812,
+     "share_of_total": 0.9333,
+     "profit_per_1000_contacts": -56.125,
+     "ipw_profit_per_1000_contacts": -66.375,
+     "profit_per_1000_customers": -24.6952,
+     "ipw_profit_per_1000_customers": -29.2051
+    },
+    {
+     "budget": 0.45,
+     "threshold": 0.005746,
+     "n_targeted": 359999,
+     "per_1000": 21.658,
+     "ipw_per_1000": 16.565,
+     "share_of_total": 0.9423,
+     "profit_per_1000_contacts": -56.685,
+     "ipw_profit_per_1000_contacts": -66.87,
+     "profit_per_1000_customers": -25.5082,
+     "ipw_profit_per_1000_customers": -30.0915
+    },
+    {
+     "budget": 0.46,
+     "threshold": 0.0053848,
+     "n_targeted": 367999,
+     "per_1000": 21.413,
+     "ipw_per_1000": 16.36,
+     "share_of_total": 0.9524,
+     "profit_per_1000_contacts": -57.174,
+     "ipw_profit_per_1000_contacts": -67.28,
+     "profit_per_1000_customers": -26.3,
+     "ipw_profit_per_1000_customers": -30.9489
+    },
+    {
+     "budget": 0.47,
+     "threshold": 0.0049178,
+     "n_targeted": 375999,
+     "per_1000": 21.023,
+     "ipw_per_1000": 16.012,
+     "share_of_total": 0.9554,
+     "profit_per_1000_contacts": -57.954,
+     "ipw_profit_per_1000_contacts": -67.977,
+     "profit_per_1000_customers": -27.2385,
+     "ipw_profit_per_1000_customers": -31.9491
+    },
+    {
+     "budget": 0.48,
+     "threshold": 0.0048685,
+     "n_targeted": 383999,
+     "per_1000": 20.678,
+     "ipw_per_1000": 15.703,
+     "share_of_total": 0.9597,
+     "profit_per_1000_contacts": -58.645,
+     "ipw_profit_per_1000_contacts": -68.594,
+     "profit_per_1000_customers": -28.1495,
+     "ipw_profit_per_1000_customers": -32.9254
+    },
+    {
+     "budget": 0.49,
+     "threshold": 0.0048537,
+     "n_targeted": 391999,
+     "per_1000": 20.354,
+     "ipw_per_1000": 15.417,
+     "share_of_total": 0.9643,
+     "profit_per_1000_contacts": -59.291,
+     "ipw_profit_per_1000_contacts": -69.166,
+     "profit_per_1000_customers": -29.0528,
+     "ipw_profit_per_1000_customers": -33.8913
+    },
+    {
+     "budget": 0.5,
+     "threshold": 0.0046636,
+     "n_targeted": 399999,
+     "per_1000": 20.007,
+     "ipw_per_1000": 15.108,
+     "share_of_total": 0.9672,
+     "profit_per_1000_contacts": -59.986,
+     "ipw_profit_per_1000_contacts": -69.784,
+     "profit_per_1000_customers": -29.9929,
+     "ipw_profit_per_1000_customers": -34.8918
+    }
+   ],
+   "breakeven": {
+    "marginal_threshold_per_1000": 50.0,
+    "grid_step": 0.01,
+    "raw": {
+     "profit_max_budget": 0.05,
+     "max_profit_per_1000_customers": 2.21,
+     "breakeven_budget": 0.11,
+     "per_1000_at_profit_max": 72.1
+    },
+    "ipw": {
+     "profit_max_budget": 0.05,
+     "max_profit_per_1000_customers": 2.53,
+     "breakeven_budget": 0.11,
+     "per_1000_at_profit_max": 75.3
+    }
+   },
+   "score_meaning": "P(visit | treated), a ranking score, not an uplift"
+  }
+ }
+}

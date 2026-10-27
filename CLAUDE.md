@@ -217,7 +217,10 @@ interpretable features and a best-arm policy; uplift with a neural τ model; est
 - Synthetic: every uplift learner reaches Spearman ≥ 0.6 with the true τ at n = 200k; the response model does not.
 - Test (`visit`): paired bootstrap (same resamples for both models) of best uplift minus response: the CI of the
   difference in incremental visits per 1,000 at the 10% budget excludes 0; the differences at 20% and 30% and in Qini
-  are reported whatever they are; the placebo Qini CI contains 0. (Changed at M3, authorised: the earlier
+  are reported whatever they are. Placebo (changed at M5, authorised): the null is the spread of Qini over ≥ 5 independent
+  shuffles of the treatment labels in train, each fitted once with the deployed settings and scored on dev; the deployed
+  model's test Qini must lie outside that spread; the single-shuffle bootstrap CI is reported, not used as the criterion.
+  (The paired criterion was changed at M3, authorised: the earlier
   "non-overlapping Qini CIs" criterion compares two marginal CIs, which is the wrong test for two models scored on
   the same customers.) Deployed pair, rule fixed at M3 before the test run: the learner with the highest dev Qini
   whose CI lower bound is within 0.005 of the best, ties to the simpler one (→ `s_learner`), with `r_learner` as the
